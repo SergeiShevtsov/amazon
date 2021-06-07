@@ -1,0 +1,12 @@
+{% extends 'maket.html' %}
+{% load static %}
+{% block detail %}
+
+Nehao {{name}}
+<br>
+{% for product in products %}
+	<br>
+	{{product.product_name}}
+{% endfor %}
+
+{% endblock %}
