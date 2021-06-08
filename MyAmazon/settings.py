@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%8&!$8#zm&$al2wxd-k$c3jeq7g!ey4_b7ybraj7sz8v)b=+*q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['amazonchik.herokuapp.com', '127.0.0.1', 'amazonchik1.herokuapp.com',]
+ALLOWED_HOSTS = ['amazonchik.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -43,7 +43,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,15 +80,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-        'CONN_MAX_AGE': 500,
     }
 }
 
-
-
-
-db_from_env=dj_database_url.config()
-DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -127,10 +120,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = 'analiz/static/'
-STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'analiz/static'),
+    os.path.join(BASE_DIR, 'static'),
 )
 
 # Default primary key field type
@@ -139,6 +131,4 @@ STATICFILES_DIRS = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/amz/MyPage'
-
-
 
