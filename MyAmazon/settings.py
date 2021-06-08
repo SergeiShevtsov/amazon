@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%8&!$8#zm&$al2wxd-k$c3jeq7g!ey4_b7ybraj7sz8v)b=+*q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['amazonchik.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['amazonchik.herokuapp.com', '127.0.0.1', 'amazonchik1.herokuapp.com',]
 
 
 # Application definition
@@ -76,16 +76,17 @@ WSGI_APPLICATION = 'MyAmazon.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-        'CONN_MAX_AGE': 500
+        'CONN_MAX_AGE': 500,
     }
 }
 
 
-import dj_database_url
+
 
 db_from_env=dj_database_url.config()
 DATABASES['default'].update(db_from_env)
