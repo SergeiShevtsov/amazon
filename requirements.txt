@@ -1,12 +1,13 @@
 asgiref==3.3.4
 certifi==2020.12.5
 chardet==4.0.0
-dj-database-url==0.5.0
+dj-database-url
 Django==3.2
 django-bootstrap==0.2.4
 django-filter==2.4.0
 django-google-charts==0.1.1
 django-on-heroku==1.1.2
+dynaconf==3.1.4
 gunicorn==20.1.0
 idna==2.10
 numpy==1.20.3
