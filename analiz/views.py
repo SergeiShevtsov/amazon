@@ -35,7 +35,7 @@ def mypage(request, manager_id, brand=''):
 	type = TypeOfProduct.objects.all().filter(manager=manager_id)
 	brands = Brand.objects.all() 
 	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
-		
+	
 	total_sales=[]
 	for item in type:
 		name = item.type
@@ -95,14 +95,17 @@ def productinfo(request, name):
 	products = Product.objects.all().filter(product_name=name)
 	product_name = products.values('product_name').first()
 	manager = products.values('manager').first()
-	sum_sales = products.aggregate(Sum('sales')) # dict
-	sales = sum_sales['sales__sum']
+	sum_sales = products.aggregate(Sum('sales')) 
+	sales = sum_sales['sales__sum'] # сделать за месяц
 	average_bsr = products.aggregate(Avg('bsr'))
 	bsr = str(average_bsr['bsr__avg'])[0:str(average_bsr['bsr__avg']).find('.')]
 	average_rating = products.aggregate(Avg('rating'))
 	rating = str(average_rating['rating__avg'])[0:3]
-	products = Product.objects.all().filter(product_name=name)
 	date = products.values('date').annotate(month=TruncMonth('date'))
+	asin = products.values('asin').first()['asin'] # dictionary
+	link = products.values('link').first()['link'] # dictionary
+	link = link[8:]
+	event = products.values('event').last()['event']
 	
 	date1 = ''
 	date2 = timezone.now()
@@ -122,6 +125,6 @@ def productinfo(request, name):
 		data = AddProduct(instance=products.last()) 
 		form = DateForm(request.POST or None)
 	
-	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data}
+	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event}
 	return render(request, 'Product.html', context)
 

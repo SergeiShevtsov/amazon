@@ -1,7 +1,5 @@
 {% extends 'maket.html' %}
 {% load static %}
- Размер страницы задается бутстрапом по CDN
-
 {% block detail %}
 
 {% block script %}
@@ -217,6 +215,9 @@
 				Суммарные продажи : {{ sales }} <br>
 				Средний BSR: {{ bsr }} <br>
 				Средний рейтинг: {{ rating }} <br>
+				Asin: {{ asin }} <br>
+				{{ link }} <br>
+				Last Event: {{ event }} <br>
 			</div>
 			
 			<!-- Main feild with charts -->
