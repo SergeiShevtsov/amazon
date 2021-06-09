@@ -1,9 +1,6 @@
-import django_filters as filters
 from .models import Product
 from django import forms
 import datetime
-from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm
 from django.utils import timezone
 

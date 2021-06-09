@@ -107,13 +107,17 @@ def productinfo(request, name):
 	link = link[8:]
 	event = products.values('event').last()['event']
 	
-	date1 = ''
-	date2 = timezone.now()
+	
+	date1 = '2020-01-01'
+	date2 = datetime.now()
 	form = DateForm(request.POST or None)
-	if form.is_valid() and date1:
+	if form.is_valid():
 		date1 = form.clean_date1()
 		date2 = form.clean_date2()
 		products = products.filter(date__gte=date1).filter(date__lte=date2)
+	if products.count() == 0:
+		products = Product.objects.all().filter(product_name=name)
+	
 	
 	data = AddProduct(request.POST or None, instance=products.last())
 	if request.method == "POST":
