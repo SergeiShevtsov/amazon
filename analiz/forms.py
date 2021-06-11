@@ -38,6 +38,9 @@ class AddProduct(ModelForm):
 	offers = forms.CharField(max_length=20, required=False)
 	event = forms.CharField(max_length=20, required=False)
 
+
+
+
 	
 	
 

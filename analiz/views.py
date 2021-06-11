@@ -114,6 +114,9 @@ def productinfo(request, name):
 	if form.is_valid():
 		date1 = form.clean_date1()
 		date2 = form.clean_date2()
+		if date1==None or date2==None:
+			date1 = '2020-01-01'
+			date2 = datetime.now()
 		products = products.filter(date__gte=date1).filter(date__lte=date2)
 	if products.count() == 0:
 		products = Product.objects.all().filter(product_name=name)
