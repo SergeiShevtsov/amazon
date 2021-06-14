@@ -23,7 +23,7 @@ class Product(models.Model):
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	type = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
 	class Meta:
-		ordering = ['date',]
+		ordering = ['-id',]
 	
 	def __str__(self):
 		return self.product_name
