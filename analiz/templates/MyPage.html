@@ -75,9 +75,9 @@
 {% if user.is_authenticated and user.get_username != "Max" %}
 <div class="container">
 	<div class="row sidebar-heading">
-		<div class="col-xs-12 col-sm-4 col-md-8 col-lg-5" style="background-color: #f1e9e9">
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="background-color: #f1e9e9">
 			<div class="row">
-				<div class="col-xs-12 col-sm-4 col-md-8 col-lg-4 sidebar-sticky" style="background-color: #c19999">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #c19999">
 					<ul class="nav navbar-nav">
 						<li class="active navbar-brand"> Managers: </li>
 						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' %}
@@ -92,7 +92,7 @@
 						{% endif %}
 					</ul>
 				</div>
-				<div class="col-xs-12 col-sm-4 col-md-8 col-lg-4 sidebar-sticky" style="background-color: #f5dbdb">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #f5dbdb">
 					<ul class="nav navbar-nav">
 						<li class="active navbar-brand"> Brands: </li>
 						{% for obj in brands %}
@@ -103,7 +103,7 @@
 					</ul>
 				</div>
 
-				<div class="col-xs-12 col-sm-4 col-md-8 col-lg-4 sidebar-sticky" style="background-color: #FFE4E1">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #FFE4E1">
 					<ul class="nav navbar-nav">
 						<li class="active navbar-brand"> Products: </li>
 						{% for item in type %}
@@ -117,10 +117,19 @@
 		</div>
 		
 		<!-- Table here -->
-		<div class="col-xs-12 col-sm-4 col-md-8 col-lg-7" style="background-color: #FFFAFA">
+		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: #FFFAFA">
 			<ul class="nav navbar-nav">
 				<li class="active navbar-brand"> Sales: </li>
 				<li class="nav navbar-toggler"><canvas id="Total_Sales" width="400" height="200"></canvas></li>
+				<div class="dropdown">
+					  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+						Год
+					  </button>
+					  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+						<li><a class="dropdown-item" href="">2021</a></li>
+						<li><a class="dropdown-item" href="">2022</a></li>
+					  </ul>
+					</div>
 			</ul>
 			<table class="table table table-hover" >
 			<thead>

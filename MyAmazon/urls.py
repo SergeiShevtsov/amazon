@@ -20,7 +20,7 @@ from analiz import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^$', include('analiz.urls')),
+    url(r'^', include('analiz.urls')), # было url(r'^$', include('analiz.urls')),
     path('amz/', include('analiz.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

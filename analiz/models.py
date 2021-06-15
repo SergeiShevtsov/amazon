@@ -19,11 +19,13 @@ class Product(models.Model):
 	offers = models.TextField(blank=True, null = True)
 	date = models.DateField() #auto_now=True,
 	event = models.TextField(blank=True, null = True) 
+	reviews = models.IntegerField(blank=True, null = True)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	type = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
+	reviews = models.IntegerField(blank=True, null = True)
 	class Meta:
-		ordering = ['-id',]
+		ordering = ['date',]
 	
 	def __str__(self):
 		return self.product_name

@@ -4,7 +4,9 @@ body {
 
 background-image: var(--bs-gradient);
 
-
+.navbar navbar-default {
+  width: 16px;
+}
 
 .feather {
   width: 16px;

@@ -210,7 +210,7 @@
 	<div class="row sidebar-heading">
 		<div class="row">
 			<!-- Left side panel -->
-			<div class="col-lg-2 sidebar-sticky" style="background-color: #a13f4f	">
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 sidebar-sticky" style="background-color: #a13f4f	">
 				<h1><font color="white">{{ name }}</font></h1>
 				Суммарные продажи : {{ sales }} <br>
 				Средний BSR: {{ bsr }} <br>
@@ -233,9 +233,9 @@
 					<li class="nav navbar-toggler"><canvas id="Rating" width="400" height="200"></canvas></li>
 				</ul>
 			</div>
-			<div class="col-lg-2" style="background-color: #a86240">
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #a86240">
 				<br>
-				<form class='form-control'  method="POST" action="" >
+				<form class='form-control' method="POST" action="" >
 					{{form}}
 					<div align="center">
 						<input type="Submit" name="submit" value="Filter"/>
@@ -245,7 +245,7 @@
 					Сбросить фильтрацию
 				</p></button></a><br>
 			</div>
-			<div class="col-lg-2" style="background-color: #68132c">
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #68132c">
 				<form method="POST" class="col-form-label", action=""><font color='#FFFFFF'>
 					{% for field in data %}
 					<div class="col-form-label-sm">
