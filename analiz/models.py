@@ -7,8 +7,8 @@ from PIL import Image
 
 class Product(models.Model):
 	product_name = models.CharField(max_length=30) #Title
-	asin = models.CharField(max_length=15) 
-	link = models.URLField()
+	asin = models.CharField(max_length=15, blank=True, null = True) 
+	link = models.URLField(blank=True, null = True)
 	changes = models.CharField(max_length=400, blank=True, null = True)
 	positions_by_keys = models.CharField(max_length=400, blank=True, null = True)
 	price = models.DecimalField(max_digits=4, decimal_places=2)
