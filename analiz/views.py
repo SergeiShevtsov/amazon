@@ -27,12 +27,26 @@ def registerPage(request):
 	context = {'form': form, 'profile_form': profile_form}
 	return render(request, 'register.html', context)
 
-
-def mypage(request, manager_id, year=None, month=None): # brand=''
+@csrf_exempt
+def mypage(request, manager_id):
 	managers = Manager.objects.all()
 	product = Product.objects.all().filter(manager=manager_id)
 	
-		
+	
+	date1 = '2020-01-01'
+	date2 = datetime.now()
+	form = DateForm(request.POST or None)
+	if form.is_valid():
+		date1 = form.clean_date1()
+		date2 = form.clean_date2()
+		if date1==None or date2==None:
+			date1 = '2020-01-01'
+			date2 = datetime.now()
+		product = product.filter(date__gte=date1).filter(date__lte=date2)
+	if product.count() == 0:
+		product = Product.objects.all()
+
+
 	type = TypeOfProduct.objects.all().filter(manager=manager_id)
 	brands = Brand.objects.all() 
 	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
@@ -48,7 +62,7 @@ def mypage(request, manager_id, year=None, month=None): # brand=''
 		total_sales.append(type_sales)
 	
 	
-	return render(request, 'MyPage.html', {'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales, 'brands':brands, 'manage_id' : manager_id})
+	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales, 'brands':brands, 'manage_id' : manager_id})
 
 # Рабочая версия mypage	
 # def mypage(request, manager_id, brand=''):
@@ -119,8 +133,6 @@ def productinfo(request, name):
 	products = Product.objects.all().filter(product_name=name)
 	product_name = products.values('product_name').first()
 	manager = products.values('manager').first()
-	sum_sales = products.aggregate(Sum('sales')) 
-	sales = sum_sales['sales__sum'] # сделать за месяц
 	average_bsr = products.aggregate(Avg('bsr'))
 	bsr = str(average_bsr['bsr__avg'])[0:str(average_bsr['bsr__avg']).find('.')]
 	average_rating = products.aggregate(Avg('rating'))
@@ -145,6 +157,8 @@ def productinfo(request, name):
 	if products.count() == 0:
 		products = Product.objects.all().filter(product_name=name)
 	
+	sum_sales = products.aggregate(Sum('sales')) 
+	sales = sum_sales['sales__sum'] # сделать за месяц
 	
 	data = AddProduct(request.POST or None, instance=products.last())
 	if request.method == "POST":
