@@ -51,40 +51,28 @@ def mypage(request, manager_id):
 	brands = Brand.objects.all() 
 	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
 	
-	total_sales=[]
+	total_sales = []
+	ave_sales = []
 	for item in type:
 		name = item.type
 		type_sales = 0
+		average_sales = 0
+		coun = 0
 		for p in product:
 			if name == p.product_name:
+				coun += 1
 				s = p.sales
 				type_sales += s
+				average_sales += s
+		if coun == 0:
+			coun = 1
+		average_sales = average_sales / coun
+		ave_sales.append(average_sales)
 		total_sales.append(type_sales)
 	
 	
-	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales, 'brands':brands, 'manage_id' : manager_id})
+	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id})
 
-# Рабочая версия mypage	
-# def mypage(request, manager_id, brand=''):
-# 	brand = Brand.objects.all()
-# 	managers = Manager.objects.all()
-# 	product = Product.objects.all().filter(manager=manager_id)
-# 	type = TypeOfProduct.objects.all().filter(manager=manager_id)
-# 	brands = Brand.objects.all() 
-# 	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
-# 	
-# 	total_sales=[]
-# 	for item in type:
-# 		name = item.type
-# 		type_sales = 0
-# 		for p in product:
-# 			if name == p.product_name:
-# 				s = p.sales
-# 				type_sales += s
-# 		total_sales.append(type_sales)
-# 	
-# 	
-# 	return render(request, 'MyPage.html', {'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales, 'brands':brands, 'manage_id' : manager_id})
 
 def brand(request, manager_id, brandname=0):
 	brands = Brand.objects.all()
