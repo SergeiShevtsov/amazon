@@ -132,7 +132,7 @@
 						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
 						{% for person in managers %}
 						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#FFF5EE>
-							{{ person.username }} - {{person.id}}
+							{{ person.username }}
 							</font></a></li>
 						{% endfor %}
 						{% else %}
