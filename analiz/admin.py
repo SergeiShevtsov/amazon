@@ -17,4 +17,7 @@ class ProductAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
 	list_display = ('id', "user", 'username')
 
+class UserAdmin(admin.ModelAdmin):
+	list_display = ('id', 'username')
+
 # Register your models here.
