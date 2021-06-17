@@ -7,7 +7,7 @@ admin.site.register(Brand)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-	list_display = ("product_name", "id", "date", 'manager', 'reviews')
+	list_display = ("product_name", "id", "date", 'reviews', 'sales')
 
 @admin.register(TypeOfProduct)
 class ProductAdmin(admin.ModelAdmin):

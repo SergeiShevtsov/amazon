@@ -136,7 +136,7 @@
 							</font></a></li>
 						{% endfor %}
 						{% else %}
-						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=manage_id %}"><font color=#FFF5EE>{{ user.get_username }}
+						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=user.id %}"><font color=#FFF5EE>{{ user.get_username }}
 						</font></a></li>
 						{% endif %}
 					</ul>
@@ -183,7 +183,7 @@
 				<li class="nav navbar-toggler"><canvas id="Total_Sales" width="400" height="200"></canvas></li>
 				<li class="nav navbar-toggler"><canvas id="Ave_Sales" width="400" height="200"></canvas></li>
 			</ul>
-			<table class="table table table-hover" >
+			<!-- <table class="table table table-hover" >
 			<thead>
 				<tr>
 					<th scope="col">rec_id</th>
@@ -208,7 +208,7 @@
 			</tr>
 			{% endfor %}
 			</tbody>
-			</table>
+			</table> -->
 		</div>
 	</div>
 </div>
