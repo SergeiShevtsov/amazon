@@ -34,7 +34,7 @@ class Product(models.Model):
 
 
 class TypeOfProduct(models.Model): # конкретно все товары
-	type = models.CharField(max_length=30)
+	type = models.CharField(max_length=30, unique=True)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE,)
 	
