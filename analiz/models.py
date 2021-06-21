@@ -9,7 +9,7 @@ class Product(models.Model):
 	product_name = models.CharField(max_length=30) #Title
 	asin = models.CharField(max_length=15, blank=True, null = True) 
 	link = models.URLField(blank=True, null = True)
-	changes = models.CharField(max_length=400, blank=True, null = True)
+	changes = models.TextField(blank=True, null = True)
 	positions_by_keys = models.CharField(max_length=400, blank=True, null = True)
 	price = models.DecimalField(max_digits=4, decimal_places=2)
 	bsr = models.IntegerField(blank=True, null = True)
@@ -24,6 +24,8 @@ class Product(models.Model):
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	type = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
 	reviews = models.IntegerField(blank=True, null = True)
+	link_to_seo = models.URLField(blank=True, null = True)
+	sel_acc = models.TextField(blank=True, null = True) 
 	class Meta:
 		ordering = ['date',]
 	

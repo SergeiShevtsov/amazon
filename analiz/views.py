@@ -150,8 +150,9 @@ def productinfo(request, name):
 	link = products.values('link').first()['link'] # dictionary
 	link = link[8:]
 	event = products.values('event').last()['event']
-	
-	
+	sel_acc = products.values('sel_acc').first()['sel_acc']
+	link_to_seo = products.values('link_to_seo').first()['link_to_seo']
+	last_30 = products[0:10:-1]
 	date1 = '2020-01-01'
 	date2 = datetime.now()
 	form = DateForm(request.POST or None)
@@ -168,7 +169,12 @@ def productinfo(request, name):
 	sum_sales = products.aggregate(Sum('sales')) 
 	sales = sum_sales['sales__sum'] # сделать за месяц
 	
-	data = AddProduct(request.POST or None, instance=products.last())
+	if products.last() == None:
+		data = AddProduct(request.POST or None)
+	else:
+		data = AddProduct(request.POST or None, instance=products.last())
+	
+	
 	if request.method == "POST":
 		data = AddProduct(request.POST)
 		if data.is_valid():
@@ -178,5 +184,5 @@ def productinfo(request, name):
 		data = AddProduct(instance=products.last()) 
 		form = DateForm(request.POST or None)
 	
-	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event}
+	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30}
 	return render(request, 'Product.html', context)

@@ -265,22 +265,50 @@
 				Asin: {{ asin }} <br>
 				<a href="https://{{ link }}">{{ link }} </a><br>
 				Last Event: {{ event }} <br>
+				Seller account: {{ seller }} <br>
+				Link To Seo:<a href="{{ seo }}"> {{ seo }} </a><br>
 			</div>
 			
 			<!-- Main feild with charts -->
-			<div class="col-lg sidebar-sticky" style="background-color: #FFFFFF">
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-6 sidebar-sticky" style="background-color: #FFFFFF">
 				<ul class="nav navbar-nav">
 					<li class="active navbar-brand"> Sales: </li>
-					<li class="nav navbar-toggler"><canvas id="myChart" width="400" height="200"></canvas></li>
+					<li class="nav navbar-toggler"><canvas id="myChart" width="400" height="150"></canvas></li>
 					<li class="active navbar-brand"> BSR: </li>
-					<li class="nav navbar-toggler"><canvas id="BSR" width="400" height="200"></canvas></li>
+					<li class="nav navbar-toggler"><canvas id="BSR" width="400" height="150"></canvas></li>
 					<li class="active navbar-brand"> Reviews: </li>
-					<li class="nav navbar-toggler"><canvas id="Reviews" width="400" height="200"></canvas></li>
+					<li class="nav navbar-toggler"><canvas id="Reviews" width="400" height="150"></canvas></li>
 					<li class="active navbar-brand"> Price: </li>
-					<li class="nav navbar-toggler"><canvas id="Price" width="400" height="200"></canvas></li>
+					<li class="nav navbar-toggler"><canvas id="Price" width="400" height="150"></canvas></li>
 					<li class="active navbar-brand"> Rating: </li>
-					<li class="nav navbar-toggler"><canvas id="Rating" width="400" height="200"></canvas></li>
+					<li class="nav navbar-toggler"><canvas id="Rating" width="400" height="150"></canvas></li>
 				</ul>
+				<table class="table table table-hover" >
+					<thead>
+						<tr>
+							<th scope="col">rec_id</th>
+							<th scope="col">Product Name</th>
+							<th scope="col">Date</th>
+							<th scope="col">Price</th>
+							<th scope="col">BSR</th>
+							<th scope="col">Sales</th>
+							<th scope="col">Rating</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for item in last_30 %}
+					<tr>
+					<th scope="row">{{item.id}}</th>
+						<td>{{item.product_name}}</td>
+						<td>{{item.date}}</td>
+						<td>{{item.price}}</td>
+						<td>{{item.bsr}}</td>
+						<td>{{item.sales}}</td>
+						<td>{{item.rating}}</td>
+					</tr>
+					{% endfor %}
+					</tbody>
+					</table>
 			</div>
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #a86240">
 				<br>
