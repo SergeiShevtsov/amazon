@@ -14,8 +14,58 @@ from django.db.models.functions import TruncMonth, TruncYear
 import itertools
 from django.db.models.functions import ExtractMonth, TruncMonth
 from django.utils import timezone
+from django.template import Context, loader
 
-
+def motivation(request):
+	managers = Manager.objects.all()
+	type = TypeOfProduct.objects.all().order_by('manager')
+	product = Product.objects.all()
+	monthes = product.values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
+	total_sales = []
+	ave_sales = []
+	for item in type:
+		name = item.type
+		type_sales = 0
+		average_sales = 0
+		coun = 0
+		for p in product:
+			if name == p.product_name:
+				coun += 1
+				s = p.sales
+				type_sales += s
+				average_sales += s
+		if coun == 0:
+			coun = 1
+		average_sales = average_sales / coun
+		ave_sales.append(average_sales)
+		total_sales.append(type_sales)
+	dictionary = dict(zip(type, total_sales))
+	
+	context = {'managers':managers, 'type':type, 'product':product, 'sales':total_sales, 'dicti':dictionary}
+	return render(request, 'motivation.html', context)
+	
+# def table_edit(request, object_id=None, Form=None, redirect_url=None):
+# 	def render_to_response(tmpl, data):
+# 		t = loader.get_template(tmpl)
+# 		c = Context(data)
+# 		return HttpResponse(t.render(c))
+# 		
+# 	if request.method == 'POST':
+# 		if object_id is None:
+# 			edit_form = AddProduct(request.POST)
+# 		else:
+# 			edit_form = AddProduct(request.POST, instance=Form.Meta.model.objects.get(id=object_id))
+# 	elif object_id is None:
+# 		edit_form = AddProduct()
+# 	else:
+# 		edit_form = AddProduct(instance=AddProduct.Meta.model.objects.get(id=object_id))
+# 	if edit_form.is_valid():
+# 		edit_form.save()
+# 		if redirect_url is not None:
+# 			return redirect(redirect_url)
+# 	return render_to_response('Product.html', {
+# 		'edit_form': edit_form,
+# 	})
 
 def registerPage(request): 
 	if request.method == 'POST':
@@ -186,3 +236,4 @@ def productinfo(request, name):
 	
 	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30}
 	return render(request, 'Product.html', context)
+

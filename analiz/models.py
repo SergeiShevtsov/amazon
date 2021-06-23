@@ -37,7 +37,8 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	type = models.CharField(max_length=30, unique=True)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE,)
-	
+	class Meta:
+		ordering = ['type',]
 	def __str__(self):
 		return self.type
 	
