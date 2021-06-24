@@ -313,6 +313,7 @@
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #a86240">
 				<br>
 				<form class='form-control' method="POST" action="" >
+					{% csrf_token %}
 					{{form}}
 					<div align="center">
 						<input type="Submit" name="submit" value="Filter"/>
@@ -324,6 +325,7 @@
 			</div>
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #68132c">
 				<form method="POST" class="col-form-label", action=""><font color='#FFFFFF'>
+					{% csrf_token %}
 					{% for field in data %}
 					<div class="col-form-label-sm">
 						<div>{{field.label_tag}}
