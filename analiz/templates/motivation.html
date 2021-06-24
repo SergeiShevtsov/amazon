@@ -80,6 +80,10 @@
 			<th scope="col">rec_id</th>
 			<th scope="col">Product Name</th>
 			<th scope="col">Sales</th>
+			<th scope="col">Price</th>
+			<th scope="col">BSR</th>
+			<th scope="col">Sales</th>
+			<th scope="col">Rating</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -87,9 +91,11 @@
 	<tr>
 	<th scope="row">{{i}}</th>
 	<th scope="row">{{k}}</th>
-	{% endfor %}
-	{% for i in managers %}
-		<td>{{i}}</td>
+		<td>{{item.type}}</td>
+		<td>{{item.price}}</td>
+		<td>{{item.bsr}}</td>
+		<td>{{item.sales}}</td>
+		<td>{{item.rating}}</td>
 	</tr>
 	{% endfor %}
 	</tbody>
