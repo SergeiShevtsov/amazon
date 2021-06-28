@@ -50,7 +50,8 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	status = models.CharField(
 		max_length=10,
 		choices=condition,
-		default=OLD,
+		null = True,
+		blank = True
 	)
 	
 	class Meta:
