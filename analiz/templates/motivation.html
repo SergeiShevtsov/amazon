@@ -92,9 +92,12 @@
 	{% if i.status == 'OLD' %}
 	<th scope="row">50</th>
 	<th scope="row">101</th>
+	{% elif i.status == "NEW" %}
+	<th scope="row">25</th>
+	<th scope="row">51</th>
 	{% else %}
-	<th scope="row">5000</th>
-	<th scope="row">10100</th>
+	<th scope="row">20</th>
+	<th scope="row">51</th>
 	{% endif %}
 	<th scope="row">{{k}}</th>
 	</tr>
@@ -103,7 +106,7 @@
 </table>
 <br>
 
-
+{{monthes}}
 {% endif %}
 
 {% endblock %}

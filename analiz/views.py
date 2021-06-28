@@ -19,8 +19,7 @@ from django.template import Context, loader
 def motivation(request):
 	managers = Manager.objects.all()
 	type = TypeOfProduct.objects.all().order_by('manager')
-	product = Product.objects.all()
-	monthes = product.values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
+	product = Product.objects.exclude(changes='бан')
 	total_sales = []
 	ave_sales = []
 	for item in type:
@@ -41,7 +40,7 @@ def motivation(request):
 		total_sales.append(type_sales)
 	dictionary = dict(zip(type, total_sales))
 	
-	context = {'managers':managers, 'type':type, 'product':product, 'sales':total_sales, 'dicti':dictionary}
+	context = {'managers':managers, 'type':type, 'product':product, 'sales':total_sales, 'dicti':dictionary,}
 	return render(request, 'motivation.html', context)
 	
 # def table_edit(request, object_id=None, Form=None, redirect_url=None):
