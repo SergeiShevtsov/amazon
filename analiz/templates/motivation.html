@@ -72,37 +72,35 @@
 	</div>
 </nav>
 
-{% if user.is_authenticated and user.get_username != "Max" %}
+{% if user.is_authenticated %}
 
 <table class="table table table-hover" >
 	<thead>
 		<tr>
-			<th scope="col">rec_id</th>
+			<th scope="col">Manager</th>
 			<th scope="col">Product Name</th>
+			<th scope="col">Min Sales</th>
+			<th scope="col">Max sales</th>
 			<th scope="col">Sales</th>
-			<th scope="col">Price</th>
-			<th scope="col">BSR</th>
-			<th scope="col">Sales</th>
-			<th scope="col">Rating</th>
 		</tr>
 	</thead>
 	<tbody>
-	{% for i,k in dicti.items %}
 	<tr>
+	{% for i,k in dicti.items %}
+	<th scope="row">{{i.manager}}</th>
 	<th scope="row">{{i}}</th>
+	{% if i.status == 'OLD' %}
+	<th scope="row">50</th>
+	<th scope="row">101</th>
+	{% else %}
+	<th scope="row">5000</th>
+	<th scope="row">10100</th>
+	{% endif %}
 	<th scope="row">{{k}}</th>
-		<td>{{item.type}}</td>
-		<td>{{item.price}}</td>
-		<td>{{item.bsr}}</td>
-		<td>{{item.sales}}</td>
-		<td>{{item.rating}}</td>
 	</tr>
 	{% endfor %}
 	</tbody>
 </table>
-{% for i,k in dicti.items %}
-{{i}} - {{k}}
-{% endfor %}
 <br>
 
 

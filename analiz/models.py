@@ -37,6 +37,18 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	type = models.CharField(max_length=30, unique=True)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE,)
+	NEW = "NEW"
+	OLD = "OLD"
+	condition = [
+		(NEW, 'NEW'),
+		(OLD, 'OLD'),
+	]
+	status = models.CharField(
+		max_length=3,
+		choices=condition,
+		default=OLD,
+	)
+	
 	class Meta:
 		ordering = ['type',]
 	def __str__(self):
