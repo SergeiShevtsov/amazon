@@ -20,6 +20,20 @@ def motivation(request):
 	managers = Manager.objects.all()
 	type = TypeOfProduct.objects.all().order_by('manager')
 	product = Product.objects.exclude(changes='бан')
+	
+	date1 = '2020-01-01'
+	date2 = datetime.now()
+	form = DateForm(request.POST or None)
+	if form.is_valid():
+		date1 = form.clean_date1()
+		date2 = form.clean_date2()
+		if date1==None or date2==None:
+			date1 = '2020-01-01'
+			date2 = datetime.now()
+		product = product.filter(date__gte=date1).filter(date__lte=date2)
+	if product.count() == 0:
+		product = Product.objects.all()
+	
 	total_sales = []
 	ave_sales = []
 	for item in type:
@@ -38,9 +52,9 @@ def motivation(request):
 		average_sales = average_sales / coun
 		ave_sales.append(average_sales)
 		total_sales.append(type_sales)
-	dictionary = dict(zip(type, total_sales))
+	dictionary = dict(zip(type, ave_sales))
 	
-	context = {'managers':managers, 'type':type, 'product':product, 'sales':total_sales, 'dicti':dictionary,}
+	context = {'managers':managers, 'type':type, 'product':product, 'sales':total_sales, 'dicti':dictionary, 'form':form}
 	return render(request, 'motivation.html', context)
 	
 # def table_edit(request, object_id=None, Form=None, redirect_url=None):

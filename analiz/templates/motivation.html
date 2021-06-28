@@ -56,6 +56,11 @@
 	<div class="container-fluid" style="background-color: #a4828f ">
 		<div class="navbar-header">
 			<h1> Amazonchik </h1>
+			<form class='form' method="POST" action="" >
+				{% csrf_token %}
+				{{form}}
+				<input type="Submit" name="submit" value="Filter"/>
+			</form>
 		</div>
 		<div>
 			<ul class="nav navbar">
