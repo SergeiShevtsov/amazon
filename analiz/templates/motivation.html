@@ -89,21 +89,8 @@
 	{% for i,k in dicti.items %}
 	<th scope="row">{{i.manager}}</th>
 	<th scope="row">{{i}}</th>
-	{% if i.status == '50-101' %}
-	<th scope="row">50</th>
-	<th scope="row">101</th>
-	{% elif i.status == "25-51" %}
-	<th scope="row">25</th>
-	<th scope="row">51</th>
-	{% elif i.status == "25-101" %}
-	<th scope="row">25</th>
-	<th scope="row">101</th>
-	{% elif i.status == "20-51" %}
-	<th scope="row">20</th>
-	<th scope="row">51</th>
-	{% else %}
-	<th scope="row">Не выбран статус товара</th>
-	<th scope="row"></th>
+	<th scope="row">{{i.status_min}}</th>
+	<th scope="row">{{i.status_need}}</th>
 	{% endif %}
 	<th scope="row">{{k}}</th>
 	</tr>

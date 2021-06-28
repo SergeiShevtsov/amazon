@@ -37,22 +37,8 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	type = models.CharField(max_length=30, unique=True)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE,)
-	NEW = "25-51"
-	OLD = "50-101"
-	MID = "20-51"
-	OTH = "25-101"
-	condition = [
-		(NEW, '25-51'),
-		(OLD, '50-101'),
-		(MID, '20-51'),
-		(OTH, "25-101")
-	]
-	status = models.CharField(
-		max_length=10,
-		choices=condition,
-		null = True,
-		blank = True
-	)
+	status_min = models.IntegerField(blank=True, null = True, default=25)
+	status_need = models.IntegerField(blank=True, null = True, default=101)
 	
 	class Meta:
 		ordering = ['type',]
