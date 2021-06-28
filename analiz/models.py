@@ -37,16 +37,18 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	type = models.CharField(max_length=30, unique=True)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE,)
-	NEW = "NEW"
-	OLD = "OLD"
-	MID = "MID"
+	NEW = "25-51"
+	OLD = "50-101"
+	MID = "20-51"
+	OTH = "25-101"
 	condition = [
-		(NEW, 'NEW'),
-		(OLD, 'OLD'),
-		(MID, 'MID'),
+		(NEW, '25-101'),
+		(OLD, '50-101'),
+		(MID, '20-51'),
+		(OTH, "25-101")
 	]
 	status = models.CharField(
-		max_length=3,
+		max_length=6,
 		choices=condition,
 		default=OLD,
 	)
