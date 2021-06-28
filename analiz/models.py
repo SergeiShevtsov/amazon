@@ -42,13 +42,13 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	MID = "20-51"
 	OTH = "25-51"
 	condition = [
-		(NEW, '25-101'),
+		(NEW, '25-51'),
 		(OLD, '50-101'),
 		(MID, '20-51'),
-		(OTH, "25-51")
+		(OTH, "25-101")
 	]
 	status = models.CharField(
-		max_length=6,
+		max_length=10,
 		choices=condition,
 		default=OLD,
 	)
