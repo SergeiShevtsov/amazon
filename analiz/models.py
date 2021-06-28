@@ -40,7 +40,7 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	NEW = "25-51"
 	OLD = "50-101"
 	MID = "20-51"
-	OTH = "25-101"
+	OTH = "25-51"
 	condition = [
 		(NEW, '25-101'),
 		(OLD, '50-101'),
