@@ -45,7 +45,7 @@ class TypeOfProduct(models.Model): # конкретно все товары
 		(NEW, '25-101'),
 		(OLD, '50-101'),
 		(MID, '20-51'),
-		(OTH, "25-101")
+		(OTH, "25-51")
 	]
 	status = models.CharField(
 		max_length=6,
