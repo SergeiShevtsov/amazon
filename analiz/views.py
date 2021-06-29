@@ -50,7 +50,9 @@ def motivation(request):
 		if coun == 0:
 			coun = 1
 		average_sales = average_sales / coun
-		ave_sales.append(average_sales)
+		average_sales = str(average_sales)
+		average_sales = average_sales[0:average_sales.find(".")]
+		ave_sales.append(int(average_sales))
 		total_sales.append(type_sales)
 	dictionary = dict(zip(type, ave_sales))
 	
