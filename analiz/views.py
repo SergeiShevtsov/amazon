@@ -45,14 +45,14 @@ def motivation(request):
 			if name == p.product_name:
 				coun += 1
 				s = p.sales
+				price = p.price
 				type_sales += s
 				average_sales += s
 		if coun == 0:
 			coun = 1
 		average_sales = average_sales / coun
-		average_sales = str(average_sales)
-		average_sales = average_sales[0:average_sales.find(".")]
-		ave_sales.append(int(average_sales))
+		average_sales = round(average_sales,0)
+		ave_sales.append(average_sales)
 		total_sales.append(type_sales)
 	dictionary = dict(zip(type, ave_sales))
 	
@@ -117,25 +117,31 @@ def mypage(request, manager_id):
 	
 	total_sales = []
 	ave_sales = []
+	got_money = []
 	for item in type:
 		name = item.type
 		type_sales = 0
 		average_sales = 0
 		coun = 0
+		money = 0
 		for p in product:
 			if name == p.product_name:
 				coun += 1
 				s = p.sales
+				price = p.price
+				money += price*s
 				type_sales += s
 				average_sales += s
 		if coun == 0:
 			coun = 1
 		average_sales = average_sales / coun
+		average_sales = round(average_sales,0)
 		ave_sales.append(average_sales)
 		total_sales.append(type_sales)
+		got_money.append(money)
 	
 	
-	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id})
+	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money})
 
 
 def brand(request, manager_id, brandname=0):
