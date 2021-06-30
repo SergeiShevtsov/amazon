@@ -1,0 +1,101 @@
+<!doctype html>
+{% load crispy_forms_tags %}
+{% load static %}
+<html lang="en">
+  <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/dashboard.rtl.css'%}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/buttons.css'%}" type="text/css">
+
+	<title>Amazonchik</title>
+  </head>
+  
+  <body>
+	<div class="container">
+	  <div class="row justify-content-center">
+		  <h1 class="mt-2">Amazonchik</h1>
+		  <hr class="mt-0 mb-4">
+		  {% block detail %}
+		  <nav class="navbar navbar-default">
+			  <div class="container-fluid" style="background-color: #93afa9 ">
+				  <div class="navbar-header">
+					  <h3><p style="font-style:italic"><font color="white">Add new Product or Type of Product</font></p></h3>
+				  </div>
+				  <div>
+					  <ul class="nav navbar">
+						  <button type="button" class="btn btn-warning"><a href="{% url 'manager_page' manager_id=user.id %}" class="link-dark">Main Page</a></button>
+					  </ul>
+				  </div>
+			  </div>
+		  </nav>
+		  <div class="container-fluid">
+			  <div class="row sidebar-heading">
+				  <div class="row">
+					  <!-- First field -->
+					  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-5 sidebar-sticky" style="background-color: #dc7a8a	">
+						<form class='form-control' method="POST" action="" >
+							{% csrf_token %}
+							<div class="row">
+								<div class="col-6">
+								   {{ new_product.product_name|as_crispy_field }}
+								   {{ new_product.link|as_crispy_field }}
+								   {{ new_product.positions_by_keys|as_crispy_field }}
+								   {{ new_product.bsr|as_crispy_field }}
+								   {{ new_product.conversion_rate|as_crispy_field }}
+								   {{ new_product.offers|as_crispy_field }}
+								   {{ new_product.event|as_crispy_field }}
+								   {{ new_product.brand|as_crispy_field }}
+								   {{ new_product.type|as_crispy_field }}
+								</div>
+								<div class="col-6">
+								   {{ new_product.asin|as_crispy_field }}
+								   {{ new_product.changes|as_crispy_field }}
+								   {{ new_product.price|as_crispy_field }}
+								   {{ new_product.sales|as_crispy_field }}
+								   {{ new_product.rating|as_crispy_field }}
+								   {{ new_product.date|as_crispy_field }}
+								   {{ new_product.reviews|as_crispy_field }}
+								   {{ new_product.manager|as_crispy_field }}
+								   {{ new_product.link_to_seo|as_crispy_field }}
+							</div>
+							{{ new_product.sel_acc|as_crispy_field }}
+							<div align="center">
+								<input type="Submit" name="submit" value="Save Product" class="btn btn-danger"/>
+							</div>
+						</form>
+					  </div>
+					  <h5>  Product name и Type of Product должны быть полностью идентичными!* </h5>
+					  </div>
+					  
+					  <!-- Second field -->
+					  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-3 sidebar-sticky" style="background-color: #f7b796">
+					<form class='form-control' method="POST" action="" >
+						 {{ new_type.type|as_crispy_field }}
+						 {{ new_type.manager|as_crispy_field }}
+						 {{ new_type.brand|as_crispy_field }}
+						 {{ new_type.status_min|as_crispy_field }}
+						 {{ new_type.status_need|as_crispy_field }}
+					  <br>
+					  <div align="center">
+						  <input type="Submit" name="submit" value="Save Type" class="btn btn-info"/>
+					  </div>
+					</form>
+					  </div>
+					  <!-- Third field -->
+					  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #c3886c">
+		  
+					  </div>
+					  <!-- Fourth field -->
+					  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #f4db89">
+		  
+					  </div>
+				  </div>	
+			  </div>	
+		  </div>
+		{% endblock %}
+	  </div>
+	</div>
+  </body>
+</html>

@@ -5,7 +5,7 @@ from django.db.models import Sum, Avg
 from django.db.models import Count
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from .forms import DateForm, AddProduct
+from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -15,6 +15,25 @@ import itertools
 from django.db.models.functions import ExtractMonth, TruncMonth
 from django.utils import timezone
 from django.template import Context, loader
+
+@csrf_exempt
+def new_page(request):
+	managers = Manager.objects.all()
+	type = TypeOfProduct.objects.all().order_by('manager')
+	new_product = AddNewProduct(request.POST or None)
+	new_type = AddTypeOfProduct(request.POST or None)
+	
+	if request.method == 'POST' and new_product.is_valid():
+		new_product.save()	
+	elif request.method == 'POST' and new_type.is_valid():
+		new_type.save()
+	else:
+		new_product = AddNewProduct(request.POST or None)
+		new_type = AddTypeOfProduct(request.POST or None)
+	
+	context = {'new_product':new_product, 'new_type':new_type}
+	return render(request, 'New.html', context)
+	
 
 def motivation(request):
 	managers = Manager.objects.all()

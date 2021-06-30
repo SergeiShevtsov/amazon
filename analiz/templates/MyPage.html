@@ -155,6 +155,7 @@
 		<div>
 			<ul class="nav navbar">
 				{% if user.is_authenticated %}
+				<button type="button" class="btn btn-warning"><a href="{% url 'adding new' %}" class="link-dark">Add Products</a></button>
 				<ul>
 				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
 				 <li class="nav-link active"><a href="{% url 'logout'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
@@ -186,7 +187,7 @@
 						{% endif %}
 						<br>
 						{% if user.get_username == 'MiMurka' or user.get_username == 'Sergik' %}
-						<button type="button" class="btn btn-dark"><a href="{% url 'motivation' %}" class="link-light">Motivation</a></button>
+						<button type="button" class="btn"><a href="{% url 'motivation' %}" class="link-light">Motivation</a></button>
 						{% endif %}
 					</ul>
 				</div>

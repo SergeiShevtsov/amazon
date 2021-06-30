@@ -23,7 +23,6 @@ class Product(models.Model):
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	type = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
-	reviews = models.IntegerField(blank=True, null = True)
 	link_to_seo = models.URLField(blank=True, null = True)
 	sel_acc = models.TextField(blank=True, null = True) 
 	class Meta:

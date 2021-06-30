@@ -8,5 +8,6 @@ urlpatterns = [
 	path('manager/<int:manager_id>/<str:brandname>', views.brand, name = "brand"),
 	path('product/<str:name>', views.productinfo , name = "product"),
 	path('regist/', views.registerPage , name = "regist"),
+	path('add_new/', views.new_page , name = "adding new"),
 	path('motivation/', views.motivation , name = "motivation"),
 ]

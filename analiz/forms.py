@@ -1,4 +1,4 @@
-from .models import Product
+from .models import Product, TypeOfProduct
 from django import forms
 import datetime
 from django.forms import ModelForm
@@ -38,6 +38,24 @@ class AddProduct(ModelForm):
 	changes = forms.CharField(max_length=20, required=False)
 	offers = forms.CharField(max_length=20, required=False)
 	event = forms.CharField(max_length=20, required=False)
+
+class AddNewProduct(ModelForm):
+	class Meta:
+		model = Product
+		fields = '__all__'
+		# exclude = ()
+	positions_by_keys = forms.CharField(max_length=40, required=False)
+	changes = forms.CharField(max_length=20, required=False)
+	offers = forms.CharField(max_length=20, required=False)
+	event = forms.CharField(max_length=20, required=False)
+
+class AddTypeOfProduct(ModelForm):
+	
+	class Meta:
+		model = TypeOfProduct
+		fields = '__all__'
+	status_min = forms.IntegerField(required=False)
+	status_need = forms.IntegerField(required=False)
 
 
 
