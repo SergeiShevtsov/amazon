@@ -272,9 +272,9 @@ def productinfo(request, name):
 			
 			product = data.save(manager_name)
 			product.save()
-			if ostatok != '':
-				ostatok -= sales
-				TypeOfProduct.objects.filter(type=name).update(ostatki=ostatok)
+			# if ostatok != '':
+			# 	ostatok -= sales
+			# 	TypeOfProduct.objects.filter(type=name).update(ostatki=ostatok)
 
 	else:
 		data = AddProduct(instance=products.last()) 
