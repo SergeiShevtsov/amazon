@@ -44,6 +44,9 @@ class AddNewProduct(ModelForm):
 		model = Product
 		fields = '__all__'
 		# exclude = ()
+		# widgets = {
+		# 	'<название поля>' : forms.TextInput(attrs={'class':'form-input'}),
+		# }
 	positions_by_keys = forms.CharField(max_length=40, required=False)
 	changes = forms.CharField(max_length=20, required=False)
 	offers = forms.CharField(max_length=20, required=False)

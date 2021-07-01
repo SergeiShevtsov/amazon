@@ -22,7 +22,8 @@ class ProductResource(resources.ModelResource):
 
 class ProductAdmin(ImportExportModelAdmin):
 	resources_class = ProductResource
-	list_display=[field.name for field in Product._meta.fields if field.name != 'id']
+	list_display=["product_name", "id", "date", 'sales', 'price', 'bsr', 'brand', 'manager'] # field.name for field in Product._meta.fields
+	search_fields = ('product_name',)
 
 admin.site.register(Product, ProductAdmin)
 
