@@ -38,7 +38,7 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE,)
 	status_min = models.IntegerField(blank=True, null = True, default=25)
 	status_need = models.IntegerField(blank=True, null = True, default=101)
-	
+	ostatki = models.PositiveIntegerField(blank=True, null = True)
 	class Meta:
 		ordering = ['type',]
 	def __str__(self):

@@ -230,7 +230,7 @@ def manager_view(request, manager_id=1):
 def productinfo(request, name):
 	products = Product.objects.all().filter(product_name=name)
 	product_name = products.values('product_name').first()
-	manager = products.values('manager').first()
+	manager_name = products.values('manager').first()['manager']
 	average_bsr = products.aggregate(Avg('bsr'))
 	bsr = str(average_bsr['bsr__avg'])[0:str(average_bsr['bsr__avg']).find('.')]
 	average_rating = products.aggregate(Avg('rating'))
@@ -257,23 +257,29 @@ def productinfo(request, name):
 		products = Product.objects.all().filter(product_name=name)
 	
 	sum_sales = products.aggregate(Sum('sales')) 
-	sales = sum_sales['sales__sum'] # сделать за месяц
+	sales = sum_sales['sales__sum'] 
+	ostatok = TypeOfProduct.objects.filter(type=name).values('ostatki').first()['ostatki']
 	
 	if products.last() == None:
 		data = AddProduct(request.POST or None)
 	else:
 		data = AddProduct(request.POST or None, instance=products.last())
 	
-	
 	if request.method == "POST":
 		data = AddProduct(request.POST)
 		if data.is_valid():
-			product = data.save(manager)
+			sales = data.cleaned_data['sales']
+			
+			product = data.save(manager_name)
 			product.save()
+			if ostatok != '':
+				ostatok -= sales
+				TypeOfProduct.objects.filter(type=name).update(ostatki=ostatok)
+
 	else:
 		data = AddProduct(instance=products.last()) 
 		form = DateForm(request.POST or None)
 	
-	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30}
+	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok}
 	return render(request, 'Product.html', context)
 
