@@ -268,64 +268,69 @@
 {% elif user.get_username == 'Max' %}
 <div class="container">
 	<div class="row sidebar-heading">
-		<div class="col-xs-12 col-sm-4 col-md-8 col-lg-3" style="background-color: #f5dbdb">
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="background-color: #f1e9e9">
 			<div class="row">
-				<div class="col-xs-12 col-sm-4 col-md-8 col-lg-6 sidebar-sticky" style="background-color: #f5dbdb">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #c19999">
+					<ul class="nav navbar-nav">
+						<li class="active navbar-brand"> Managers: </li>
+						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
+						{% for person in managers %}
+						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#FFF5EE>
+							{{ person.username }}
+							</font></a></li>
+						{% endfor %}
+						{% else %}
+						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=user.id %}"><font color=#FFF5EE>{{ user.get_username }}
+						</font></a></li>
+						{% endif %}
+						<br>
+						{% if user.get_username == 'MiMurka' or user.get_username == 'Sergik' %}
+						<button type="button" class="btn"><a href="{% url 'motivation' %}" class="link-light">Motivation</a></button>
+						{% endif %}
+					</ul>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #f5dbdb">
 					<ul class="nav navbar-nav">
 						<li class="active navbar-brand"> Brands: </li>
 						{% for obj in brands %}
 						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'brand' manager_id=user.id brandname=obj.id %}"><font color=#7B68EE>
-							{{ obj.product_set.manager}}
+							{{ obj }}
 							</font></a></li>
 						{% endfor %}
 					</ul>
 				</div>
 
-				<div class="col-xs-12 col-sm-4 col-md-8 col-lg-6 sidebar-sticky" style="background-color: #FFE4E1">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #FFE4E1">
 					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"> Products: </li>
-						{% for item in type %}
-							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}"><font color=#B8860B>
-							{{ item.type }}
-							</font></a></li>
-						{% endfor %}
+					<li class="active navbar-brand"> Products: </li>
+					{% for item in maxim %}
+					<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}"><font color=#B8860B>
+						{{ item }}
+					</font></a></li>
+					{% endfor %}
 					</ul>
 				</div>
 			</div>
 		</div>
 		
 		<!-- Table here -->
-		<div class="col-xs-12 col-sm-4 col-md-8 col-lg-9" style="background-color: #FFFAFA">
+		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: #FFFAFA">
 			<ul class="nav navbar-nav">
-				<li class="active navbar-brand"> Sales: </li>
+				<li class="active navbar-brand">
+					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" align="left">
+						<form class='form' method="POST" action="" >
+							Sales     
+							{% for i in form %}
+								{{i}}
+							{% endfor %}
+							<input type="Submit" name="submit" value="Filter"/>
+						</form>
+					</div>
+				</li>
 				<li class="nav navbar-toggler"><canvas id="Total_Sales" width="400" height="200"></canvas></li>
+				<li class="nav navbar-toggler"><canvas id="Ave_Sales" width="400" height="200"></canvas></li>
+				<li class="nav navbar-toggler"><canvas id="Общие продажи в $" width="400" height="200"></canvas></li>
 			</ul>
-			<table class="table table table-hover" >
-			<thead>
-				<tr>
-					<th scope="col">rec_id</th>
-					<th scope="col">Product Name</th>
-					<th scope="col">Date</th>
-					<th scope="col">Price</th>
-					<th scope="col">BSR</th>
-					<th scope="col">Sales</th>
-					<th scope="col">Rating</th>
-				</tr>
-			</thead>
-			<tbody>
-			{% for item in product %}
-			<tr>
-			<th scope="row">{{item.id}}</th>
-				<td>{{item.product_name}}</td>
-				<td>{{item.date}}</td>
-				<td>{{item.price}}</td>
-				<td>{{item.bsr}}</td>
-				<td>{{item.sales}}</td>
-				<td>{{item.rating}}</td>
-			</tr>
-			{% endfor %}
-			</tbody>
-			</table>
 		</div>
 	</div>
 </div>

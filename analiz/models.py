@@ -39,6 +39,7 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	status_min = models.IntegerField(blank=True, null = True, default=25)
 	status_need = models.IntegerField(blank=True, null = True, default=101)
 	ostatki = models.PositiveIntegerField(blank=True, null = True)
+	owner = models.CharField(max_length=40, blank=True, null = True)
 	class Meta:
 		ordering = ['type',]
 	def __str__(self):

@@ -131,6 +131,15 @@ def mypage(request, manager_id):
 
 
 	type = TypeOfProduct.objects.all().filter(manager=manager_id)
+	if type.count() == 0:
+		type = TypeOfProduct.objects.all()
+	maxim_list = []
+	for i in type:
+		if i.owner == "max" or i.owner == "Max":
+			maxim_list.append(i)
+		else:
+			pass
+
 	brands = Brand.objects.all() 
 	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
 	
@@ -160,7 +169,7 @@ def mypage(request, manager_id):
 		got_money.append(money)
 	
 	
-	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money})
+	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list})
 
 
 def brand(request, manager_id, brandname=0):
@@ -253,6 +262,7 @@ def productinfo(request, name):
 			date1 = '2020-01-01'
 			date2 = datetime.now()
 		products = products.filter(date__gte=date1).filter(date__lte=date2)
+		last_30 = products
 	if products.count() == 0:
 		products = Product.objects.all().filter(product_name=name)
 	
