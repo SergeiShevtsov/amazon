@@ -3029,16 +3029,6 @@ textarea.form-control-lg {
   background-color: #0dcaf0;
   border-color: #0dcaf0;
 }
-
-.btn-warning {
-  color: #000;
-  background-color: #ffc107;
-  border-color: #ffc107;
-}
-.btn-warning:hover {
-  color: #000;
-  background-color: #ffca2c;
-  border-color: #ffc720;
 }
 .btn-check:focus + .btn-warning, .btn-warning:focus {
   color: #000;
