@@ -10,4 +10,6 @@ urlpatterns = [
 	path('regist/', views.registerPage , name = "regist"),
 	path('add_new/', views.new_page , name = "adding new"),
 	path('motivation/', views.motivation , name = "motivation"),
+	path('product/edit/<int:id>/', views.edit),
+	path('product/delete/<int:id>/', views.delete),
 ]

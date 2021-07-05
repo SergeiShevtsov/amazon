@@ -15,6 +15,10 @@ import itertools
 from django.db.models.functions import ExtractMonth, TruncMonth
 from django.utils import timezone
 from django.template import Context, loader
+from django.http import HttpResponseNotFound
+from django.http import HttpResponseRedirect
+
+
 
 @csrf_exempt
 def new_page(request):
@@ -78,28 +82,6 @@ def motivation(request):
 	context = {'managers':managers, 'type':type, 'product':product, 'sales':total_sales, 'dicti':dictionary, 'form':form}
 	return render(request, 'motivation.html', context)
 	
-# def table_edit(request, object_id=None, Form=None, redirect_url=None):
-# 	def render_to_response(tmpl, data):
-# 		t = loader.get_template(tmpl)
-# 		c = Context(data)
-# 		return HttpResponse(t.render(c))
-# 		
-# 	if request.method == 'POST':
-# 		if object_id is None:
-# 			edit_form = AddProduct(request.POST)
-# 		else:
-# 			edit_form = AddProduct(request.POST, instance=Form.Meta.model.objects.get(id=object_id))
-# 	elif object_id is None:
-# 		edit_form = AddProduct()
-# 	else:
-# 		edit_form = AddProduct(instance=AddProduct.Meta.model.objects.get(id=object_id))
-# 	if edit_form.is_valid():
-# 		edit_form.save()
-# 		if redirect_url is not None:
-# 			return redirect(redirect_url)
-# 	return render_to_response('Product.html', {
-# 		'edit_form': edit_form,
-# 	})
 
 def registerPage(request): 
 	if request.method == 'POST':
@@ -293,3 +275,38 @@ def productinfo(request, name):
 	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok}
 	return render(request, 'Product.html', context)
 
+
+# def create(request):
+# 	if request.method == "POST":
+# 		person = Person()
+# 		person.name = request.POST.get("name")
+# 		person.age = request.POST.get("age")
+# 		person.save()
+# 	return HttpResponseRedirect("/")
+ 
+
+def edit(request, id): #changing data in DB
+	try:
+		product = Product.objects.get(id=id)
+		prod_name = product.product_name
+		link = f'/amz/product/{prod_name}'
+		form = AddProduct(request.POST or None, instance=product)
+		context = {'form':form, 'product':product}
+		if request.method == "POST":
+			form.save()
+			return HttpResponseRedirect(link)
+		else:
+			return render(request, "edit.html", context)
+	except Product.DoesNotExist:
+		return HttpResponseNotFound("<h2>Person not found</h2>")
+
+
+def delete(request, id): # removing data from DB
+	try:
+		product = Product.objects.get(id=id)
+		product.delete()
+		prod_name = product.product_name
+		link = f'/amz/product/{prod_name}'
+		return HttpResponseRedirect(link)
+	except Product.DoesNotExist:
+		return HttpResponseNotFound("<h2>Person not found</h2>")
