@@ -177,8 +177,11 @@
 						<li class="active navbar-brand"> Managers: </li>
 						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
 						{% for person in managers %}
-						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#FFF5EE>
+							{% if person.username == 'Maxim' or person.username == 'Ira🐝' or person.username == 'Chief💲' or person.username == 'Nochniki🌚'%}
+							{% else %}
+							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#FFF5EE>
 							{{ person.username }}
+							{% endif %}
 							</font></a></li>
 						{% endfor %}
 						{% else %}
