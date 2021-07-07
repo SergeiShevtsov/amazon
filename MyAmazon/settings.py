@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'analiz',
     'import_export',
     'crispy_forms',
+    'multiforloop',
 ]
 
 MIDDLEWARE = [

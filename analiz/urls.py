@@ -12,4 +12,5 @@ urlpatterns = [
 	path('motivation/', views.motivation , name = "motivation"),
 	path('product/edit/<int:id>/', views.edit),
 	path('product/delete/<int:id>/', views.delete),
+	path('akcii/', views.akcii , name = "table"),
 ]

@@ -26,6 +26,14 @@ class DateForm(forms.Form):
 		return data2
 
 
+class ChooseType(ModelForm):
+	class Meta:
+		model = Product
+		fields = ('type',)
+	def clean_type(self):
+		type_one = self.cleaned_data['type']
+		# Помните, что всегда надо возвращать "очищенные" данные.
+		return type_one
 
 
 class AddProduct(ModelForm):

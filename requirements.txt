@@ -12,6 +12,7 @@ django-crispy-forms==1.12.0
 django-filter==2.4.0
 django-google-charts==0.1.1
 django-import-export==2.5.0
+django-multiforloop==0.3.1
 django-on-heroku==1.1.2
 dynaconf==3.1.4
 et-xmlfile==1.1.0

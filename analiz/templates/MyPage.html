@@ -3,6 +3,150 @@
 {% block detail %}
 
 {% block script %}
+{% if user.get_username == 'Max' %}
+<!-- Для Максима -->
+ <script>
+	 $(document).ready(function(){
+		 var ctx = document.getElementById('Max_Total_Sales').getContext('2d');
+		 var myChart = new Chart(ctx, {
+			 type: 'bar',
+			 data: {
+				 labels: [
+					 {% for item in maxim %}
+					 "{{ item.type }}",
+					 {% endfor %}
+				 ],
+				 datasets: [{
+					 label: 'Sales',
+					 data: [
+						 {% for item in max_total_sales %}
+						 "{{ item }}",
+						 {% endfor %}
+					 ],
+					 backgroundColor: [
+						 'rgba(255, 99, 132, 0.2)',
+						 'rgba(54, 162, 235, 0.2)',
+						 'rgba(255, 206, 86, 0.2)',
+						 'rgba(75, 192, 192, 0.2)',
+						 'rgba(153, 102, 255, 0.2)',
+						 'rgba(255, 159, 64, 0.2)'
+					 ],
+					 borderColor: [
+						 'rgba(255, 99, 132, 1)',
+						 'rgba(54, 162, 235, 1)',
+						 'rgba(255, 206, 86, 1)',
+						 'rgba(75, 192, 192, 1)',
+						 'rgba(153, 102, 255, 1)',
+						 'rgba(255, 159, 64, 1)'
+					 ],
+					 borderWidth: 1
+				 }]
+			 },
+			 options: {
+				 scales: {
+					 y: {
+						 beginAtZero: true
+					 }
+				 }
+			 }
+		 });
+	 });	
+ </script>
+ <script>
+	 $(document).ready(function(){
+		 var ctx = document.getElementById('Max_Ave_Sales').getContext('2d');
+		 var myChart = new Chart(ctx, {
+			 type: 'bar',
+			 data: {
+				 labels: [
+					 {% for item in maxim %}
+					 "{{ item.type }}",
+					 {% endfor %}
+				 ],
+				 datasets: [{
+					 label: 'Средние продажи',
+					 data: [
+						 {% for item in max_ave_sales %}
+						 "{{ item }}",
+						 {% endfor %}
+					 ],
+					 backgroundColor: [
+						 'rgba(255, 99, 132, 0.2)',
+						 'rgba(54, 162, 235, 0.2)',
+						 'rgba(255, 206, 86, 0.2)',
+						 'rgba(75, 192, 192, 0.2)',
+						 'rgba(153, 102, 255, 0.2)',
+						 'rgba(255, 159, 64, 0.2)'
+					 ],
+					 borderColor: [
+						 'rgba(255, 99, 132, 1)',
+						 'rgba(54, 162, 235, 1)',
+						 'rgba(255, 206, 86, 1)',
+						 'rgba(75, 192, 192, 1)',
+						 'rgba(153, 102, 255, 1)',
+						 'rgba(255, 159, 64, 1)'
+					 ],
+					 borderWidth: 1
+				 }]
+			 },
+			 options: {
+				 scales: {
+					 y: {
+						 beginAtZero: true
+					 }
+				 }
+			 }
+		 });
+	 });	
+ </script>
+ <script>
+	 $(document).ready(function(){
+		 var ctx = document.getElementById(' Max Общие продажи в $').getContext('2d');
+		 var myChart = new Chart(ctx, {
+			 type: 'bar',
+			 data: {
+				 labels: [
+					 {% for item in maxim %}
+					 "{{ item.type }}",
+					 {% endfor %}
+				 ],
+				 datasets: [{
+					 label: 'Общие продажи в $',
+					 data: [
+						 {% for item in max_got_money %}
+						 "{{ item }}",
+						 {% endfor %}
+					 ],
+					 backgroundColor: [
+						 'rgba(255, 99, 132, 0.2)',
+						 'rgba(54, 162, 235, 0.2)',
+						 'rgba(255, 206, 86, 0.2)',
+						 'rgba(75, 192, 192, 0.2)',
+						 'rgba(153, 102, 255, 0.2)',
+						 'rgba(255, 159, 64, 0.2)'
+					 ],
+					 borderColor: [
+						 'rgba(255, 99, 132, 1)',
+						 'rgba(54, 162, 235, 1)',
+						 'rgba(255, 206, 86, 1)',
+						 'rgba(75, 192, 192, 1)',
+						 'rgba(153, 102, 255, 1)',
+						 'rgba(255, 159, 64, 1)'
+					 ],
+					 borderWidth: 1
+				 }]
+			 },
+			 options: {
+				 scales: {
+					 y: {
+						 beginAtZero: true
+					 }
+				 }
+			 }
+		 });
+	 });	
+ </script>
+ {% else %}
 <script>
 	$(document).ready(function(){
 		var ctx = document.getElementById('Total_Sales').getContext('2d');
@@ -144,6 +288,8 @@
 		});
 	});	
 </script>
+{% endif %}
+
 {% endblock %}
 
 
@@ -154,11 +300,22 @@
 		</div>
 		<div>
 			<ul class="nav navbar">
-				{% if user.is_authenticated %}
+				{% if user.is_authenticated and user.get_username != 'Chief' and user.get_username != 'Max' %}
 				<button type="button" class="btn btn-warning"><a href="{% url 'adding new' %}" class="link-dark">Add Products</a></button>
 				<ul>
 				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
 				 <li class="nav-link active"><a href="{% url 'logout'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
+				 
+				{% elif user.is_authenticated and user.get_username == 'Chief' %}
+				<button type="button" class="btn btn-warning"><a href="{% url 'table' %}" class="link-dark">Sales</a></button>
+				<ul>
+				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
+				 <li class="nav-link active"><a href="{% url 'logout'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
+				 {% elif user.is_authenticated and user.get_username == 'Max' %}
+				 <button type="button" class="btn btn-warning"><a href="{% url 'table' %}" class="link-dark">Sales</a></button>
+				 <ul>
+				  <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
+				  <li class="nav-link active"><a href="{% url 'logout'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
 				{% else %}
 				 <li><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE><h2>Login</h2></font></a></li>
 				{% endif %} 
@@ -237,32 +394,6 @@
 				<li class="nav navbar-toggler"><canvas id="Ave_Sales" width="400" height="200"></canvas></li>
 				<li class="nav navbar-toggler"><canvas id="Общие продажи в $" width="400" height="200"></canvas></li>
 			</ul>
-			<!-- <table class="table table table-hover" >
-			<thead>
-				<tr>
-					<th scope="col">rec_id</th>
-					<th scope="col">Product Name</th>
-					<th scope="col">Date</th>
-					<th scope="col">Price</th>
-					<th scope="col">BSR</th>
-					<th scope="col">Sales</th>
-					<th scope="col">Rating</th>
-				</tr>
-			</thead>
-			<tbody>
-			{% for item in product %}
-			<tr>
-			<th scope="row">{{item.id}}</th>
-				<td>{{item.product_name}}</td>
-				<td>{{item.date}}</td>
-				<td>{{item.price}}</td>
-				<td>{{item.bsr}}</td>
-				<td>{{item.sales}}</td>
-				<td>{{item.rating}}</td>
-			</tr>
-			{% endfor %}
-			</tbody>
-			</table> -->
 		</div>
 	</div>
 </div>
@@ -292,7 +423,7 @@
 						{% endif %}
 					</ul>
 				</div>
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #f5dbdb">
+				<!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #f5dbdb">
 					<ul class="nav navbar-nav">
 						<li class="active navbar-brand"> Brands: </li>
 						{% for obj in brands %}
@@ -301,9 +432,9 @@
 							</font></a></li>
 						{% endfor %}
 					</ul>
-				</div>
+				</div> -->
 
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #FFE4E1">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-8 sidebar-sticky" style="background-color: #FFE4E1">
 					<ul class="nav navbar-nav">
 					<li class="active navbar-brand"> Products: </li>
 					{% for item in maxim %}
@@ -330,9 +461,9 @@
 						</form>
 					</div>
 				</li>
-				<li class="nav navbar-toggler"><canvas id="Total_Sales" width="400" height="200"></canvas></li>
-				<li class="nav navbar-toggler"><canvas id="Ave_Sales" width="400" height="200"></canvas></li>
-				<li class="nav navbar-toggler"><canvas id="Общие продажи в $" width="400" height="200"></canvas></li>
+				<li class="nav navbar-toggler"><canvas id="Max_Total_Sales" width="400" height="200"></canvas></li>
+				<li class="nav navbar-toggler"><canvas id="Max_Ave_Sales" width="400" height="200"></canvas></li>
+				<li class="nav navbar-toggler"><canvas id="Max Общие продажи в $" width="400" height="200"></canvas></li>
 			</ul>
 		</div>
 	</div>
