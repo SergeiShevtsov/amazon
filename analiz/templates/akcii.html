@@ -44,6 +44,7 @@
 			   </thead>
 			   <tbody>
 			   {% load multifor %}
+			   {% if user.is_authenticated and user.get_username != 'Max' %}
 			   {% for x in type; y in money; z in sales %}
 			   <tr>
 				   <td>{{ forloop.counter }}</td>
@@ -52,6 +53,17 @@
 				   <td>{{ y }}</td>
 			   </tr>
 			   {% endfor %}
+			   {% elif user.get_username == 'Max' %}
+			   {% for x in max_types; y in max_money; z in max_sales %}
+				  <tr>
+					  <td>{{ forloop.counter }}</td>
+					  <td>{{ x }}</td>
+					  <td>{{ z }}</td>
+					  <td>{{ y }}</td>
+				  </tr>
+				{% endfor %}
+				{% else %}
+			   {% endif %}
 			   </tbody>
 		   </table>
 		  </div>

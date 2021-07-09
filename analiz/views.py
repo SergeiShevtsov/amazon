@@ -21,7 +21,10 @@ from django.http import HttpResponseRedirect
 
 def akcii(request):
 	type = TypeOfProduct.objects.all().order_by('manager')
+	max_types = type.filter(owner='Max')
 	products = Product.objects.all()
+	max_sales = []
+	max_money = []
 	total_sales = []
 	ave_sales = []
 	got_money = []
@@ -58,10 +61,13 @@ def akcii(request):
 		ave_sales.append(average_sales)
 		total_sales.append(type_sales)
 		got_money.append(money)
+		if item.owner == 'Max' or item.owner == 'max':
+			max_sales.append(type_sales)
+			max_money.append(money)
 	
 	
 
-	context = {'sales':total_sales, 'money':got_money, 'type':type, 'form':form}
+	context = {'sales':total_sales, 'money':got_money, 'type':type, 'form':form, 'max_sales':max_sales, 'max_money':max_money, 'max_types':max_types}
 	return render(request, 'akcii.html', context)
 
 
