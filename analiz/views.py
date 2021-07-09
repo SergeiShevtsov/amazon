@@ -149,7 +149,7 @@ def registerPage(request):
 def mypage(request, manager_id):
 	text_alarm = ''
 	managers = Manager.objects.all()
-	product = Product.objects.all().filter(manager=(manager_id))
+	product = Product.objects.all()
 	date1 = '2020-01-01'
 	date2 = datetime.now()
 	form = DateForm(request.POST or None)
