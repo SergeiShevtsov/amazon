@@ -33,6 +33,15 @@
 		  <nav class="navbar navbar-default">
 			<!-- Text up to table -->
 		  </nav>
+		  <!-- {{month_sales}}
+		  {% for i in sales_by_last_month %}
+		  	{{i}}--{{i.sales}}
+		  {% endfor %}
+		  <br><br>
+		  {% for i in sales_by_last_premonth %}
+			{{i}}--{{i.sales}}
+		{% endfor %} -->
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-6" style="background-color: #f1e9e9">
 		   <table class="table table table-hover" >
 			   <thead>
 				   <tr>
@@ -48,16 +57,18 @@
 			   {% for x in type; y in money; z in sales %}
 			   <tr>
 				   <td>{{ forloop.counter }}</td>
-				   <td>{{ x }}</td>
-				   <td>{{ z }}</td>
-				   <td>{{ y }}</td>
+					  <td>{{ x }}</td>
+					  <td>{{ z }}</td>
+					  <td>{{ y }}</td>
 			   </tr>
 			   {% endfor %}
 			   {% elif user.get_username == 'Max' %}
-			   {% for x in max_types; y in max_money; z in max_sales %}
+			   {% for x in max_types; y in max_money; z in max_sales; a in sales_by_last_month; b in sales_by_last_premonth %}
 				  <tr>
 					  <td>{{ forloop.counter }}</td>
 					  <td>{{ x }}</td>
+					  <td>{{ a }}</td>
+					  <td>{{ b }}</td>
 					  <td>{{ z }}</td>
 					  <td>{{ y }}</td>
 				  </tr>
@@ -66,6 +77,44 @@
 			   {% endif %}
 			   </tbody>
 		   </table>
+		</div>
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-6" style="background-color: #f1e9e9">
+			   <table class="table table table-hover" >
+				   <thead>
+					   <tr>
+						   <th scope="col">ID</th>
+						   <th scope="col">Название Товара</th>
+						   <th scope="col">За предыдущий месяц</th>
+						   <th scope="col">За прошлый месяц</th>
+					   </tr>
+				   </thead>
+				   <tbody>
+				   {% load multifor %}
+				   {% if user.is_authenticated and user.get_username != 'Max' %}
+				   {% for a in sales_by_last_month; b in sales_by_last_premonth %}
+				   <tr>
+					  <td>{{ forloop.counter }}</td>
+						 <td>{{ a.type }}</td>
+						 <td>{{ a.sales }}</td>
+						 <td>{{ b.sales }}</td>
+				   </tr>
+				   {% endfor %}
+				   {% elif user.get_username == 'Max' %}
+				   {% for x in max_types; y in max_money; z in max_sales; a in sales_by_last_month; b in sales_by_last_premonth %}
+					  <tr>
+						  <td>{{ forloop.counter }}</td>
+						  <td>{{ x }}</td>
+						  <td>{{ a }}</td>
+						  <td>{{ b }}</td>
+						  <td>{{ z }}</td>
+						  <td>{{ y }}</td>
+					  </tr>
+					{% endfor %}
+					{% else %}
+				   {% endif %}
+				   </tbody>
+			   </table>
+			</div>
 		  </div>
 		{% endblock %}
 	  </div>
