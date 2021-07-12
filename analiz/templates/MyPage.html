@@ -178,7 +178,7 @@
 						'rgba(54, 162, 235, 1)',
 						'rgba(255, 206, 86, 1)',
 						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
+						'rg#f6c909 102, 255, 1)',
 						'rgba(255, 159, 64, 1)'
 					],
 					borderWidth: 1
@@ -366,9 +366,23 @@
 					<ul class="nav navbar-nav">
 						<li class="active navbar-brand"> Products: </li>
 						{% for item in type %}
-							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}"><font color=#B8860B>
+							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}">
+							{% if item.status == 'BAN' %}
+							<font color=#F81B02> 
+							{% elif item.status == 'OSS' %}
+							<font color=#F6C909>
+							{% elif item.status == 'SSS' %}
+							<font color=#A9A62C>
+							{% elif item.status == 'InDev' %}
+							<font color=#B8860B>
+							{% elif item.status == 'IsS' %}
+							<font color=#0F6002>
+							{% else %}
+							<font color=#9046A0>
+							{% endif %}
 							{{ item.type }}
 							</font></a></li>
+							
 						{% endfor %}
 					</ul>
 				</div>

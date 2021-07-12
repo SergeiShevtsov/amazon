@@ -36,10 +36,29 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	type = models.CharField(max_length=30, unique=True)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE,)
+	# мотивация
 	status_min = models.IntegerField(blank=True, null = True, default=25)
 	status_need = models.IntegerField(blank=True, null = True, default=101)
-	ostatki = models.PositiveIntegerField(blank=True, null = True)
+	
+	ostatki = models.PositiveIntegerField(blank=True, null = True) # удалить
 	owner = models.CharField(max_length=40, blank=True, null = True)
+	# статус товара: продается/не продается/в разработке и тп
+	BAN = 'BAN'
+	OUT_OF_STOCK = 'OOS'
+	SUPRESSION = 'SSS'
+	IN_DEV = "InDev"
+	IS_S = 'IsS'
+	ANOTHER_ISSUE = 'AN_ISS'
+	STATUS_CHOICES = [
+		(IN_DEV, 'В разработке'),
+		(IS_S, 'Продается'),
+		(ANOTHER_ISSUE, 'Другая причина'),
+		(BAN, 'Бан'),
+		(OUT_OF_STOCK, 'Нет на складе'),
+		(SUPRESSION, 'Ограничение'),
+	]
+	status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=IS_S)
+	
 	class Meta:
 		ordering = ['type',]
 	def __str__(self):
