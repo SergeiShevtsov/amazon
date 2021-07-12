@@ -35,7 +35,34 @@ def akcii(request):
 	date_1 = f'2021-{sales_by_premonth}-01' # предпоследний месяц
 	date_2 = f'2021-{sales_by_month}-01' # последний месяц
 	sales_last_month = products.filter(date__gte=date_2) # продукты за последний месяц
+	sales_1 = []
+	sales_2 = []
 	sales_last_premonth = products.filter(date__gte=date_1).filter(date__lte=date_2) # продукты за предпоследний месяц
+	for item in type:
+		name = item.type
+		sales = 0
+		coun = 0
+		for p in sales_last_month:
+			if name == p.product_name:
+				coun += 1
+				s = p.sales
+				sales += s
+		sales_1.append(sales)
+	
+	for item in type:
+		name = item.type
+		sales = 0
+		coun = 0
+		for p in sales_last_premonth:
+			if name == p.product_name:
+				coun += 1
+				s = p.sales
+				sales += s
+		if coun == 0:
+			coun = 1
+		sales_2.append(sales)
+		
+		
 	# форма для фильтрации по дате  
 	date1 = '2020-01-01'
 	date2 = datetime.now()
@@ -80,7 +107,7 @@ def akcii(request):
 	
 	
 
-	context = {'sales':total_sales, 'money':got_money, 'type':type, 'form':form, 'max_sales':max_sales, 'max_money':max_money, 'max_types':max_types, 'month_sales':sales_by_month, 'sales_by_last_month':sales_last_month, 'sales_by_last_premonth':sales_last_premonth}
+	context = {'sales':total_sales, 'money':got_money, 'type':type, 'form':form, 'max_sales':max_sales, 'max_money':max_money, 'max_types':max_types, 'month_sales':sales_by_month, 'sales_1':sales_1, 'sales_2':sales_2}
 	return render(request, 'akcii.html', context)
 
 
