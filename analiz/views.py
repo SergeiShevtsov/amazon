@@ -93,10 +93,7 @@ def akcii(request):
 		ave_sales.append(average_sales)
 		total_sales.append(type_sales)
 		got_money.append(money)
-		if money == 0:
-			ave_sales.append(average_sales)
-			total_sales.append(type_sales)
-			got_money.append(money)
+
 		if item.owner == 'Max' or item.owner == 'max':
 			max_sales.append(type_sales)
 			max_money.append(money)
