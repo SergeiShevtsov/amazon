@@ -3428,6 +3428,11 @@ textarea.form-control-lg {
   text-decoration: none;
   white-space: nowrap;
 }
+.navbar-custom {
+  height: 50vh;
+  overflow: scroll; 
+  flex-wrap: nowrap;
+}
 .navbar-nav {
   display: flex;
   flex-direction: column;
