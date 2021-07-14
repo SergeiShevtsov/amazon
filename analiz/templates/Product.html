@@ -327,10 +327,11 @@
 			<form style="font-style:italic" class='form-control' method="POST" action="" >
 				<h3><p style="font-style:italic"><font color="white">Manager: {{ products.first.manager }}</font></p></h3>
 				{% csrf_token %}
-				Text {{chat.text}}
+				<font color="white"> Text {{chat.text}}
 				From {{chat.user}}
 				{{chat.product_type}}
 				{{chat.date}}
+				</font>
 				<div align="center">
 					<input type="Submit" name="submit" value="Send"/>
 				</div>
@@ -347,7 +348,7 @@
 	<div class="row sidebar-heading">
 		<div class="row">
 			<!-- Left side panel -->
-			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 sidebar-sticky" style="background-color: #a13f4f	">
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 sidebar-sticky" style="background-color: #a13f4f">
 				<h1><font color="white">{{ name }}</font></h1>
 				Суммарные продажи : {{ sales }} <br>
 				Средний BSR: {{ bsr }} <br>
