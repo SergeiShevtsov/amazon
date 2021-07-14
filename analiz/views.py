@@ -1,11 +1,11 @@
-from .models import Product, Manager, Brand, TypeOfProduct
+from .models import Product, Manager, Brand, TypeOfProduct, Message
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Sum, Avg
 from django.db.models import Count
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType
+from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType, MessageForm
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -300,9 +300,9 @@ def brand(request, manager_id, brandname=0):
 
 
 def manager_view(request, manager_id=1):
-	managers = Manager.objects.all()
-	product = Product.objects.all()
-	type = TypeOfProduct.objects.all()
+	managers = Manager.objects.all() # Veronika Igor Nadya
+	product = Product.objects.all() # Swizon Black 2021-04-01 Swizon Black 2021-04-02 and eth.
+	type = TypeOfProduct.objects.all() # Swizon Black
 	brands = Brand.objects.all() # Kinpur Artulano
 	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
 		
@@ -321,6 +321,7 @@ def manager_view(request, manager_id=1):
 
 @csrf_exempt
 def productinfo(request, name):
+	type = TypeOfProduct.objects.filter(type=name).first()
 	products = Product.objects.all().filter(product_name=name)
 	product_name = products.values('product_name').first()
 	manager_name = products.values('manager').first()['manager']
@@ -369,7 +370,35 @@ def productinfo(request, name):
 		data = AddProduct(instance=products.last()) 
 		form = DateForm(request.POST or None)
 	
-	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok}
+	if request.method == "POST":
+		data = AddProduct(request.POST)
+		if data.is_valid():
+			sales = data.cleaned_data['sales']
+			product = data.save(manager_name)
+			product.save()
+	else:
+		data = AddProduct(instance=products.last()) 
+		form = DateForm(request.POST or None)
+		
+	type_id = TypeOfProduct.objects.filter(type=name).values('id').first()['id'] # 35
+	messages = Message.objects.filter(product_type=type_id).order_by('-id')
+	last_message = Message.objects.filter(product_type=type_id).last()
+	
+	chat_form = MessageForm(request.POST or None)
+	if request.method == 'POST' and chat_form.is_valid():
+		chat_form.save()
+		# chat_form.save(commit=False)
+		# chat_form.user=request.user
+		# chat_form.chat_id=request.product
+		# chat_form.product_type=type
+		# if chat_form.is_valid():
+		# 	chat_form.save(commit=True)
+	else:
+		chat_form = MessageForm(request.POST or None, instance=last_message)
+	
+	
+	
+	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok, 'chat':chat_form, 'messages':messages, 'type_o':type}
 	return render(request, 'Product.html', context)
 
  

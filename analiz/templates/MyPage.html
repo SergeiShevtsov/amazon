@@ -294,9 +294,9 @@
 
 
 <nav class="navbar navbar-default">
-	<div class="container-fluid" style="background-color: #a4828f ">
+	<div class="container-fluid" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)">
 		<div class="navbar-header">
-			<h1> Amazonchik </h1>
+			<h1><font color=#FFF5EE> Amazonchik </font></h1>
 		</div>
 		<div>
 			<ul class="nav navbar">
@@ -327,11 +327,11 @@
 {% if user.is_authenticated and user.get_username != "Max" %}
 <div class="container">
 	<div class="row sidebar-heading">
-		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="background-color: #f1e9e9">
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 			<div class="row">
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #c19999">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky">
 					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"> Managers: </li>
+						<li class="active navbar-brand"><font color=#FFF5EE> Managers: </font></li>
 						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
 						{% for person in managers %}
 							{% if person.username == 'Maxim' or person.username == 'Ira🐝' or person.username == 'Chief💲' or person.username == 'Nochniki🌚'%}
@@ -351,9 +351,9 @@
 						{% endif %}
 					</ul>
 				</div>
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #f5dbdb">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky">
 					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"> Brands: </li>
+						<li class="active navbar-brand"><font color=#FFF5EE> Brands: </font></li>
 						{% for obj in brands %}
 						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'brand' manager_id=user.id brandname=obj.id %}"><font color=#7B68EE>
 							{{ obj }}
@@ -362,9 +362,9 @@
 					</ul>
 				</div>
 
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #FFE4E1">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky">
 					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"> Products: </li>
+						<li class="active navbar-brand"><font color=#FFF5EE> Products: </font></li>
 						{% for item in type %}
 							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}">
 							{% if item.status == 'BAN' %}
@@ -390,13 +390,15 @@
 		</div>
 		
 		<!-- Table here -->
-		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: #FFFAFA">
+		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-image: url(https://kartinkin.com/uploads/posts/2021-01/1611201074_13-p-zadnii-fon-v-2d-13.jpg)">
 			<ul class="nav navbar-nav">
 				<li class="active navbar-brand">
 					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" align="left">
 						
 						<form class='form' method="POST" action="" >
+							<font color=#FFF5EE>
 							Sales     
+							</font>
 							{% for i in form %}
 								{{i}}
 							{% endfor %}

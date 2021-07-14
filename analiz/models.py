@@ -4,6 +4,15 @@ from django.contrib.auth.models import User
 from PIL import Image
 
 
+class Message(models.Model):
+	text = models.TextField()
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	product_type = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
+	date = models.DateField(auto_now=True)
+	
+	def __str__(self, ):
+		return self.text
+
 
 class Product(models.Model):
 	product_name = models.CharField(max_length=30) #Title

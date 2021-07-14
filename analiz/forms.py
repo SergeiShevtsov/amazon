@@ -1,10 +1,16 @@
-from .models import Product, TypeOfProduct
+from .models import Product, TypeOfProduct, Message
 from django import forms
 import datetime
 from django.forms import ModelForm
 from django.utils import timezone
 
 
+class MessageForm(ModelForm):
+	text = forms.CharField(
+	)
+	class Meta:
+		model = Message
+		exclude = () 
 
 
 class DateForm(forms.Form):
