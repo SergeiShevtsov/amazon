@@ -369,16 +369,6 @@ def productinfo(request, name):
 	else:
 		data = AddProduct(instance=products.last()) 
 		form = DateForm(request.POST or None)
-	
-	if request.method == "POST":
-		data = AddProduct(request.POST)
-		if data.is_valid():
-			sales = data.cleaned_data['sales']
-			product = data.save(manager_name)
-			product.save()
-	else:
-		data = AddProduct(instance=products.last()) 
-		form = DateForm(request.POST or None)
 		
 	type_id = TypeOfProduct.objects.filter(type=name).values('id').first()['id'] # 35
 	messages = Message.objects.filter(product_type=type_id).order_by('-id')
