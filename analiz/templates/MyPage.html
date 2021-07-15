@@ -362,7 +362,12 @@
 					</ul>
 				</div>
 
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="overflow-x: hidden;
+				position: relative;
+				top: 0;
+				height: calc(100vh - 48px);
+				padding-top: .5rem;
+				overflow-y: auto;">
 					<ul class="nav navbar-nav">
 						<li class="active navbar-brand"><font color=#FFF5EE> Products: </font></li>
 						{% for item in type %}
