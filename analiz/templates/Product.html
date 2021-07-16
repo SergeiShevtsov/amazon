@@ -49,6 +49,7 @@
 						tooltip: {
 							callbacks: {
 							  afterLabel: function(context) {
+								  	console.log(context)
 									const title = context.label;
 									switch (title) {
 										{% for item in products %}
@@ -426,7 +427,7 @@
 				<a href="{% url 'product' name=products.first.product_name %}"><button class="save btn btn"><p style="font-style:Arial">
 					Сбросить фильтрацию
 				</p></button></a><br><br>
-				<form style=" font-style:italic" class='form-control' method="POST" action="" >
+				<form style=" font-style:italic" class='form-check' method="POST" action="" >
 					{% csrf_token %}
 					<font color="black"> Text {{chat.text}}
 					From {{chat.user}}
