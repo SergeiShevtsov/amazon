@@ -2375,11 +2375,11 @@ textarea.form-control-lg {
 }
 
 .form-check {
-  display: none;
+  display: block;
   min-height: 1.5rem;
   padding-left: 1.5em;
   margin-bottom: 0.125rem;
-  max-width: 100%;
+  width: 1rem;
 }
 .form-check .form-check-input {
   float: left;

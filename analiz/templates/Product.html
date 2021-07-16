@@ -45,24 +45,6 @@
 					y: {
 						beginAtZero: true
 					},
-					plugins: {
-						tooltip: {
-							callbacks: {
-							  afterLabel: function(context) {
-								  	console.log(context)
-									const title = context.label;
-									switch (title) {
-										{% for item in products %}
-									  case '{{item.date|date:"j-M" }}':
-										return 'Cocos';
-										{% endfor %}
-									  default:
-										return 'хз';
-									}
-								}
-							}
-						}
-					}
 				}
 				
 			}
