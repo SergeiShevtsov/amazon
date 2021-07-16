@@ -330,6 +330,10 @@ def productinfo(request, name):
 	asin = products.values('asin').first()['asin'] # dictionary
 	link = products.values('link').first()['link'] # dictionary
 	link = link[8:]
+	
+	type_id = TypeOfProduct.objects.filter(type=name).values('id').first()['id'] # 35
+	messages = Message.objects.filter(product_type=type_id).order_by('-id')
+	
 	event = products.values('event').last()['event']
 	sel_acc = products.values('sel_acc').first()['sel_acc']
 	link_to_seo = products.values('link_to_seo').first()['link_to_seo']
@@ -345,6 +349,7 @@ def productinfo(request, name):
 			date2 = datetime.now()
 		products = products.filter(date__gte=date1).filter(date__lte=date2)
 		last_30 = products
+		messages = Message.objects.filter(product_type=type_id).filter(date__gte=date1).filter(date__lte=date2).order_by('-id')
 	if products.count() == 0:
 		products = Product.objects.all().filter(product_name=name)
 	
@@ -371,8 +376,7 @@ def productinfo(request, name):
 		data = AddProduct(instance=products.last()) 
 		form = DateForm(request.POST or None)
 		
-	type_id = TypeOfProduct.objects.filter(type=name).values('id').first()['id'] # 35
-	messages = Message.objects.filter(product_type=type_id).order_by('-id')
+	
 	last_message = Message.objects.filter(product_type=type_id).last()
 	
 	chat_form = MessageForm(request.POST or None)
