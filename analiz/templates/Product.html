@@ -7,7 +7,7 @@
 	$(document).ready(function(){
 		var ctx = document.getElementById('myChart').getContext('2d');
 		var myChart = new Chart(ctx, {
-			type: 'line',
+			type: 'bar',
 			data: {
 				labels: [
 					{% for item in products %}
@@ -44,8 +44,26 @@
 				scales: {
 					y: {
 						beginAtZero: true
+					},
+					plugins: {
+						tooltip: {
+							callbacks: {
+							  afterLabel: function(context) {
+									const title = context.label;
+									switch (title) {
+										{% for item in products %}
+									  case '{{item.date|date:"j-M" }}':
+										return 'Cocos';
+										{% endfor %}
+									  default:
+										return 'хз';
+									}
+								}
+							}
+						}
 					}
 				}
+				
 			}
 		});
 	});	
@@ -324,18 +342,7 @@
 <nav class="navbar navbar-default">
 	<div class="container-fluid" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)">
 		<div class="navbar-header" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)>
-			<form style="font-style:italic" class='form-control' method="POST" action="" >
-				<h3><p style="font-style:italic"><font color="white">Manager: {{ products.first.manager }}</font></p></h3>
-				{% csrf_token %}
-				<font color="white"> Text {{chat.text}}
-				From {{chat.user}}
-				{{chat.product_type}}
-				{{chat.date}}
-				</font>
-				<div align="center">
-					<input type="Submit" name="submit" value="Send"/>
-				</div>
-			</form>
+			<p style="font-style:italic"><font color="white"><h3>Manager: {{ products.first.manager }}</h3></font></p></h3>
 		</div>
 		<div>
 			<ul class="nav navbar">
@@ -354,7 +361,6 @@
 				Средний BSR: {{ bsr }} <br>
 				Средний рейтинг: {{ rating }} <br>
 				Asin: {{ asin }} <br>
-				Last Event: {{ event }} <br>
 				Seller account: {{ seller }} <br>
 				Ссылка на СЕО:<a href="{{ seo }}"> {{ seo }} </a><br>
 				Остатки: {{ ostatki }} <br>
@@ -420,7 +426,17 @@
 				<a href="{% url 'product' name=products.first.product_name %}"><button class="save btn btn"><p style="font-style:Arial">
 					Сбросить фильтрацию
 				</p></button></a><br><br>
-				
+				<form style=" font-style:italic" class='form-control' method="POST" action="" >
+					{% csrf_token %}
+					<font color="black"> Text {{chat.text}}
+					From {{chat.user}}
+					{{chat.product_type}}
+					{{chat.date}}
+					</font>
+					<div align="center">
+						<input type="Submit" name="submit" value="Send"/>
+					</div>
+				</form>
 			</div>
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #68132c">
 				<form method="POST" class="col-form-label", action=""><font color='#FFFFFF'>

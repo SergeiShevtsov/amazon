@@ -27,7 +27,7 @@ class Product(models.Model):
 	rating = models.DecimalField(max_digits=2, decimal_places=1)
 	offers = models.TextField(blank=True, null = True)
 	date = models.DateField() #auto_now=True,
-	event = models.TextField(blank=True, null = True) 
+	event = models.TextField(max_length=1000 ,blank=True, null = True) 
 	reviews = models.IntegerField(blank=True, null = True)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)

@@ -166,22 +166,22 @@
 						{% endfor %}
 					],
 					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
-					borderColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rg#f6c909 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
-					borderWidth: 1
+						 'rgba(255, 99, 132, 0.6)',
+						 'rgba(54, 162, 235, 0.6)',
+						 'rgba(255, 206, 86, 0.6)',
+						 'rgba(75, 192, 192, 0.6)',
+						 'rgba(153, 102, 255, 0.6)',
+						 'rgba(255, 159, 64, 0.6)'
+					 ],
+					 borderColor: [
+						 'rgba(255, 99, 132, 1)',
+						 'rgba(54, 162, 235, 1)',
+						 'rgba(255, 206, 86, 1)',
+						 'rgba(75, 192, 192, 1)',
+						 'rgba(153, 102, 255, 1)',
+						 'rgba(255, 159, 64, 1)'
+					 ],
+					 borderWidth: 1
 				}]
 			},
 			options: {
@@ -213,13 +213,13 @@
 						{% endfor %}
 					],
 					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
+						 'rgba(255, 99, 132, 0.6)',
+						 'rgba(54, 162, 235, 0.6)',
+						 'rgba(255, 206, 86, 0.6)',
+						 'rgba(75, 192, 192, 0.6)',
+						 'rgba(153, 102, 255, 0.6)',
+						 'rgba(255, 159, 64, 0.6)'
+					 ],
 					borderColor: [
 						'rgba(255, 99, 132, 1)',
 						'rgba(54, 162, 235, 1)',
@@ -260,13 +260,13 @@
 						{% endfor %}
 					],
 					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
+						 'rgba(255, 99, 132, 0.6)',
+						 'rgba(54, 162, 235, 0.6)',
+						 'rgba(255, 206, 86, 0.6)',
+						 'rgba(75, 192, 192, 0.6)',
+						 'rgba(153, 102, 255, 0.6)',
+						 'rgba(255, 159, 64, 0.6)'
+					 ],
 					borderColor: [
 						'rgba(255, 99, 132, 1)',
 						'rgba(54, 162, 235, 1)',
@@ -365,7 +365,7 @@
 				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="overflow-x: hidden;
 				position: relative;
 				top: 0;
-				height: calc(100vh - 48px);
+				height: calc(100vh - 3px);
 				padding-top: .5rem;
 				overflow-y: auto;">
 					<ul class="nav navbar-nav">
@@ -399,7 +399,6 @@
 			<ul class="nav navbar-nav">
 				<li class="active navbar-brand">
 					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" align="left">
-						
 						<form class='form' method="POST" action="" >
 							<font color=#FFF5EE>
 							Sales     
@@ -423,11 +422,11 @@
 {% elif user.get_username == 'Max' %}
 <div class="container">
 	<div class="row sidebar-heading">
-		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="background-color: #f1e9e9">
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 			<div class="row">
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #c19999">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" >
 					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"> Managers: </li>
+						<li class="active navbar-brand"><font color="white"> Managers: </font></li>
 						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
 						{% for person in managers %}
 						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#FFF5EE>
@@ -455,11 +454,11 @@
 					</ul>
 				</div> -->
 
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-8 sidebar-sticky" style="background-color: #FFE4E1">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-8 sidebar-sticky">
 					<ul class="nav navbar-nav">
-					<li class="active navbar-brand"> Products: </li>
+					<li class="active navbar-brand"><font color="white">Products:</font></li>
 					{% for item in maxim %}
-					<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}"><font color=#B8860B>
+					<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}"><font color=#FFF5EE>
 						{{ item }}
 					</font></a></li>
 					{% endfor %}
@@ -469,8 +468,8 @@
 		</div>
 		
 		<!-- Table here -->
-		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: #FFFAFA; overflow: scroll">
-			<ul class="nav navbar-nav" style="height: 50vh; overflow: scroll; flex-wrap: nowrap;">
+		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: #FFFAFA; ">
+			<ul class="nav navbar-nav">
 				<li class="active navbar-brand">
 					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" align="left">
 						<form class='form' method="POST" action="" >

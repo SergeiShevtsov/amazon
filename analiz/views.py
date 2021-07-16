@@ -325,10 +325,7 @@ def productinfo(request, name):
 	products = Product.objects.all().filter(product_name=name)
 	product_name = products.values('product_name').first()
 	manager_name = products.values('manager').first()['manager']
-	average_bsr = products.aggregate(Avg('bsr'))
-	bsr = str(average_bsr['bsr__avg'])[0:str(average_bsr['bsr__avg']).find('.')]
-	average_rating = products.aggregate(Avg('rating'))
-	rating = str(average_rating['rating__avg'])[0:3]
+	
 	date = products.values('date').annotate(month=TruncMonth('date'))
 	asin = products.values('asin').first()['asin'] # dictionary
 	link = products.values('link').first()['link'] # dictionary
@@ -351,6 +348,10 @@ def productinfo(request, name):
 	if products.count() == 0:
 		products = Product.objects.all().filter(product_name=name)
 	
+	average_bsr = products.aggregate(Avg('bsr'))
+	bsr = str(average_bsr['bsr__avg'])[0:str(average_bsr['bsr__avg']).find('.')]
+	average_rating = products.aggregate(Avg('rating'))
+	rating = str(average_rating['rating__avg'])[0:3]
 	sum_sales = products.aggregate(Sum('sales')) 
 	sales = sum_sales['sales__sum'] 
 	ostatok = TypeOfProduct.objects.filter(type=name).values('ostatki').first()['ostatki']
