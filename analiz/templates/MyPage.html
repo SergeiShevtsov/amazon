@@ -373,17 +373,17 @@
 						{% for item in type %}
 							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}">
 							{% if item.status == 'BAN' %}
-							<font color=#F81B02>  # красный
+							<font color=#F81B02>  
 							{% elif item.status == 'OSS' %}
-							<font color=#F6C909> # желтый
+							<font color=#F6C909> 
 							{% elif item.status == 'SSS' %}
-							<font color=#A9A62C> # болотный
+							<font color=#A9A62C> 
 							{% elif item.status == 'InDev' %}
-							<font color=#ddd2eb> # светло фиолетовый
+							<font color=#ddd2eb> 
 							{% elif item.status == 'IsS' %}
-							<font color=#12AB03> # салатовый
+							<font color=#12AB03> 
 							{% else %}
-							<font color=#9046A0> # фиолетовый
+							<font color=#9046A0> 
 							{% endif %}
 							{{ item.type }}
 							</font></a></li>
