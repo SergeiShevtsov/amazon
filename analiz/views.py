@@ -225,17 +225,22 @@ def mypage(request, manager_id):
 	max_total_sales = []
 	max_ave_sales = []
 	max_got_money = []
-	
 	total_sales = []
 	ave_sales = []
 	got_money = []
+	
+	last_3 = []
+	last_3_id = []
+	last_3_date = []
+	last_3_sales = []
+
 	for item in type:
 		name = item.type
 		type_sales = 0
 		average_sales = 0
 		coun = 0
 		money = 0
-		for p in product:
+		for p in product.order_by('-date'):
 			if name == p.product_name:
 				coun += 1
 				s = p.sales
@@ -243,6 +248,12 @@ def mypage(request, manager_id):
 				money += price*s
 				type_sales += s
 				average_sales += s
+				if coun <= 3:
+					last_3_id.append(p.id)
+					last_3.append(p.product_name)
+					last_3_date.append(p.date)
+					last_3_sales.append(p.sales)
+					
 		if coun == 0:
 			coun = 1
 		average_sales = average_sales / coun
@@ -257,7 +268,7 @@ def mypage(request, manager_id):
 			max_got_money.append(money)
 	
 	
-	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money})
+	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_3':last_3, 'last_3_id':last_3_id, 'last_3_sales':last_3_sales, 'last_3_date':last_3_date})
 
 
 def brand(request, manager_id, brandname=0):
@@ -353,7 +364,7 @@ def productinfo(request, name):
 	event = products.values('event').last()['event']
 	sel_acc = products.values('sel_acc').first()['sel_acc']
 	link_to_seo = products.values('link_to_seo').first()['link_to_seo']
-	last_30 = products.order_by('-id')[0:10:-1]
+	last_30 = products.order_by('-date')[0:10:-1]
 	date1 = '2020-01-01'
 	date2 = datetime.now()
 	form = DateForm(request.POST or None)
@@ -440,12 +451,3 @@ def delete(request, id): # removing data from DB
 	except Product.DoesNotExist:
 		return HttpResponseNotFound("<h2>Person not found</h2>")
 
-
-# <!-- <form class='form-control' method="POST" action="" >
-# {% csrf_token %}
-# <div class="row">
-# 	   {{ choose_type.type|as_crispy_field }} 
-# <div align="center">
-# 	<input type="Submit" name="submit" value="Save Product" class="btn btn-danger"/>
-# </div>
-# </form> -->

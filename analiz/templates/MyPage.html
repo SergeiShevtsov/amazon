@@ -412,7 +412,46 @@
 				</li>
 				<li class="nav navbar-toggler"><canvas id="Total_Sales" width="400" height="200"></canvas></li>
 				<li class="nav navbar-toggler"><canvas id="Ave_Sales" width="400" height="200"></canvas></li>
+				{% if user.get_username == 'MiMurka' or user.get_username == 'Chief' or user.get_username == 'Sergik' %} 
 				<li class="nav navbar-toggler"><canvas id="Общие продажи в $" width="400" height="200"></canvas></li>
+				{% endif %}
+				<table class="table table table-hover" style="background-color:white">
+					<thead>
+						<tr>
+							<th scope="col">rec_id</th>
+							<th scope="col">Product Name</th>
+							<th scope="col">Date</th>
+							<th scope="col">Sales</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% load multifor %}
+					{% for x in last_3_id; y in last_3; z in last_3_date ; f in last_3_sales %}
+					<tr>
+					<th scope="row">{{x}}</th>
+						<td>{{y}}</td>
+						<td>{{z}}</td>
+						<td>{{f}}</td>
+					</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+				<!-- {% for item in type %}
+				<div class="accordion" id="accordionExample">
+					  <div class="accordion-item">
+						<h2 class="accordion-header" id="headingOne">
+						  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							{{item}}
+						  </button>
+						</h2>
+						<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+						  <div class="accordion-body">
+							<strong>Это тело аккордеона первого элемента.</strong> По умолчанию оно скрыто, пока плагин сворачивания не добавит соответствующие классы, которые мы используем для стилизации каждого элемента. Эти классы управляют общим внешним видом, а также отображением и скрытием с помощью переходов CSS. Вы можете изменить все это с помощью собственного CSS или переопределить наши переменные по умолчанию. Также стоит отметить, что практически любой HTML может быть помещен в <code>.accordion-body</code>, хотя переход ограничивает переполнение.
+						  </div>
+						</div>
+					  </div>
+					</div>
+				{% endfor %} -->
 			</ul>
 		</div>
 	</div>
