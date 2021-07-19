@@ -306,7 +306,7 @@
 				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
 				 <li class="nav-link active"><a href="{% url 'logout'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
 				 
-				{% elif user.is_authenticated and user.get_username == 'Chief' %}
+				{% elif user.is_authenticated and user.get_username == 'Chief' or user.is_authenticated and user.get_username == 'MiMurka' %}
 				<button type="button" class="btn btn-warning"><a href="{% url 'table' %}" class="link-dark">Sales</a></button>
 				<ul>
 				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
@@ -373,17 +373,17 @@
 						{% for item in type %}
 							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}">
 							{% if item.status == 'BAN' %}
-							<font color=#F81B02> 
+							<font color=#F81B02>  # красный
 							{% elif item.status == 'OSS' %}
-							<font color=#F6C909>
+							<font color=#F6C909> # желтый
 							{% elif item.status == 'SSS' %}
-							<font color=#A9A62C>
+							<font color=#A9A62C> # болотный
 							{% elif item.status == 'InDev' %}
-							<font color=#B8860B>
+							<font color=#ddd2eb> # светло фиолетовый
 							{% elif item.status == 'IsS' %}
-							<font color=#12AB03>
+							<font color=#12AB03> # салатовый
 							{% else %}
-							<font color=#9046A0>
+							<font color=#9046A0> # фиолетовый
 							{% endif %}
 							{{ item.type }}
 							</font></a></li>

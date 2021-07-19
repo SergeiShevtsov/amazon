@@ -7,7 +7,7 @@
 	$(document).ready(function(){
 		var ctx = document.getElementById('myChart').getContext('2d');
 		var myChart = new Chart(ctx, {
-			type: 'bar',
+			type: 'line',
 			data: {
 				labels: [
 					{% for item in products %}
@@ -194,53 +194,6 @@
 	</script>
 <script>
 	$(document).ready(function(){
-		var ctx = document.getElementById('Reviews').getContext('2d');
-		var myChart = new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: [
-					{% for item in products %}
-						'{{ item.date|date:"j-M" }}',
-					{% endfor %}
-				],
-				datasets: [{
-					label: 'Reviews',
-					data: [
-						{% for item in products %}
-						"{{ item.reviews }}",
-						{% endfor %}
-					],
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
-					borderColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
-					borderWidth: 1
-				}]
-			},
-			options: {
-				scales: {
-					y: {
-						beginAtZero: true
-					}
-				}
-			}
-		});
-	});	
-	</script>
-<script>
-	$(document).ready(function(){
 		var ctx = document.getElementById('LinaChart').getContext('2d');
 		var myChart = new Chart(ctx, {
 			  type: "bar",
@@ -325,7 +278,7 @@
 <nav class="navbar navbar-default">
 	<div class="container-fluid" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)">
 		<div class="navbar-header" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)>
-			<p style="font-style:italic"><font color="white"><h3>Manager: {{ products.first.manager }}</h3></font></p></h3>
+			<p style="font-style:italic"><font color="white"><h3>Manager: {{ type_o.manager }}</h3></font></p></h3>
 		</div>
 		<div>
 			<ul class="nav navbar">
@@ -341,6 +294,7 @@
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 sidebar-sticky" style="background-color: #a13f4f">
 				<h1><font color="white">{{ name }}</font></h1>
 				Суммарные продажи : {{ sales }} <br>
+				Средние продажи: {{ ave_sales}}
 				Средний BSR: {{ bsr }} <br>
 				Средний рейтинг: {{ rating }} <br>
 				Asin: {{ asin }} <br>
@@ -365,8 +319,6 @@
 					<li class="nav navbar-toggler"><canvas id="myChart" width="400" height="150"></canvas></li>
 					<li class="active navbar-brand"> BSR: </li>
 					<li class="nav navbar-toggler"><canvas id="BSR" width="400" height="150"></canvas></li>
-					<li class="active navbar-brand"> Reviews: </li>
-					<li class="nav navbar-toggler"><canvas id="Reviews" width="400" height="150"></canvas></li>
 					<li class="active navbar-brand"> Price: </li>
 					<li class="nav navbar-toggler"><canvas id="Price" width="400" height="150"></canvas></li>
 					<li class="active navbar-brand"> Rating: </li>

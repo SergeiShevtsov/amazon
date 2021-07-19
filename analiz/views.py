@@ -19,6 +19,10 @@ from django.http import HttpResponseNotFound
 from django.http import HttpResponseRedirect
 
 
+def dash(request):
+	return render(request, 'dashboard.html')
+
+
 def akcii(request):
 	type = TypeOfProduct.objects.all().order_by('type')
 	max_types = type.filter(owner='Max')
@@ -333,6 +337,18 @@ def productinfo(request, name):
 	
 	type_id = TypeOfProduct.objects.filter(type=name).values('id').first()['id'] # 35
 	messages = Message.objects.filter(product_type=type_id).order_by('-id')
+	coun = 0
+	average_sales = 0
+	for p in products:
+		if type == p.product_name:
+			s = p.sales
+			average_sales += s
+			coun += 1
+	if coun == 0:
+		coun = 1
+	average_sales = average_sales / coun
+	average_sales = round(average_sales,0)
+
 	
 	event = products.values('event').last()['event']
 	sel_acc = products.values('sel_acc').first()['sel_acc']
@@ -393,7 +409,7 @@ def productinfo(request, name):
 	
 	
 	
-	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok, 'chat':chat_form, 'messages':messages, 'type_o':type}
+	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok, 'chat':chat_form, 'messages':messages, 'type_o':type, 'ave_sales':average_sales}
 	return render(request, 'Product.html', context)
 
  
