@@ -3,7 +3,15 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from PIL import Image
 
-
+class ACOS(models.Model):
+	product_name = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
+	acos = models.DecimalField(max_digits=2, decimal_places=0)
+	spend = models.IntegerField()
+	sale = models.IntegerField()
+	budget = models.IntegerField()
+	date = models.CharField(max_length=50)
+	
+	
 class Message(models.Model):
 	text = models.TextField()
 	user = models.ForeignKey(User, on_delete=models.CASCADE)

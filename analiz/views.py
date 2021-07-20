@@ -1,11 +1,11 @@
-from .models import Product, Manager, Brand, TypeOfProduct, Message
+from .models import Product, Manager, Brand, TypeOfProduct, Message, ACOS
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Sum, Avg
 from django.db.models import Count
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType, MessageForm
+from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType, MessageForm, ACOSForm
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -19,6 +19,24 @@ from django.http import HttpResponseNotFound
 from django.http import HttpResponseRedirect
 
 
+def acos(request):
+	products = ACOS.objects.all()	
+	add_acos = ACOSForm(request.POST)
+	if request.method == 'POST':
+		data = ACOSForm(request.POST)
+		if data.is_valid():
+			add_acos.save()
+	else:
+		add_acos = ACOSForm(request.POST or None)
+	
+	context = {
+		'acos':products,
+		'form':add_acos,
+	}
+	
+	return render(request, 'ACOS.html', context)
+
+# пытаюсь добавить красивый шаблон с bootstrap
 def dash(request):
 	return render(request, 'dashboard.html')
 
@@ -313,7 +331,6 @@ def brand(request, manager_id, brandname=0):
 	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id})
 
 
-
 def manager_view(request, manager_id=1):
 	managers = Manager.objects.all() # Veronika Igor Nadya
 	product = Product.objects.all() # Swizon Black 2021-04-01 Swizon Black 2021-04-02 and eth.
@@ -450,4 +467,30 @@ def delete(request, id): # removing data from DB
 		return HttpResponseRedirect(link)
 	except Product.DoesNotExist:
 		return HttpResponseNotFound("<h2>Person not found</h2>")
+
+def edit_reklama(request, id): #changing data in DB
+	try:
+		product = ACOS.objects.get(id=id)
+		prod_name = product.product_name
+		link = f'/amz/acos'
+		form = ACOSForm(request.POST or None, instance=product)
+		context = {'form':form, 'product':product}
+		if request.method == "POST":
+			form.save()
+			return HttpResponseRedirect(link)
+		else:
+			return render(request, "edit.html", context)
+	except Product.DoesNotExist:
+		return HttpResponseNotFound("<h2>Запись не найдена</h2>")
+
+
+def delete_reklama(request, id): # removing data from DB
+	try:
+		product = ACOS.objects.get(id=id)
+		product.delete()
+		prod_name = product.product_name
+		link = f'/amz/acos'
+		return HttpResponseRedirect(link)
+	except Product.DoesNotExist:
+		return HttpResponseNotFound("<h2>Запись не найдена</h2>")
 

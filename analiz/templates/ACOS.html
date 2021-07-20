@@ -1,0 +1,72 @@
+{% extends 'maket.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block detail %}
+
+{% block script %}
+<script>
+	if ( window.history.replaceState ) {
+		window.history.replaceState( null, null, window.location.href );
+	}
+</script>
+{% endblock %}
+
+
+<nav class="navbar navbar-default">
+	<div class="container-fluid" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)">
+		<div class="navbar-header" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)>
+			<p style="font-style:italic"><font color="white"><h3>Рекламa</h3></font></p></h3>
+		</div>
+		<div>
+			  <ul class="nav navbar">
+				  <button type="button" class="btn btn-warning"><a href="{% url 'manager_page' manager_id=user.id %}" class="link-dark">Main Page</a></button>
+			  </ul>
+		  </div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row sidebar-heading">
+		<div class="row">
+			<div class="col-xs-7 col-sm-7 col-md-7 col-lg-3">
+				<form class='form-control' method="POST" action="" >
+				{% csrf_token %}
+				{{ form.product_name|as_crispy_field }}
+				{{ form.acos|as_crispy_field }}
+				{{ form.date|as_crispy_field }}
+				{{ form.spend|as_crispy_field }}
+				{{ form.sale|as_crispy_field }}
+				{{ form.budget|as_crispy_field }}<br>
+				<div align="center">
+					<input type="Submit" name="submit" value="Save" class="btn btn-danger"/>
+				</div>
+				</form>
+			</div>
+			<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+			<table class="table table table-hover" style="background-color:white">
+				<thead>
+					<tr>
+						<th scope="col">Product</th>
+						<th scope="col">Date</th>
+						<th scope="col">Spend</th>
+						<th scope="col">Sale</th>
+						<th scope="col">Budget</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for item in acos %}
+				<tr>
+				<th scope="row">{{item.product_name}}</th>
+					<td>{{item.date}}</td>
+					<td>{{item.spend}}</td>
+					<td>{{item.sale}}</td>
+					<td>{{item.budget}}</td>
+					<td><a href="edit/{{item.id}}">Изменить</a> | <a href="delete/{{item.id}}">Удалить</a></td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			</div>
+		</div>	
+	</div>	
+</div>
+{% endblock %}
