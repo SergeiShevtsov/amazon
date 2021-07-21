@@ -1,17 +1,14 @@
-from .models import Product, TypeOfProduct, Message
+from .models import Product, TypeOfProduct, Message, ACOS
 from django import forms
 import datetime
 from django.forms import ModelForm
 from django.utils import timezone
 
 
-# class ACOSForm(ModelForm):
-# 	class Meta:
-# 		model = ACOS
-# 		exclude = ()
-# 	budget = forms.IntegerField(
-# 		required = False
-# 	)
+class ACOSForm(ModelForm):
+	class Meta:
+		model = ACOS
+		exclude = ()
 
 
 class MessageForm(ModelForm):
