@@ -9,6 +9,9 @@ class ACOSForm(ModelForm):
 	class Meta:
 		model = ACOS
 		exclude = ()
+	budget = forms.IntegerField(
+		required = False
+	)
 
 
 class MessageForm(ModelForm):

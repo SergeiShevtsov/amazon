@@ -19,11 +19,15 @@ from django.http import HttpResponseNotFound
 from django.http import HttpResponseRedirect
 
 
+@csrf_exempt
 def acos(request):
+	type = TypeOfProduct.objects.all().order_by("manager")
+	name = 'acosir'
 	products = ACOS.objects.all()	
 	add_acos = ACOSForm(request.POST)
 	if request.method == 'POST':
 		data = ACOSForm(request.POST)
+		data.product_name=name
 		if data.is_valid():
 			add_acos.save()
 	else:
@@ -32,6 +36,7 @@ def acos(request):
 	context = {
 		'acos':products,
 		'form':add_acos,
+		'type':type,
 	}
 	
 	return render(request, 'ACOS.html', context)

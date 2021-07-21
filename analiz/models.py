@@ -5,10 +5,10 @@ from PIL import Image
 
 class ACOS(models.Model):
 	product_name = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
-	acos = models.DecimalField(max_digits=2, decimal_places=0)
+	acos = models.DecimalField(max_digits=3, decimal_places=0)
 	spend = models.IntegerField()
 	sale = models.IntegerField()
-	budget = models.IntegerField()
+	budget = models.IntegerField(null=True, blank=True)
 	date = models.CharField(max_length=50)
 	
 	
@@ -53,6 +53,14 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	type = models.CharField(max_length=30, unique=True)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE,)
+	# релкама
+	YES='YES'
+	NO='NO'
+	adver_choices = [
+		(YES, 'Yes'),
+		(NO, 'No'),
+	]
+	adver=models.CharField(max_length=3, choices=adver_choices, default=NO)
 	# мотивация
 	status_min = models.IntegerField(blank=True, null = True, default=25)
 	status_need = models.IntegerField(blank=True, null = True, default=101)

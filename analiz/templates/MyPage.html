@@ -300,9 +300,9 @@
 		</div>
 		<div>
 			<ul class="nav navbar">
-				<button type="button" class="btn btn-warning"><a href="{% url 'acos' %}" class="link-dark">Реклама</a></button>
-
 				{% if user.is_authenticated and user.get_username != 'Chief' and user.get_username != 'Max' and user.get_username != 'MiMurka' %}
+				<button type="button" class="btn btn-warning"><a href="{% url 'acos' %}" class="link-dark">Реклама</a></button>
+				
 				<button type="button" class="btn btn-warning"><a href="{% url 'adding new' %}" class="link-dark">Add Products</a></button>
 				<ul>
 				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>

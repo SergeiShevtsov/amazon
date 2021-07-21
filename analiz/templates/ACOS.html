@@ -69,4 +69,50 @@
 		</div>	
 	</div>	
 </div>
+
+
+
+
+<div class="container-fluid">
+	<div class="row sidebar-heading">
+		<div class="row">
+			<div class="col-xs-7 col-sm-7 col-md-7 col-lg-12">
+			<table class="table table table-hover" style="background-color:white">
+				<thead>
+					<tr>
+						<th scope="col">Product</th>
+						<th scope="col">Date</th>
+						<th scope="col">Spend</th>
+						<th scope="col">ACOS</th>
+						<th scope="col">Sale</th>
+						<th scope="col">Budget</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for i in type %}
+				{% if i.adver == 'YES' %}
+				<tr>
+					{% if i.owner == 'Max' or i.owner == 'max' %}
+				<th scope="row" style="background-color:red">{{ form.product_name|as_crispy_field }}</th>
+					{% else %}
+				<th scope="row" style="background-color:yellow">{{ form.product_name|as_crispy_field }} - {{i}}</th>
+					{% endif %}
+					<form class='form-control' method="POST" action="" >
+					<td>{{ form.date|as_crispy_field }}</td>
+					<td>{{ form.spend|as_crispy_field }}</td>
+					<td>{{ form.acos|as_crispy_field }}</td>
+					<td>{{ form.sale|as_crispy_field }}</td>
+					<td>{{ form.budget|as_crispy_field }}<br></td>
+					<td><input type="Submit" name="submit" value="Save" class="btn btn-danger"/></td>
+					</form>
+				</tr>
+				{% else %}
+				{% endif %}
+				{% endfor %}
+				</tbody>
+			</table>
+			</div>
+		</div>	
+	</div>	
+</div>
 {% endblock %}
