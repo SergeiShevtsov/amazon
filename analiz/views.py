@@ -1,11 +1,11 @@
-from .models import Product, Manager, Brand, TypeOfProduct, Message, ACOS
+from .models import Product, Manager, Brand, TypeOfProduct, Message
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Sum, Avg
 from django.db.models import Count
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType, MessageForm, ACOSForm
+from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType, MessageForm
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -19,27 +19,27 @@ from django.http import HttpResponseNotFound
 from django.http import HttpResponseRedirect
 
 
-@csrf_exempt
-def acos(request):
-	type = TypeOfProduct.objects.all().order_by("manager")
-	name = 'acosir'
-	products = ACOS.objects.all()	
-	add_acos = ACOSForm(request.POST)
-	if request.method == 'POST':
-		data = ACOSForm(request.POST)
-		data.product_name=name
-		if data.is_valid():
-			add_acos.save()
-	else:
-		add_acos = ACOSForm(request.POST or None)
-	
-	context = {
-		'acos':products,
-		'form':add_acos,
-		'type':type,
-	}
-	
-	return render(request, 'ACOS.html', context)
+# @csrf_exempt
+# def acos(request):
+# 	type = TypeOfProduct.objects.all().order_by("manager")
+# 	name = 'acosir'
+# 	products = ACOS.objects.all()	
+# 	add_acos = ACOSForm(request.POST)
+# 	if request.method == 'POST':
+# 		data = ACOSForm(request.POST)
+# 		data.product_name=name
+# 		if data.is_valid():
+# 			add_acos.save()
+# 	else:
+# 		add_acos = ACOSForm(request.POST or None)
+# 	
+# 	context = {
+# 		'acos':products,
+# 		'form':add_acos,
+# 		'type':type,
+# 	}
+# 	
+# 	return render(request, 'ACOS.html', context)
 
 # пытаюсь добавить красивый шаблон с bootstrap
 def dash(request):

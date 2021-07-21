@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Manager, Brand, TypeOfProduct, Message, ACOS
+from .models import Product, Manager, Brand, TypeOfProduct, Message
 from django.contrib.auth.models import User
 from django.utils.translation import gettext, gettext_lazy as _
 
@@ -35,9 +35,9 @@ class ProductAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
 	list_display = ('id','product_type', 'text', 'user',)
 	
-@admin.register(ACOS)
-class ProductAdmin(admin.ModelAdmin):
-	list_display = ('id','product_name', 'spend', 'sale', 'date')
+# @admin.register(ACOS)
+# class ProductAdmin(admin.ModelAdmin):
+# 	list_display = ('id','product_name', 'spend', 'sale', 'date')
 
 
 @admin.register(TypeOfProduct)
