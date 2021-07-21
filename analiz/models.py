@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from PIL import Image
 
+<<<<<<< HEAD
 # class ACOS(models.Model):
 # 	product_name = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
 # 	acos = models.DecimalField(max_digits=4, decimal_places=1, null = True, blank = True)
@@ -10,6 +11,15 @@ from PIL import Image
 # 	sale = models.IntegerField()
 # 	budget = models.IntegerField(null=True, blank=True)
 # 	date = models.CharField(max_length=50)
+=======
+class ACOS(models.Model):
+	product_name = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
+	acos = models.DecimalField(max_digits=3, decimal_places=0)
+	spend = models.IntegerField()
+	sale = models.IntegerField()
+	budget = models.IntegerField(null=True, blank=True)
+	date = models.CharField(max_length=50)
+>>>>>>> parent of 6d5b7dd... 1
 	
 	
 class Message(models.Model):
