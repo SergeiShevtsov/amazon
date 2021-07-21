@@ -5,7 +5,7 @@ from PIL import Image
 
 class ACOS(models.Model):
 	product_name = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
-	acos = models.DecimalField(max_digits=3, decimal_places=1, null = True, blank = True)
+	acos = models.DecimalField(max_digits=4, decimal_places=1, null = True, blank = True)
 	spend = models.IntegerField()
 	sale = models.IntegerField()
 	budget = models.IntegerField(null=True, blank=True)
