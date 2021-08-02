@@ -87,16 +87,7 @@
 					  </div>
 					  <!-- Third field -->
 					  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #c3886c">
-						  <form class='form-control' method="POST" action="" >
-							 {% for i in choose %}
-							   {{i|as_crispy_field}}
-							 {% endfor %}
-							 {{prod.sales}}
-							<br>
-							<div align="center">
-								<a href="{% url 'adding new' %}" class="link-dark"><input type="Submit" name="submit" value="Save Type" class="btn btn-info"/></a>
-							</div>
-						  </form>
+
 					  </div>
 					  <!-- Fourth field -->
 					  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #f4db89">

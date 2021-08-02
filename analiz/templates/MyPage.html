@@ -300,9 +300,10 @@
 		</div>
 		<div>
 			<ul class="nav navbar">
+				{% if user.is_authenticated and user.get_username != 'Chief' and user.get_username != 'Max' and user.get_username != 'MiMurka' %}
 				<button type="button" class="btn btn-warning"><a href="{% url 'acos' %}" class="link-dark">Реклама</a></button>
 
-				{% if user.is_authenticated and user.get_username != 'Chief' and user.get_username != 'Max' and user.get_username != 'MiMurka' %}
+				
 				<button type="button" class="btn btn-warning"><a href="{% url 'adding new' %}" class="link-dark">Add Products</a></button>
 				<ul>
 				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
@@ -438,22 +439,6 @@
 					{% endfor %}
 					</tbody>
 				</table>
-				<!-- {% for item in type %}
-				<div class="accordion" id="accordionExample">
-					  <div class="accordion-item">
-						<h2 class="accordion-header" id="headingOne">
-						  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-							{{item}}
-						  </button>
-						</h2>
-						<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-						  <div class="accordion-body">
-							<strong>Это тело аккордеона первого элемента.</strong> По умолчанию оно скрыто, пока плагин сворачивания не добавит соответствующие классы, которые мы используем для стилизации каждого элемента. Эти классы управляют общим внешним видом, а также отображением и скрытием с помощью переходов CSS. Вы можете изменить все это с помощью собственного CSS или переопределить наши переменные по умолчанию. Также стоит отметить, что практически любой HTML может быть помещен в <code>.accordion-body</code>, хотя переход ограничивает переполнение.
-						  </div>
-						</div>
-					  </div>
-					</div>
-				{% endfor %} -->
 			</ul>
 		</div>
 	</div>
@@ -484,16 +469,6 @@
 						{% endif %}
 					</ul>
 				</div>
-				<!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #f5dbdb">
-					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"> Brands: </li>
-						{% for obj in brands %}
-						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'brand' manager_id=user.id brandname=obj.id %}"><font color=#7B68EE>
-							{{ obj }}
-							</font></a></li>
-						{% endfor %}
-					</ul>
-				</div> -->
 
 				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-8 sidebar-sticky">
 					<ul class="nav navbar-nav">

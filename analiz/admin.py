@@ -18,6 +18,20 @@ class ProductResource(resources.ModelResource):
 	# category = fields.Field(column_name='category', attribute='category', widget=ForeignKeyWidget(ProductCategory,'name'))
 	class Meta:
 		model = Product
+		exclude = ('changes', 'positions_by_keys', 'offers', 'event', 'link_to_seo', '')
+
+# class ProductResource(resources.ModelResource):
+# 	brand = fields.Field(column_name='brand', attribute='brand', widget=ForeignKeyWidget(Brand, 'brand'))
+# 	manager=fields.Field(column_name='manager', attribute='manager', widget=ForeignKeyWidget(Manager, 'username'))
+# 	type = fields.Field(column_name='type', attribute='type', widget=ForeignKeyWidget(TypeOfProduct, 'type'))
+# 	product_name = fields.Field(column_name='Product Short Name', attribute='product_name')
+# 	date = fields.Field(column_name='Yesterday\'s Date on Marketplace', attribute='sales')
+# 	sales = fields.Field(column_name='my sales', attribute='sales')
+# 	# category = fields.Field(column_name='category', attribute='category', widget=ForeignKeyWidget(ProductCategory,'name'))
+# 	class Meta:
+# 		fields = ('product_name', 'asin', 'link', 'conversion_rate', 'rating', 'date', 'sales', 'sel_acc', 'brand', 'manager', 'type')
+# 		model = Product
+# 		export_order = ('product_name', 'asin', 'link', 'conversion_rate', 'rating', 'date', 'sales', 'sel_acc', 'brand', 'manager', 'type')
 	
 
 class ProductAdmin(ImportExportModelAdmin):
