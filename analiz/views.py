@@ -354,7 +354,6 @@ def manager_view(request, manager_id=1):
 @csrf_exempt
 def productinfo(request, name):
 	type = TypeOfProduct.objects.filter(type=name).first()
-	status = type.values('status')
 	products = Product.objects.all().filter(product_name=name)
 	product_name = products.values('product_name').first()
 	manager_name = products.values('manager').first()['manager']
