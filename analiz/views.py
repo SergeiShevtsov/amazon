@@ -224,8 +224,9 @@ def mypage(request, manager_id):
 	if product.count() == 0:
 		product = Product.objects.all()
 		text_alarm = 'Данных по продуктам за данный период не обнаружено'
-
-
+	
+	l_products = Product.objects.filter(manager=manager_id)
+	last_products = l_products[0:3]
 	type = TypeOfProduct.objects.all().filter(manager=manager_id)
 	type_for_graphi = TypeOfProduct.objects.all().order_by('manager')
 	if type.count() == 0:
@@ -246,11 +247,7 @@ def mypage(request, manager_id):
 	total_sales = []
 	ave_sales = []
 	got_money = []
-	
-	# last_3 = []
-	# last_3_id = []
-	# last_3_date = []
-	# last_3_sales = []
+
 
 	for item in type:
 		name = item.type
@@ -266,12 +263,7 @@ def mypage(request, manager_id):
 				money += price*s
 				type_sales += s
 				average_sales += s
-				# if coun <= 3:
-				# 	last_3_id.append(p.id)
-				# 	last_3.append(p.product_name)
-				# 	last_3_date.append(p.date)
-				# 	last_3_sales.append(p.sales)
-					
+	
 		if coun == 0:
 			coun = 1
 		average_sales = average_sales / coun
@@ -286,7 +278,7 @@ def mypage(request, manager_id):
 			max_got_money.append(money)
 	
 	
-	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money})
+	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products})
 
 
 def brand(request, manager_id, brandname=0):
@@ -354,6 +346,7 @@ def manager_view(request, manager_id=1):
 @csrf_exempt
 def productinfo(request, name):
 	type = TypeOfProduct.objects.filter(type=name).first()
+	status = type.values('status')
 	products = Product.objects.all().filter(product_name=name)
 	product_name = products.values('product_name').first()
 	manager_name = products.values('manager').first()['manager']
