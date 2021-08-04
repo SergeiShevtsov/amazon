@@ -428,30 +428,6 @@
 						</tr>
 					</thead>
 					<tbody>
-					{% load multifor %}
-					{% for x in last_3_id; y in last_3; z in last_3_date ; f in last_3_sales %}
-					<tr>
-					<th scope="row">{{x}}</th>
-						<td>{{y}}</td>
-						<td>{{z}}</td>
-						<td>{{f}}</td>
-					</tr>
-					{% endfor %}
-					</tbody>
-				</table>
-				
-				
-				
-				<table class="table table table-hover" style="background-color:white">
-					<thead>
-						<tr>
-							<th scope="col">rec_id</th>
-							<th scope="col">Product Name</th>
-							<th scope="col">Date</th>
-							<th scope="col">Sales</th>
-						</tr>
-					</thead>
-					<tbody>
 					{% for x in last_products %}
 					<tr>
 					<th scope="row">{{x.id}}</th>
