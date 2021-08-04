@@ -225,7 +225,7 @@ def mypage(request, manager_id):
 		product = Product.objects.all()
 		text_alarm = 'Данных по продуктам за данный период не обнаружено'
 	
-	l_products = Product.objects.filter(manager=manager_id)
+	l_products = Product.objects.filter(manager=manager_id).order_by('-date')
 	last_products = l_products[0:3]
 	type = TypeOfProduct.objects.all().filter(manager=manager_id)
 	type_for_graphi = TypeOfProduct.objects.all().order_by('manager')
@@ -346,7 +346,6 @@ def manager_view(request, manager_id=1):
 @csrf_exempt
 def productinfo(request, name):
 	type = TypeOfProduct.objects.filter(type=name).first()
-	status = type.values('status')
 	products = Product.objects.all().filter(product_name=name)
 	product_name = products.values('product_name').first()
 	manager_name = products.values('manager').first()['manager']
