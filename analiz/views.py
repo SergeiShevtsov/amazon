@@ -206,11 +206,25 @@ def registerPage(request):
 	context = {'form': form, 'profile_form': profile_form}
 	return render(request, 'register.html', context)
 
+
 @csrf_exempt
 def mypage(request, manager_id):
-	text_alarm = ''
-	managers = Manager.objects.all()
-	product = Product.objects.all()
+	manager_id = Manager.objects.get(id=manager_id)
+	# print(manager_id)
+	product = Product.objects.select_related('manager', 'type', 'brand').all()
+	managers = []
+	type = []
+	brands = []
+	for item in product:
+		if item.manager not in managers:
+			managers.append(item.manager)
+		if item.brand not in brands:
+			brands.append(item.brand)
+	
+	for item in product:
+		if item.type not in type and item.manager == manager_id:
+			type.append(item.type)
+	
 	date1 = '2020-01-01'
 	date2 = datetime.now()
 	form = DateForm(request.POST or None)
@@ -221,25 +235,19 @@ def mypage(request, manager_id):
 			date1 = '2020-01-01'
 			date2 = datetime.now()
 		product = product.filter(date__gte=date1).filter(date__lte=date2)
-	if product.count() == 0:
-		product = Product.objects.all()
-		text_alarm = 'Данных по продуктам за данный период не обнаружено'
+
 	
-	l_products = Product.objects.filter(manager=manager_id).order_by('-date')
-	last_products = l_products[0:3]
-	type = TypeOfProduct.objects.all().filter(manager=manager_id)
-	type_for_graphi = TypeOfProduct.objects.all().order_by('manager')
-	if type.count() == 0:
+	last_products = product.filter(manager=manager_id).order_by('-date')[0:len(type)]
+	if len(type) == 0:
 		type = TypeOfProduct.objects.all()
+	
+	# разобраться с максимом
 	maxim_list = []
 	for i in type:
 		if i.owner == "max" or i.owner == "Max":
 			maxim_list.append(i)
 		else:
 			pass
-
-	brands = Brand.objects.all() 
-	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
 	
 	max_total_sales = []
 	max_ave_sales = []
@@ -276,9 +284,11 @@ def mypage(request, manager_id):
 			max_ave_sales.append(average_sales)
 			max_total_sales.append(type_sales)
 			max_got_money.append(money)
+		
+	context = {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products}
 	
 	
-	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products})
+	return render(request, 'MyPage.html', context)
 
 
 def brand(request, manager_id, brandname=0):
@@ -323,24 +333,24 @@ def brand(request, manager_id, brandname=0):
 	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id})
 
 
-def manager_view(request, manager_id=1):
-	managers = Manager.objects.all() # Veronika Igor Nadya
-	product = Product.objects.all() # Swizon Black 2021-04-01 Swizon Black 2021-04-02 and eth.
-	type = TypeOfProduct.objects.all() # Swizon Black
-	brands = Brand.objects.all() # Kinpur Artulano
-	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
-		
-	total_sales=[]
-	for item in type:
-		name = item.type
-		type_sales = 0
-		for p in product:
-			if name == p.product_name:
-				s = p.sales
-				type_sales += s
-		total_sales.append(type_sales)
-	
-	return render(request, 'MyPage.html', {'manager':manager_id ,'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales, 'brands':brands})
+# def manager_view(request, manager_id=1):
+# 	managers = Manager.objects.all() # Veronika Igor Nadya
+# 	product = Product.objects.all() # Swizon Black 2021-04-01 Swizon Black 2021-04-02 and eth.
+# 	type = TypeOfProduct.objects.all() # Swizon Black
+# 	brands = Brand.objects.all() # Kinpur Artulano
+# 	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
+# 		
+# 	total_sales=[]
+# 	for item in type:
+# 		name = item.type
+# 		type_sales = 0
+# 		for p in product:
+# 			if name == p.product_name:
+# 				s = p.sales
+# 				type_sales += s
+# 		total_sales.append(type_sales)
+# 	
+# 	return render(request, 'MyPage.html', {'manager':manager_id ,'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales, 'brands':brands})
 
 
 @csrf_exempt
@@ -460,6 +470,7 @@ def delete(request, id): # removing data from DB
 	except Product.DoesNotExist:
 		return HttpResponseNotFound("<h2>Person not found</h2>")
 
+
 def edit_reklama(request, id): #changing data in DB
 	try:
 		product = ACOS.objects.get(id=id)
@@ -486,3 +497,79 @@ def delete_reklama(request, id): # removing data from DB
 	except Product.DoesNotExist:
 		return HttpResponseNotFound("<h2>Запись не найдена</h2>")
 
+
+# @csrf_exempt
+# def mypage(request, manager_id):
+# 	text_alarm = ''
+# 	managers = Manager.objects.all()
+# 	product = Product.objects.all()
+# 	date1 = '2020-01-01'
+# 	date2 = datetime.now()
+# 	form = DateForm(request.POST or None)
+# 	if form.is_valid():
+# 		date1 = form.clean_date1()
+# 		date2 = form.clean_date2()
+# 		if date1==None or date2==None:
+# 			date1 = '2020-01-01'
+# 			date2 = datetime.now()
+# 		product = product.filter(date__gte=date1).filter(date__lte=date2)
+# 	if product.count() == 0:
+# 		product = Product.objects.all()
+# 		text_alarm = 'Данных по продуктам за данный период не обнаружено'
+# 	
+# 	l_products = Product.objects.filter(manager=manager_id).order_by('-date')
+# 	last_products = l_products[0:3]
+# 	type = TypeOfProduct.objects.all().filter(manager=manager_id)
+# 	type_for_graphi = TypeOfProduct.objects.all().order_by('manager')
+# 	if type.count() == 0:
+# 		type = TypeOfProduct.objects.all()
+# 	maxim_list = []
+# 	for i in type:
+# 		if i.owner == "max" or i.owner == "Max":
+# 			maxim_list.append(i)
+# 		else:
+# 			pass
+# 
+# 	brands = Brand.objects.all() 
+# 	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
+# 	
+# 	max_total_sales = []
+# 	max_ave_sales = []
+# 	max_got_money = []
+# 	total_sales = []
+# 	ave_sales = []
+# 	got_money = []
+# 
+# 
+# 	for item in type:
+# 		name = item.type
+# 		type_sales = 0
+# 		average_sales = 0
+# 		coun = 0
+# 		money = 0
+# 		for p in product.order_by('-date'):
+# 			if name == p.product_name:
+# 				coun += 1
+# 				s = p.sales
+# 				price = p.price
+# 				money += price*s
+# 				type_sales += s
+# 				average_sales += s
+# 	
+# 		if coun == 0:
+# 			coun = 1
+# 		average_sales = average_sales / coun
+# 		average_sales = round(average_sales,0)
+# 		ave_sales.append(average_sales)
+# 		total_sales.append(type_sales)
+# 		got_money.append(money)
+# 		
+# 		if item.owner == 'Max' or item.owner == 'max':
+# 			max_ave_sales.append(average_sales)
+# 			max_total_sales.append(type_sales)
+# 			max_got_money.append(money)
+# 		
+# 	context = {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products}
+# 	
+# 	
+# 	return render(request, 'MyPage.html', context)

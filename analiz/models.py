@@ -23,25 +23,30 @@ class Message(models.Model):
 
 
 class Product(models.Model):
-	product_name = models.CharField(max_length=30) #Title
-	asin = models.CharField(max_length=15, blank=True, null = True) 
+	product_name = models.CharField(max_length=30) 
 	link = models.URLField(blank=True, null = True)
 	changes = models.TextField(blank=True, null = True)
 	positions_by_keys = models.CharField(max_length=400, blank=True, null = True)
-	price = models.DecimalField(max_digits=4, decimal_places=2)
 	bsr = models.IntegerField(blank=True, null = True)
-	sales = models.IntegerField()
 	conversion_rate = models.CharField(max_length=10, null = True, blank = True) 
 	rating = models.DecimalField(max_digits=2, decimal_places=1)
 	offers = models.TextField(blank=True, null = True)
-	date = models.DateField() #auto_now=True,
 	event = models.TextField(max_length=1000 ,blank=True, null = True) 
-	reviews = models.IntegerField(blank=True, null = True)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	type = models.ForeignKey('TypeOfProduct', on_delete=models.CASCADE)
 	link_to_seo = models.URLField(blank=True, null = True)
+		
+	# from exel
+	fba_inventory = models.TextField(blank=True, null = True) # add 
 	sel_acc = models.TextField(blank=True, null = True) 
+	date = models.DateField() 
+	sales = models.IntegerField()
+	price = models.DecimalField(max_digits=4, decimal_places=2)
+	asin = models.CharField(max_length=15, blank=True, null = True) 
+	reviews = models.IntegerField(blank=True, null = True)
+
+
 	class Meta:
 		ordering = ['date',]
 	
