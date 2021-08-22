@@ -356,7 +356,7 @@
 				</div>
 				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #ffebcd ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; >
 					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"><font color=#FFF5EE> Brands: </font></li>
+						<li style="list-style-type: none;" class="active navbar-brand"><font color=#000000> Brands: </font></li>
 						{% for obj in brands %}
 						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'brand' manager_id=user.id brandname=obj.id %}"><font color=#7B68EE>
 							{{ obj }}
@@ -373,7 +373,7 @@
 				overflow-y: auto;
 				background-color: #ffe4c4 ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; ">
 					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"><font color=#FFF5EE> Products: </font></li>
+						<li class="active navbar-brand"><font color=#000000> Products: </font></li>
 						{% for item in type %}
 							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}">
 							{% if item.status == 'BAN' %}
