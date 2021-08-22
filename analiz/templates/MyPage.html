@@ -328,33 +328,33 @@
 	</div>
 </nav>
 {% if user.is_authenticated and user.get_username != "Max" %}
-<div class="container">
+<div class="container" style="outline: 2px; outline-color: #ffdfa8; outline-style: solid ;">
 	<div class="row sidebar-heading">
 		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 			<div class="row">
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #ffefd5 ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; ">
 					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"><font color=#FFF5EE> Managers: </font></li>
+						<li class="active navbar-brand"><font color=#000000> Managers: </font></li>
 						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
 						{% for person in managers %}
 							{% if person.username == 'Maxim' or person.username == 'Ira🐝' or person.username == 'Chief💲' or person.username == 'Nochniki🌚'%}
 							{% else %}
-							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#FFF5EE>
+							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#000000>
 							{{ person.username }}
 							{% endif %}
 							</font></a></li>
 						{% endfor %}
 						{% else %}
-						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=user.id %}"><font color=#FFF5EE>{{ user.get_username }}
+						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=user.id %}"><font color=#000000>{{ user.get_username }}
 						</font></a></li>
 						{% endif %}
 						<br>
 						{% if user.get_username == 'MiMurka' or user.get_username == 'Sergik' %}
-						<button type="button" class="btn"><a href="{% url 'motivation' %}" class="link-light">Motivation</a></button>
+						<button type="button" class="btn"><a href="{% url 'motivation' %}" class="link-dark" style="">Motivation</a></button>
 						{% endif %}
 					</ul>
 				</div>
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #ffebcd ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; >
 					<ul class="nav navbar-nav">
 						<li class="active navbar-brand"><font color=#FFF5EE> Brands: </font></li>
 						{% for obj in brands %}
@@ -368,9 +368,10 @@
 				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="overflow-x: hidden;
 				position: relative;
 				top: 0;
-				height: calc(160vh - 3px);
+				height: calc(94vh - 4px);
 				padding-top: .5rem;
-				overflow-y: auto;">
+				overflow-y: auto;
+				background-color: #ffe4c4 ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; ">
 					<ul class="nav navbar-nav">
 						<li class="active navbar-brand"><font color=#FFF5EE> Products: </font></li>
 						{% for item in type %}
@@ -382,7 +383,7 @@
 							{% elif item.status == 'SSS' %}
 							<font color=#A9A62C> 
 							{% elif item.status == 'InDev' %}
-							<font color=#ddd2eb> 
+							<font color=#a78bcc> 
 							{% elif item.status == 'IsS' %}
 							<font color=#12AB03> 
 							{% else %}
@@ -398,7 +399,7 @@
 		</div>
 		
 		<!-- Table here -->
-		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-image: url(https://kartinkin.com/uploads/posts/2021-01/1611201074_13-p-zadnii-fon-v-2d-13.jpg); background-attachment:fixed, scroll;">
+		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: #fadfad ; border-width: 0.5px ; border-color:#000000 ; border-style: solid;  background-attachment:fixed, scroll;">
 			<ul class="nav navbar-nav">
 				<li class="active navbar-brand">
 					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" align="left">
