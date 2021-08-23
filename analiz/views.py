@@ -208,11 +208,13 @@ def registerPage(request):
 	context = {'form': form, 'profile_form': profile_form}
 	return render(request, 'register.html', context)
 
-@cache_page(60 * 60 * 9) # установить время для кеширования main page
+# поставить прогрузку продуктов на графике за прошедний месяц
+@cache_page(60 * 60 * 5) # установить время для кеширования main page
 @csrf_exempt
 def mypage(request, manager_id):
 	manager_id = Manager.objects.get(id=manager_id)
 	product = Product.objects.select_related('manager', 'type', 'brand').all()
+	
 	managers = []
 	type = []
 	brands = []
@@ -226,16 +228,22 @@ def mypage(request, manager_id):
 		if item.type not in type and item.manager == manager_id:
 			type.append(item.type)
 	
-	date1 = '2020-01-01'
 	date2 = datetime.now()
+	date1 = f'{date2.timetuple()[0]}-0{date2.timetuple()[1]-1}-01' 
+	date2 = f'{date2.timetuple()[0]}-0{date2.timetuple()[1]}-01' 
 	form = DateForm(request.POST or None)
+	got_items = 0
 	if form.is_valid():
+		got_items = 1
 		date1 = form.clean_date1()
 		date2 = form.clean_date2()
 		if date1==None or date2==None:
 			date1 = '2020-01-01'
 			date2 = datetime.now()
 		product = product.filter(date__gte=date1).filter(date__lte=date2)
+	else:
+		product = product.filter(date__gte=date1).filter(date__lte=date2)
+
 
 	
 	last_products = product.filter(manager=manager_id).order_by('-date')[0:len(type)]
@@ -272,6 +280,9 @@ def mypage(request, manager_id):
 				money += price*s
 				type_sales += s
 				average_sales += s
+				
+				# if coun == 30 and got_items != 1:
+				# 	break
 	
 		if coun == 0:
 			coun = 1
