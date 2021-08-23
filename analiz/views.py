@@ -209,7 +209,7 @@ def registerPage(request):
 	return render(request, 'register.html', context)
 
 # поставить прогрузку продуктов на графике за прошедний месяц
-# @cache_page(60 * 60 * 5) # установить время для кеширования main page
+@cache_page(60 * 60 * 5) # установить время для кеширования main page
 @csrf_exempt
 def mypage(request, manager_id):
 	manager_id = Manager.objects.get(id=manager_id)
