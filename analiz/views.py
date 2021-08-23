@@ -209,7 +209,7 @@ def registerPage(request):
 	return render(request, 'register.html', context)
 
 # поставить прогрузку продуктов на графике за прошедний месяц
-@cache_page(60 * 60 * 5) # установить время для кеширования main page
+# @cache_page(60 * 60 * 5) # установить время для кеширования main page
 @csrf_exempt
 def mypage(request, manager_id):
 	manager_id = Manager.objects.get(id=manager_id)
@@ -229,12 +229,12 @@ def mypage(request, manager_id):
 			type.append(item.type)
 	
 	date2 = datetime.now()
-	date1 = f'{date2.timetuple()[0]}-0{date2.timetuple()[1]-1}-01' 
-	date2 = f'{date2.timetuple()[0]}-0{date2.timetuple()[1]}-01' 
+	date1 = f'{date2.timetuple()[0]}-0{date2.timetuple()[1]-1}-01' # добавил
+	date2 = f'{date2.timetuple()[0]}-0{date2.timetuple()[1]}-01' # добавил
 	form = DateForm(request.POST or None)
-	got_items = 0
+	got_items = '0'
 	if form.is_valid():
-		got_items = 1
+		got_items = '1'
 		date1 = form.clean_date1()
 		date2 = form.clean_date2()
 		if date1==None or date2==None:
@@ -280,9 +280,7 @@ def mypage(request, manager_id):
 				money += price*s
 				type_sales += s
 				average_sales += s
-				
-				# if coun == 30 and got_items != 1:
-				# 	break
+
 	
 		if coun == 0:
 			coun = 1
@@ -297,7 +295,7 @@ def mypage(request, manager_id):
 			max_total_sales.append(type_sales)
 			max_got_money.append(money)
 		
-	context = {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products}
+	context = {'got_items':got_items, 'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products}
 	
 	
 	return render(request, 'MyPage.html', context)

@@ -405,13 +405,15 @@
 						<form class='form' method="POST" action="" >
 							{% csrf_token %}
 							<font color=#000000>
-							Sales     
+							Sales    
 							</font>
 							{% for i in form %}
 								{{i}}
 							{% endfor %}
 							<input type="Submit" name="submit" value="Filter"/>
+							<font size="1rem">{% if got_items == '0' %}(for the previous month){% endif %}</font>
 						</form>
+						
 					</div>
 				</li>
 				<li class="nav navbar-toggler"><canvas id="Total_Sales" width="400" height="200"></canvas></li>
