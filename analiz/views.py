@@ -17,6 +17,8 @@ from django.utils import timezone
 from django.template import Context, loader
 from django.http import HttpResponseNotFound
 from django.http import HttpResponseRedirect
+from django.views.decorators.cache import cache_page
+
 
 
 def acos(request):
@@ -206,11 +208,10 @@ def registerPage(request):
 	context = {'form': form, 'profile_form': profile_form}
 	return render(request, 'register.html', context)
 
-
+@cache_page(60 * 60 * 9) # установить время для кеширования main page
 @csrf_exempt
 def mypage(request, manager_id):
 	manager_id = Manager.objects.get(id=manager_id)
-	# print(manager_id)
 	product = Product.objects.select_related('manager', 'type', 'brand').all()
 	managers = []
 	type = []
@@ -241,7 +242,7 @@ def mypage(request, manager_id):
 	if len(type) == 0:
 		type = TypeOfProduct.objects.all()
 	
-	# разобраться с максимом
+	# разобраться с максимом отдельный def вызывающийся когда нужно
 	maxim_list = []
 	for i in type:
 		if i.owner == "max" or i.owner == "Max":
@@ -332,25 +333,6 @@ def brand(request, manager_id, brandname=0):
 	
 	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id})
 
-
-# def manager_view(request, manager_id=1):
-# 	managers = Manager.objects.all() # Veronika Igor Nadya
-# 	product = Product.objects.all() # Swizon Black 2021-04-01 Swizon Black 2021-04-02 and eth.
-# 	type = TypeOfProduct.objects.all() # Swizon Black
-# 	brands = Brand.objects.all() # Kinpur Artulano
-# 	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
-# 		
-# 	total_sales=[]
-# 	for item in type:
-# 		name = item.type
-# 		type_sales = 0
-# 		for p in product:
-# 			if name == p.product_name:
-# 				s = p.sales
-# 				type_sales += s
-# 		total_sales.append(type_sales)
-# 	
-# 	return render(request, 'MyPage.html', {'manager':manager_id ,'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales, 'brands':brands})
 
 
 @csrf_exempt

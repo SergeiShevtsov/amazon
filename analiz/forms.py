@@ -51,7 +51,7 @@ class ChooseType(ModelForm):
 class AddProduct(ModelForm):
 	class Meta:
 		model = Product
-		exclude = ('link', 'asin','positions_by_keys', 'link_to_seo', 'sel_acc')
+		exclude = ('link', 'asin','positions_by_keys', 'link_to_seo', 'sel_acc', 'fba_inventory')
 		# fields = '__all__'
 		# exclude = ()
 	positions_by_keys = forms.CharField(max_length=40, required=False)
