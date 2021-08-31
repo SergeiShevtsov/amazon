@@ -209,10 +209,12 @@ def registerPage(request):
 	return render(request, 'register.html', context)
 
 # поставить прогрузку продуктов на графике за прошедний месяц
-@cache_page(60 * 60 * 5) # установить время для кеширования main page
+# @cache_page(60 * 60 * 5) # установить время для кеширования main page
 @csrf_exempt
 def mypage(request, manager_id):
-	manager_id = Manager.objects.get(id=manager_id)
+	current_user = request.user.id #
+	
+	manager_id = Manager.objects.get(id=current_user) # manager_id = Manager.objects.get(id=manager_id)
 	product = Product.objects.select_related('manager', 'type', 'brand').all()
 	
 	managers = []
@@ -295,7 +297,7 @@ def mypage(request, manager_id):
 			max_total_sales.append(type_sales)
 			max_got_money.append(money)
 		
-	context = {'got_items':got_items, 'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products}
+	context = {'got_items':got_items, 'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products, 'current_user':current_user}
 	
 	
 	return render(request, 'MyPage.html', context)
@@ -419,15 +421,8 @@ def productinfo(request, name):
 	chat_form = MessageForm(request.POST or None)
 	if request.method == 'POST' and chat_form.is_valid():
 		chat_form.save()
-		# chat_form.save(commit=False)
-		# chat_form.user=request.user
-		# chat_form.chat_id=request.product
-		# chat_form.product_type=type
-		# if chat_form.is_valid():
-		# 	chat_form.save(commit=True)
 	else:
 		chat_form = MessageForm(request.POST or None, instance=last_message)
-	
 	
 	
 	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok, 'chat':chat_form, 'messages':messages, 'type_o':type, 'ave_sales':average_sales}
@@ -435,7 +430,7 @@ def productinfo(request, name):
 
  
 
-def edit(request, id): #changing data in DB
+def edit(request, id): # changing data in DB
 	try:
 		product = Product.objects.get(id=id)
 		prod_name = product.product_name
@@ -489,78 +484,18 @@ def delete_reklama(request, id): # removing data from DB
 		return HttpResponseNotFound("<h2>Запись не найдена</h2>")
 
 
-# @csrf_exempt
-# def mypage(request, manager_id):
-# 	text_alarm = ''
-# 	managers = Manager.objects.all()
-# 	product = Product.objects.all()
-# 	date1 = '2020-01-01'
-# 	date2 = datetime.now()
-# 	form = DateForm(request.POST or None)
-# 	if form.is_valid():
-# 		date1 = form.clean_date1()
-# 		date2 = form.clean_date2()
-# 		if date1==None or date2==None:
-# 			date1 = '2020-01-01'
-# 			date2 = datetime.now()
-# 		product = product.filter(date__gte=date1).filter(date__lte=date2)
-# 	if product.count() == 0:
-# 		product = Product.objects.all()
-# 		text_alarm = 'Данных по продуктам за данный период не обнаружено'
-# 	
-# 	l_products = Product.objects.filter(manager=manager_id).order_by('-date')
-# 	last_products = l_products[0:3]
-# 	type = TypeOfProduct.objects.all().filter(manager=manager_id)
-# 	type_for_graphi = TypeOfProduct.objects.all().order_by('manager')
-# 	if type.count() == 0:
-# 		type = TypeOfProduct.objects.all()
-# 	maxim_list = []
-# 	for i in type:
-# 		if i.owner == "max" or i.owner == "Max":
-# 			maxim_list.append(i)
-# 		else:
-# 			pass
-# 
-# 	brands = Brand.objects.all() 
-# 	monthes = Product.objects.filter(manager=manager_id).values('product_name', 'sales', 'date').annotate(month=TruncMonth('date')).annotate(sales_by_month=Sum('sales'))
-# 	
-# 	max_total_sales = []
-# 	max_ave_sales = []
-# 	max_got_money = []
-# 	total_sales = []
-# 	ave_sales = []
-# 	got_money = []
-# 
-# 
-# 	for item in type:
-# 		name = item.type
-# 		type_sales = 0
-# 		average_sales = 0
-# 		coun = 0
-# 		money = 0
-# 		for p in product.order_by('-date'):
-# 			if name == p.product_name:
-# 				coun += 1
-# 				s = p.sales
-# 				price = p.price
-# 				money += price*s
-# 				type_sales += s
-# 				average_sales += s
-# 	
-# 		if coun == 0:
-# 			coun = 1
-# 		average_sales = average_sales / coun
-# 		average_sales = round(average_sales,0)
-# 		ave_sales.append(average_sales)
-# 		total_sales.append(type_sales)
-# 		got_money.append(money)
-# 		
-# 		if item.owner == 'Max' or item.owner == 'max':
-# 			max_ave_sales.append(average_sales)
-# 			max_total_sales.append(type_sales)
-# 			max_got_money.append(money)
-# 		
-# 	context = {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'monthes': monthes, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products}
-# 	
-# 	
-# 	return render(request, 'MyPage.html', context)
+def edit_type(request, id): # removing data from DB
+	try:
+		type = TypeOfProduct.objects.get(id=id)
+		product = Product.objects.get(id=id)
+		prod_name = product.product_name
+		link = f'/amz/product/{prod_name}'
+		form = AddTypeOfProduct(request.POST or None, instance=type)
+		context = {'form':form, 'type':type}
+		if request.method == "POST":
+			form.save()
+			return HttpResponseRedirect(link)
+		else:
+			return render(request, "edit.html", context)
+	except TypeOfProduct.DoesNotExist:
+		return HttpResponseNotFound("<h2>Запись не найдена</h2>")

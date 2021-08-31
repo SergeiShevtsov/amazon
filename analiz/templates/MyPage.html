@@ -334,12 +334,12 @@
 			<div class="row">
 				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #ffefd5 ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; ">
 					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"><font color=#000000> Managers: </font></li>
+						<li class="active navbar-brand"><font color=#000000><b> Managers: </b></font></li>
 						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
 						{% for person in managers %}
 							{% if person.username == 'Maxim' or person.username == 'Ira🐝' or person.username == 'Chief💲' or person.username == 'Nochniki🌚'%}
 							{% else %}
-							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#000000>
+							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=user.id  %}"><font color=#000000>
 							{{ person.username }}
 							{% endif %}
 							</font></a></li>
@@ -350,15 +350,15 @@
 						{% endif %}
 						<br>
 						{% if user.get_username == 'MiMurka' or user.get_username == 'Sergik' %}
-						<button type="button" class="btn"><a href="{% url 'motivation' %}" class="link-dark" style="">Motivation</a></button>
+						<button type="button" class="btn btn-dark"><a href="{% url 'motivation' %}" class="link-dark" style="">Motivation</a></button>
 						{% endif %}
 					</ul>
 				</div>
 				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #ffebcd ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; >
 					<ul class="nav navbar-nav">
-						<li style="list-style-type: none;" class="active navbar-brand"><font color=#000000> Brands: </font></li>
+						<li style="list-style-type: none;" class="active navbar-brand"><font color=#000000><b> Brands: </b></font></li>
 						{% for obj in brands %}
-						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'brand' manager_id=user.id brandname=obj.id %}"><font color=#7B68EE>
+						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'brand' manager_id=user.id brandname=obj.id %}"><font color=#0000000>
 							{{ obj }}
 							</font></a></li>
 						{% endfor %}
@@ -372,7 +372,7 @@
 				overflow-y: auto;
 				background-color: #ffe4c4 ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; ">
 					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"><font color=#000000> Products: </font></li>
+						<li class="active navbar-brand"><font color=#000000><b> Products: </b></font></li>
 						{% for item in type %}
 							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}">
 							{% if item.status == 'BAN' %}

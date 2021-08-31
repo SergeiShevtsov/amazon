@@ -11,6 +11,7 @@ urlpatterns = [
 	path('motivation/', views.motivation , name = "motivation"),
 	path('product/edit/<int:id>/', views.edit),
 	path('product/delete/<int:id>/', views.delete),
+	path('product/edit_type/<int:id>/', views.edit_type),
 	path('acos/edit/<int:id>/', views.edit_reklama),
 	path('acos/delete/<int:id>/', views.delete_reklama),
 	path('akcii/', views.akcii , name = "table"),

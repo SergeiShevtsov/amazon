@@ -278,11 +278,12 @@
 <nav class="navbar navbar-default">
 	<div class="container-fluid" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)">
 		<div class="navbar-header" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)>
-			<p style="font-style:italic"><font color="white"><h3>Manager: {{ type_o.manager }}</h3></font></p></h3>
+			<p style="font-style:italic"><font color="white"><h3>Manager: {{ type_o.manager }}</h3></font></p>
 		</div>
+		<!-- <a href="edit_type/{{type_o.id}}">Изменить</a> -->
 		<div>
 			<ul class="nav navbar">
-				<button type="button" class="btn btn-light"><a href="{% url 'manager_page' manager_id=user.id %}" class="link-dark">Main Page</a></button>
+				<button type="button" class="btn btn-dark"><a href="{% url 'manager_page' manager_id=user.id %}" class="link-dark">Main Page</a></button>
 			</ul>
 		</div>
 	</div>
@@ -292,16 +293,16 @@
 		<div class="row">
 			<!-- Left side panel -->
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 sidebar-sticky" style="background-color: #a13f4f">
-				<h1><font color="white">{{ name }}</font></h1>
-				Суммарные продажи : {{ sales }} <br>
-				Средние продажи: {{ ave_sales}}
-				Средний BSR: {{ bsr }} <br>
+				<h1><font color="white"><a href="https://{{ link }}" target="_blank"> {{name}} </a></font></h1>
+				Продажи : {{ sales }} <br>
+				Средние продажи: {{ ave_sales}} <br>
+				BSR: {{ bsr }} <br>
 				Средний рейтинг: {{ rating }} <br>
 				Asin: {{ asin }} <br>
 				Seller account: {{ seller }} <br>
-				Ссылка на СЕО:<a href="{{ seo }}"> {{ seo }} </a><br>
-				Остатки: {{ ostatki }} <br>
-				<button class="btn btn" ><a href="https://{{ link }}"> Link </a></button><br>
+				<!-- Ссылка на СЕО:<a href="{{ seo }}"> {{ seo }} </a><br> -->
+				<!-- Остатки: {{ ostatki }} <br> -->
+				<button class="btn btn" ><a href="edit_type/{{type_o.id}}" target="_blank">Change status</a></button><br>
 				<h2>Comments:<br></h2>
 				<div>
 				<ul class="nav navbar-nav">

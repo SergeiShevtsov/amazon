@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load crispy_forms_tags %}
+
 <html>
 <head>
 	<meta charset="utf-8" />
@@ -7,7 +9,9 @@
 <body class="container">
 	<form method="POST">
 		{% csrf_token %}
-		{{form}}
+		{% for item in form %}
+		{{ item|as_crispy_field }}
+		{% endfor %}
 		<input type="submit" value="Сохранить" >
 	</form>
 </body>
