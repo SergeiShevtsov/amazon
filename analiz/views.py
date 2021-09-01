@@ -18,6 +18,8 @@ from django.template import Context, loader
 from django.http import HttpResponseNotFound
 from django.http import HttpResponseRedirect
 from django.views.decorators.cache import cache_page
+from django.contrib.auth.models import User, Group
+
 
 
 
@@ -212,9 +214,16 @@ def registerPage(request):
 @cache_page(60 * 60 * 5) # установить время для кеширования main page
 @csrf_exempt
 def mypage(request, manager_id):
-	current_user = request.user.id #
+	current_user = request.user.id # руководство не может фильтровать по менеджерам
+	user = User.objects.get(id=current_user)
 	
-	manager_id = Manager.objects.get(id=current_user) # manager_id = Manager.objects.get(id=manager_id)
+	# print(User.groups)
+	if user.groups.filter(name='Boss').exists():
+		print('YEEEEEEEEEEES')
+		manager_id = Manager.objects.get(id=manager_id)
+	else:
+		manager_id = Manager.objects.get(id=current_user) # manager_id = Manager.objects.get(id=manager_id)
+		
 	product = Product.objects.select_related('manager', 'type', 'brand').all()
 	
 	managers = []

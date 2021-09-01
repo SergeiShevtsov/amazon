@@ -339,7 +339,7 @@
 						{% for person in managers %}
 							{% if person.username == 'Maxim' or person.username == 'Ira🐝' or person.username == 'Chief💲' or person.username == 'Nochniki🌚'%}
 							{% else %}
-							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=user.id  %}"><font color=#000000>
+							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#000000>
 							{{ person.username }}
 							{% endif %}
 							</font></a></li>
