@@ -219,7 +219,6 @@ def mypage(request, manager_id):
 	
 	# print(User.groups)
 	if user.groups.filter(name='Boss').exists():
-		print('YEEEEEEEEEEES')
 		manager_id = Manager.objects.get(id=manager_id)
 	else:
 		manager_id = Manager.objects.get(id=current_user) # manager_id = Manager.objects.get(id=manager_id)
