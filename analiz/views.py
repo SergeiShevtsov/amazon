@@ -211,13 +211,16 @@ def registerPage(request):
 	return render(request, 'register.html', context)
 
 # поставить прогрузку продуктов на графике за прошедний месяц
-# @cache_page(60 * 60 * 5) # установить время для кеширования main page
+@cache_page(60 * 60 * 5) # установить время для кеширования main page
 @csrf_exempt
 def mypage(request, manager_id):
-	current_user = request.user.id # руководство не может фильтровать по менеджерам
+	if request.user.id:
+		pass
+	else:
+		return render(request, 'MyPage.html')
+	current_user = request.user.id 
 	user = User.objects.get(id=current_user)
 	
-	# print(User.groups)
 	if user.groups.filter(name='Boss').exists():
 		manager_id = Manager.objects.get(id=manager_id)
 	else:

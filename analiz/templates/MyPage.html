@@ -2,6 +2,226 @@
 {% load static %}
 {% block detail %}
 
+
+
+
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<h1><font color=#FFF5EE> Amazonchik </font></h1>
+		</div>
+		<div>
+			<ul class="nav navbar">
+				{% if user.is_authenticated and user.get_username != 'Chief' and user.get_username != 'Max' and user.get_username != 'MiMurka' %}
+				<button type="button" class="btn btn-warning"><a href="{% url 'acos' %}" class="link-dark">Реклама</a></button>
+
+				
+				<button type="button" class="btn btn-warning"><a href="{% url 'adding new' %}" class="link-dark">Add Products</a></button>
+				<ul>
+				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
+				 <li class="nav-link active"><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
+				 
+				{% elif user.is_authenticated and user.get_username == 'Chief' or user.is_authenticated and user.get_username == 'MiMurka' %}
+				<button type="button" class="btn btn-warning"><a href="{% url 'table' %}" class="link-dark">Sales</a></button>
+				<ul>
+				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
+				 <li class="nav-link active"><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
+				 {% elif user.is_authenticated and user.get_username == 'Max' %}
+				 <button type="button" class="btn btn-warning"><a href="{% url 'table' %}" class="link-dark">Sales</a></button>
+				 <ul>
+				  <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
+				  <li class="nav-link active"><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
+				{% else %}
+				 <li><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE><h2>Login</h2></font></a></li>
+				{% endif %} 
+				</ul>
+			</ul>
+		</div>
+	</div>
+</nav>
+{% if user.is_authenticated and user.get_username != "Max" %}
+<div class="container" style="outline: 2px; outline-color: #ffdfa8; outline-style: solid ;">
+	<div class="row sidebar-heading">
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+			<div class="row">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #ffefd5 ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; ">
+					<ul class="nav navbar-nav">
+						<li class="active navbar-brand"><font color=#000000><b> Managers: </b></font></li>
+						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
+						{% for person in managers %}
+							{% if person.username == 'Maxim' or person.username == 'Ira🐝' or person.username == 'Chief💲' or person.username == 'Nochniki🌚'%}
+							{% else %}
+							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#000000>
+							{{ person.username }}
+							{% endif %}
+							</font></a></li>
+						{% endfor %}
+						{% else %}
+						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=user.id %}"><font color=#000000>{{ user.get_username }}
+						</font></a></li>
+						{% endif %}
+						<br>
+						{% if user.get_username == 'MiMurka' or user.get_username == 'Sergik' %}
+						<button type="button" class="btn btn-dark"><a href="{% url 'motivation' %}" class="link-dark" style="">Motivation</a></button>
+						{% endif %}
+					</ul>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #ffebcd ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; >
+					<ul class="nav navbar-nav">
+						<li style="list-style-type: none;" class="active navbar-brand"><font color=#000000><b> Brands: </b></font></li>
+						{% for obj in brands %}
+						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'brand' manager_id=user.id brandname=obj.id %}"><font color=#0000000>
+							{{ obj }}
+							</font></a></li>
+						{% endfor %}
+					</ul>
+				</div>
+
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="overflow-x: hidden;
+				position: relative;
+				top: 0;
+				height: calc(94vh - 4px);
+				overflow-y: auto;
+				background-color: #ffe4c4 ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; ">
+					<ul class="nav navbar-nav">
+						<li class="active navbar-brand"><font color=#000000><b> Products: </b></font></li>
+						{% for item in type %}
+							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}">
+							{% if item.status == 'BAN' %}
+							<font color=#F81B02>  
+							{% elif item.status == 'OOS' %}
+							<font color=#f27522> 
+							{% elif item.status == 'SSS' %}
+							<font color=#F6C909> 
+							{% elif item.status == 'InDev' %}
+							<font color=#a78bcc> 
+							{% elif item.status == 'IsS' %}
+							<font color=#12AB03> 
+							{% else %}
+							<font color=#9046A0> 
+							{% endif %}
+							{{ item.type }}
+							</font></a></li>
+							
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Table here -->
+		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: #fadfad ; border-width: 0.5px ; border-color:#000000 ; border-style: solid;  background-attachment:fixed, scroll;">
+			<ul class="nav navbar-nav">
+				<li class="active navbar-brand">
+					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" align="left">
+						<form class='form' method="POST" action="" >
+							{% csrf_token %}
+							<font color=#000000>
+							Sales    
+							</font>
+							{% for i in form %}
+								{{i}}
+							{% endfor %}
+							<input type="Submit" name="submit" value="Filter"/>
+							<font size="1rem">{% if got_items == '0' %}(for the previous month){% endif %}</font>
+						</form>
+						
+					</div>
+				</li>
+				<li class="nav navbar-toggler"><canvas id="Total_Sales" width="400" height="200"></canvas></li>
+				<li class="nav navbar-toggler"><canvas id="Ave_Sales" width="400" height="200"></canvas></li>
+				{% if user.get_username == 'MiMurka' or user.get_username == 'Chief' or user.get_username == 'Sergik' %} 
+				<li class="nav navbar-toggler"><canvas id="Общие продажи в $" width="400" height="200"></canvas></li>
+				{% endif %}
+				<table class="table table table-hover" style="background-color:white">
+					<thead>
+						<tr>
+							<th scope="col">rec_id</th>
+							<th scope="col">Product Name</th>
+							<th scope="col">Date</th>
+							<th scope="col">Sales</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for x in last_products %}
+					<tr>
+					<th scope="row">{{x.id}}</th>
+						<td>{{x.product_name}}</td>
+						<td>{{x.date}}</td>
+						<td>{{x.sales}}</td>
+					</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+{% elif user.get_username == 'Max' %}
+<div class="container">
+	<div class="row sidebar-heading">
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+			<div class="row">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" >
+					<ul class="nav navbar-nav">
+						<li class="active navbar-brand"><font color="white"> Managers: </font></li>
+						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
+						{% for person in managers %}
+						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#FFF5EE>
+							{{ person.username }}
+							</font></a></li>
+						{% endfor %}
+						{% else %}
+						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=user.id %}"><font color=#FFF5EE>{{ user.get_username }}
+						</font></a></li>
+						{% endif %}
+						<br>
+						{% if user.get_username == 'MiMurka' or user.get_username == 'Sergik' %}
+						<button type="button" class="btn"><a href="{% url 'motivation' %}" class="link-light">Motivation</a></button>
+						{% endif %}
+					</ul>
+				</div>
+
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-8 sidebar-sticky">
+					<ul class="nav navbar-nav">
+					<li class="active navbar-brand"><font color="white">Products:</font></li>
+					{% for item in maxim %}
+					<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}"><font color=#FFF5EE>
+						{{ item }}
+					</font></a></li>
+					{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Table here -->
+		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: #FFFAFA; ">
+			<ul class="nav navbar-nav">
+				<li class="active navbar-brand">
+					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" align="left">
+						<form class='form' method="POST" action="" >{% csrf_token %}
+							Sales     
+							{% for i in form %}
+								{{i}}
+							{% endfor %}
+							<input type="Submit" name="submit" value="Filter"/>
+						</form>
+					</div>
+				</li>
+				<li class="nav navbar-toggler"><canvas id="Max_Total_Sales" width="400" height="200"></canvas></li>
+				<li class="nav navbar-toggler"><canvas id="Max_Ave_Sales" width="400" height="200"></canvas></li>
+				<li class="nav navbar-toggler"><canvas id="Max Общие продажи в $" width="400" height="200"></canvas></li>
+			</ul>
+		</div>
+	</div>
+</div>
+{% else %}
+
+{% endif %} 
 {% block script %}
 {% if user.get_username == 'Max' %}
 <!-- Для Максима -->
@@ -291,223 +511,4 @@
 {% endif %}
 
 {% endblock %}
-
-
-<nav class="navbar navbar-default">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<h1><font color=#FFF5EE> Amazonchik </font></h1>
-		</div>
-		<div>
-			<ul class="nav navbar">
-				{% if user.is_authenticated and user.get_username != 'Chief' and user.get_username != 'Max' and user.get_username != 'MiMurka' %}
-				<button type="button" class="btn btn-warning"><a href="{% url 'acos' %}" class="link-dark">Реклама</a></button>
-
-				
-				<button type="button" class="btn btn-warning"><a href="{% url 'adding new' %}" class="link-dark">Add Products</a></button>
-				<ul>
-				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
-				 <li class="nav-link active"><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
-				 
-				{% elif user.is_authenticated and user.get_username == 'Chief' or user.is_authenticated and user.get_username == 'MiMurka' %}
-				<button type="button" class="btn btn-warning"><a href="{% url 'table' %}" class="link-dark">Sales</a></button>
-				<ul>
-				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
-				 <li class="nav-link active"><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
-				 {% elif user.is_authenticated and user.get_username == 'Max' %}
-				 <button type="button" class="btn btn-warning"><a href="{% url 'table' %}" class="link-dark">Sales</a></button>
-				 <ul>
-				  <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
-				  <li class="nav-link active"><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
-				{% else %}
-				 <li><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE><h2>Login</h2></font></a></li>
-				{% endif %} 
-				</ul>
-			</ul>
-		</div>
-	</div>
-</nav>
-{% if user.is_authenticated and user.get_username != "Max" %}
-<div class="container" style="outline: 2px; outline-color: #ffdfa8; outline-style: solid ;">
-	<div class="row sidebar-heading">
-		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-			<div class="row">
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #ffefd5 ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; ">
-					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"><font color=#000000><b> Managers: </b></font></li>
-						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
-						{% for person in managers %}
-							{% if person.username == 'Maxim' or person.username == 'Ira🐝' or person.username == 'Chief💲' or person.username == 'Nochniki🌚'%}
-							{% else %}
-							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#000000>
-							{{ person.username }}
-							{% endif %}
-							</font></a></li>
-						{% endfor %}
-						{% else %}
-						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=user.id %}"><font color=#000000>{{ user.get_username }}
-						</font></a></li>
-						{% endif %}
-						<br>
-						{% if user.get_username == 'MiMurka' or user.get_username == 'Sergik' %}
-						<button type="button" class="btn btn-dark"><a href="{% url 'motivation' %}" class="link-dark" style="">Motivation</a></button>
-						{% endif %}
-					</ul>
-				</div>
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="background-color: #ffebcd ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; >
-					<ul class="nav navbar-nav">
-						<li style="list-style-type: none;" class="active navbar-brand"><font color=#000000><b> Brands: </b></font></li>
-						{% for obj in brands %}
-						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'brand' manager_id=user.id brandname=obj.id %}"><font color=#0000000>
-							{{ obj }}
-							</font></a></li>
-						{% endfor %}
-					</ul>
-				</div>
-
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" style="overflow-x: hidden;
-				position: relative;
-				top: 0;
-				height: calc(94vh - 4px);
-				overflow-y: auto;
-				background-color: #ffe4c4 ; border-width: 0px ; border-left: 0.5px; border-top: 0.5px; border-color:#000000 ; border-style: solid; ">
-					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"><font color=#000000><b> Products: </b></font></li>
-						{% for item in type %}
-							<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}">
-							{% if item.status == 'BAN' %}
-							<font color=#F81B02>  
-							{% elif item.status == 'OSS' %}
-							<font color=#F6C909> 
-							{% elif item.status == 'SSS' %}
-							<font color=#A9A62C> 
-							{% elif item.status == 'InDev' %}
-							<font color=#a78bcc> 
-							{% elif item.status == 'IsS' %}
-							<font color=#12AB03> 
-							{% else %}
-							<font color=#9046A0> 
-							{% endif %}
-							{{ item.type }}
-							</font></a></li>
-							
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-		</div>
-		
-		<!-- Table here -->
-		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: #fadfad ; border-width: 0.5px ; border-color:#000000 ; border-style: solid;  background-attachment:fixed, scroll;">
-			<ul class="nav navbar-nav">
-				<li class="active navbar-brand">
-					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" align="left">
-						<form class='form' method="POST" action="" >
-							{% csrf_token %}
-							<font color=#000000>
-							Sales    
-							</font>
-							{% for i in form %}
-								{{i}}
-							{% endfor %}
-							<input type="Submit" name="submit" value="Filter"/>
-							<font size="1rem">{% if got_items == '0' %}(for the previous month){% endif %}</font>
-						</form>
-						
-					</div>
-				</li>
-				<li class="nav navbar-toggler"><canvas id="Total_Sales" width="400" height="200"></canvas></li>
-				<li class="nav navbar-toggler"><canvas id="Ave_Sales" width="400" height="200"></canvas></li>
-				{% if user.get_username == 'MiMurka' or user.get_username == 'Chief' or user.get_username == 'Sergik' %} 
-				<li class="nav navbar-toggler"><canvas id="Общие продажи в $" width="400" height="200"></canvas></li>
-				{% endif %}
-				<table class="table table table-hover" style="background-color:white">
-					<thead>
-						<tr>
-							<th scope="col">rec_id</th>
-							<th scope="col">Product Name</th>
-							<th scope="col">Date</th>
-							<th scope="col">Sales</th>
-						</tr>
-					</thead>
-					<tbody>
-					{% for x in last_products %}
-					<tr>
-					<th scope="row">{{x.id}}</th>
-						<td>{{x.product_name}}</td>
-						<td>{{x.date}}</td>
-						<td>{{x.sales}}</td>
-					</tr>
-					{% endfor %}
-					</tbody>
-				</table>
-
-			</ul>
-		</div>
-	</div>
-</div>
-
-
-{% elif user.get_username == 'Max' %}
-<div class="container">
-	<div class="row sidebar-heading">
-		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-			<div class="row">
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 sidebar-sticky" >
-					<ul class="nav navbar-nav">
-						<li class="active navbar-brand"><font color="white"> Managers: </font></li>
-						{% if user.get_username == 'Sergik' or user.get_username == 'Chief' or user.get_username == 'MiMurka' or user.get_username == 'Chief'%}
-						{% for person in managers %}
-						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=person.id  %}"><font color=#FFF5EE>
-							{{ person.username }}
-							</font></a></li>
-						{% endfor %}
-						{% else %}
-						<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'manager_page' manager_id=user.id %}"><font color=#FFF5EE>{{ user.get_username }}
-						</font></a></li>
-						{% endif %}
-						<br>
-						{% if user.get_username == 'MiMurka' or user.get_username == 'Sergik' %}
-						<button type="button" class="btn"><a href="{% url 'motivation' %}" class="link-light">Motivation</a></button>
-						{% endif %}
-					</ul>
-				</div>
-
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-8 sidebar-sticky">
-					<ul class="nav navbar-nav">
-					<li class="active navbar-brand"><font color="white">Products:</font></li>
-					{% for item in maxim %}
-					<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'product' name=item.type %}"><font color=#FFF5EE>
-						{{ item }}
-					</font></a></li>
-					{% endfor %}
-					</ul>
-				</div>
-			</div>
-		</div>
-		
-		<!-- Table here -->
-		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: #FFFAFA; ">
-			<ul class="nav navbar-nav">
-				<li class="active navbar-brand">
-					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" align="left">
-						<form class='form' method="POST" action="" >{% csrf_token %}
-							Sales     
-							{% for i in form %}
-								{{i}}
-							{% endfor %}
-							<input type="Submit" name="submit" value="Filter"/>
-						</form>
-					</div>
-				</li>
-				<li class="nav navbar-toggler"><canvas id="Max_Total_Sales" width="400" height="200"></canvas></li>
-				<li class="nav navbar-toggler"><canvas id="Max_Ave_Sales" width="400" height="200"></canvas></li>
-				<li class="nav navbar-toggler"><canvas id="Max Общие продажи в $" width="400" height="200"></canvas></li>
-			</ul>
-		</div>
-	</div>
-</div>
-{% else %}
-
-{% endif %} 
 {% endblock %}
