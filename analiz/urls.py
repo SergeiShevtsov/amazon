@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 from . import forms
+from django.conf.urls import url
+from django.views.generic import RedirectView
+
 
 urlpatterns = [
 	path('MyPage/<str:manager_id>', views.mypage, name = 'manager_page'),
@@ -17,5 +20,5 @@ urlpatterns = [
 	path('akcii/', views.akcii , name = "table"),
 	path('dashboard/', views.dash, name = 'dashboard'),
 	path('acos/', views.acos, name = 'acos'),
-	
+	url(r'^favicon\.ico$', RedirectView.as_view(url='/static/img/favicon.ico', permanent=True)),
 ]
