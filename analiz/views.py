@@ -211,7 +211,7 @@ def registerPage(request):
 	return render(request, 'register.html', context)
 
 # поставить прогрузку продуктов на графике за прошедний месяц
-@cache_page(60 * 60 * 5) # установить время для кеширования main page
+@cache_page(5) # установить время для кеширования main page
 @csrf_exempt
 def mypage(request, manager_id):
 	if request.user.id:
@@ -240,6 +240,8 @@ def mypage(request, manager_id):
 	for item in product:
 		if item.type not in type and item.manager == manager_id:
 			type.append(item.type)
+
+	last_products = product.filter(manager=manager_id).order_by('-date')[0:len(type)]
 	
 	date3 = datetime.now()
 	date1 = f'{date3.timetuple()[0]}-0{date3.timetuple()[1]-1}-01' 
@@ -259,8 +261,6 @@ def mypage(request, manager_id):
 		product = product.filter(date__gte=date1).filter(date__lte=date2)
 
 
-	
-	last_products = product.filter(manager=manager_id).order_by('-date')[0:len(type)+1]
 	if len(type) == 0:
 		type = TypeOfProduct.objects.all()
 	
