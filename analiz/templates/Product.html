@@ -302,14 +302,14 @@
 				<!-- Ссылка на СЕО:<a href="{{ seo }}"> {{ seo }} </a><br> -->
 				<!-- Остатки: {{ ostatki }} <br> -->
 				<button class="btn btn" ><a href="edit_type/{{type_o.id}}" target="_blank">Change status</a></button><br>
-				<h2>Comments:<br></h2>
+				<!-- <h2>Comments:<br></h2>
 				<div>
 				<ul class="nav navbar-nav">
 					{% for item in messages %}
 					<li class="active navbar-collapse">{{item.date}} {{item.user}} : {{item.text}}</li>
 				{% endfor %}
 				</ul>
-				</div>
+				</div> -->
 			</div>
 			
 			<!-- Main feild with charts -->
@@ -361,7 +361,7 @@
 				<a href="{% url 'product' name=products.first.product_name %}"><button class="save btn btn"><p style="font-style:Arial">
 					Сбросить фильтрацию
 				</p></button></a><br><br>
-				<form style=" font-style:italic" class='form-check' method="POST" action="" >
+				<!-- <form style=" font-style:italic" class='form-check' method="POST" action="" >
 					{% csrf_token %}
 					<font color="black"> Text {{chat.text}}
 					From {{chat.user}}
@@ -371,7 +371,7 @@
 					<div align="center">
 						<input type="Submit" name="submit" value="Send"/>
 					</div>
-				</form>
+				</form> -->
 			</div>
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #68132c">
 				<form method="POST" class="col-form-label", action=""><font color='#FFFFFF'>

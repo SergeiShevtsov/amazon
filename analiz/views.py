@@ -211,7 +211,7 @@ def registerPage(request):
 	return render(request, 'register.html', context)
 
 # поставить прогрузку продуктов на графике за прошедний месяц
-@cache_page(60*60*2) # установить время для кеширования main page
+# @cache_page(60*60*2) # установить время для кеширования main page 
 @csrf_exempt
 def mypage(request, manager_id):
 	if request.user.id:
@@ -220,6 +220,7 @@ def mypage(request, manager_id):
 		return render(request, 'MyPage.html')
 	current_user = request.user.id 
 	user = User.objects.get(id=current_user)
+	users = User.objects.all()
 	
 	if user.groups.filter(name='Boss').exists():
 		manager_id = Manager.objects.get(id=manager_id)
@@ -309,7 +310,7 @@ def mypage(request, manager_id):
 			max_total_sales.append(type_sales)
 			max_got_money.append(money)
 		
-	context = {'got_items':got_items, 'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products, 'current_user':current_user}
+	context = {'got_items':got_items, 'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products, 'current_user':current_user, 'users':users}
 	
 	
 	return render(request, 'MyPage.html', context)
