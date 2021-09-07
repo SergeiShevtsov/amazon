@@ -1,8 +1,29 @@
-from .models import Product, TypeOfProduct, Message, ACOS
+from .models import Product, TypeOfProduct, Message, ACOS, Manager
 from django import forms
 import datetime
 from django.forms import ModelForm
 from django.utils import timezone
+from django.contrib.auth.models import User
+
+
+class Managersform(ModelForm):
+	class Meta:
+		model = Manager
+		exclude = ()
+	# def clean_type(self):
+	# 	type_one = self.cleaned_data['type']
+	# 	# Помните, что всегда надо возвращать "очищенные" данные.
+	# 	return type_one
+
+
+class UsersForm(ModelForm):
+	class Meta:
+		model = User
+		exclude = ()
+	# def clean_type(self):
+	# 	type_one = self.cleaned_data['type']
+	# 	# Помните, что всегда надо возвращать "очищенные" данные.
+	# 	return type_one
 
 
 class ACOSForm(ModelForm):

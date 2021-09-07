@@ -5,7 +5,7 @@ from django.db.models import Sum, Avg
 from django.db.models import Count
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType, MessageForm, ACOSForm
+from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType, MessageForm, ACOSForm, Managersform, UsersForm
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -21,6 +21,23 @@ from django.views.decorators.cache import cache_page
 from django.contrib.auth.models import User, Group
 
 
+def managers_users(request):
+	manager = Managersform(request.POST or None)
+	user = UsersForm(request.POST or None)
+	# if request.method == 'POST' and new_product.is_valid():
+	# 	new_product.save()	
+	# elif request.method == 'POST' and new_type.is_valid():
+	# 	new_type.save()
+	# elif choose_type.is_valid() and request.method == "POST":
+	# 	data = choose_type.clean_type()
+	# 	prod = Product.objects.filter(type=data).last()
+	# 	new_product = AddNewProduct(request.POST or None, instance=prod)
+	# else:
+	# 	new_product = AddNewProduct(request.POST or None, instance=prod)
+	# 	new_type = AddTypeOfProduct(request.POST or None)
+	
+	context = {'new_manager':manager, 'new_user':user}
+	return render(request, 'Managers&Users.html', context)
 
 
 def acos(request):
@@ -211,7 +228,7 @@ def registerPage(request):
 	return render(request, 'register.html', context)
 
 # поставить прогрузку продуктов на графике за прошедний месяц
-@cache_page(60*60*2) # установить время для кеширования main page 
+# @cache_page(60*60*2) # установить время для кеширования main page 
 @csrf_exempt
 def mypage(request, manager_id):
 	if request.user.id:
@@ -234,6 +251,7 @@ def mypage(request, manager_id):
 	brands = []
 	for item in product:
 		if item.manager not in managers:
+			print(item.manager)
 			managers.append(item.manager)
 		if item.brand not in brands:
 			brands.append(item.brand)
@@ -356,7 +374,6 @@ def brand(request, manager_id, brandname=0):
 		total_sales.append(type_sales)
 	
 	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id})
-
 
 
 @csrf_exempt
