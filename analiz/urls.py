@@ -14,6 +14,8 @@ urlpatterns = [
 	path('managers_users/', views.managers_users , name = "managers&users"),
 	path('motivation/', views.motivation , name = "motivation"),
 	path('product/edit/<int:id>/', views.edit),
+	path('product/edit_first/<int:id>/', views.edit_first),
+	path('motivation/edit_motivation/<int:id>/', views.edit_motivation),
 	path('product/delete/<int:id>/', views.delete),
 	path('product/edit_type/<int:id>/', views.edit_type),
 	path('acos/edit/<int:id>/', views.edit_reklama),

@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+{% extends 'maket.html' %}
+{% load static %}
+{% block detail %}
 {% load crispy_forms_tags %}
 
 <html>
@@ -6,6 +9,18 @@
 	<meta charset="utf-8" />
 	<title>Модели в Django</title>
 </head>
+<nav class="navbar navbar-default">
+	<div class="container-fluid" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)">
+		<div class="navbar-header" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)>
+			<p style="font-style:italic"><font color="white"><h3>Amazonchik</h3></font></p>
+		</div>
+		<div>
+			<ul class="nav navbar">
+				<button type="button" class="btn btn-dark"><a href="{% url 'manager_page' manager_id=user.id %}" class="link-dark">Main Page</a></button>
+			</ul>
+		</div>
+	</div>
+</nav>
 <body class="container">
 	<form method="POST">
 		{% csrf_token %}
@@ -16,3 +31,4 @@
 	</form>
 </body>
 </html>
+{% endblock %}

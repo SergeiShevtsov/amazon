@@ -2,6 +2,122 @@
 {% load static %}
 {% block detail %}
 
+
+
+
+<nav class="navbar navbar-default">
+	<div class="container-fluid" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)">
+		<div class="navbar-header" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)>
+			<p style="font-style:italic"><font color="white"><h3>Manager: {{ type_o.manager }}</h3></font></p>
+		</div>
+		<div>
+			<ul class="nav navbar">
+				<button type="button" class="btn btn-dark"><a href="{% url 'manager_page' manager_id=user.id %}" class="link-dark">Main Page</a></button>
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row sidebar-heading">
+		<div class="row">
+			<!-- Left side panel -->
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 sidebar-sticky" style="background-color: #a13f4f">
+				<h1><font color="white"><a href="https://{{ link }}" target="_blank"> {{name}} </a></font></h1>
+				Продажи : {{ sales }} <br>
+				Средние продажи: {{ ave_sales}} <br>
+				BSR: {{ bsr }} <br>
+				Средний рейтинг: {{ rating }} <br>
+				Asin: {{ asin }} <br>
+				Seller account: {{ seller }} <br>
+				
+				<button class="btn btn" ><a href="edit_first/{{first_product.id}}">Change Link/ASIN</a><br></button><br>
+				<button class="btn btn" ><a href="edit_type/{{type_o.id}}" target="_blank">Change Status</a></button><br>
+				<!-- <h2>Comments:<br></h2>
+				<div>
+				<ul class="nav navbar-nav">
+					{% for item in messages %}
+					<li class="active navbar-collapse">{{item.date}} {{item.user}} : {{item.text}}</li>
+				{% endfor %}
+				</ul>
+				</div> -->
+			</div>
+			
+			<!-- Main feild with charts -->
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-6 sidebar-sticky" style="background-color: #FFFFFF">
+				<ul class="nav navbar-nav">
+					<li class="active navbar-brand"> Sales: </li>
+					<li class="nav navbar-toggler"><canvas id="myChart" width="400" height="150"></canvas></li>
+					<li class="active navbar-brand"> BSR: </li>
+					<li class="nav navbar-toggler"><canvas id="BSR" width="400" height="150"></canvas></li>
+					<li class="active navbar-brand"> Price: </li>
+					<li class="nav navbar-toggler"><canvas id="Price" width="400" height="150"></canvas></li>
+					<li class="active navbar-brand"> Rating: </li>
+					<li class="nav navbar-toggler"><canvas id="Rating" width="400" height="150"></canvas></li>
+				</ul>
+				<table class="table table table-hover" >
+					<thead>
+						<tr>
+							<th scope="col">rec_id</th>
+							<th scope="col">Product Name</th>
+							<th scope="col">Date</th>
+							<th scope="col">Price</th>
+							<th scope="col">Sales</th>
+							<th scope="col">Changes</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for item in last_30 %}
+					<tr>
+					<th scope="row">{{item.id}}</th>
+						<td>{{item.product_name}}</td>
+						<td>{{item.date}}</td>
+						<td>{{item.price}}</td>
+						<td>{{item.sales}}</td>
+						<td>{{item.changes}}</td>
+						<td><a href="edit/{{item.id}}">Изменить</a> | <a href="delete/{{item.id}}">Удалить</a></td>
+					</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #a86240">
+				<br>
+				<form class='form-control' method="POST" action="" >
+					{{form}}
+					<div align="center">
+						<input type="Submit" name="submit" value="Filter"/>
+					</div>
+				</form>
+				<a href="{% url 'product' name=products.first.product_name %}"><button class="save btn btn"><p style="font-style:Arial">
+					Сбросить фильтрацию
+				</p></button></a><br><br>
+				<!-- <form style=" font-style:italic" class='form-check' method="POST" action="" >
+					{% csrf_token %}
+					<font color="black"> Text {{chat.text}}
+					From {{chat.user}}
+					{{chat.product_type}}
+					{{chat.date}}
+					</font>
+					<div align="center">
+						<input type="Submit" name="submit" value="Send"/>
+					</div>
+				</form> -->
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #68132c">
+				<form method="POST" class="col-form-label", action=""><font color='#FFFFFF'>
+					{% for field in data %}
+					<div class="col-form-label-sm">
+						<div>{{field.label_tag}}
+						{{field}}</div>
+					</div>
+					{% endfor %}
+					<input type="Submit" name="data" value="Сохранить"/></font>
+				</form>
+			</div>
+		</div>	
+	</div>	
+</div>
+
 {% block script %}
 <script>
 	$(document).ready(function(){
@@ -273,119 +389,5 @@
 	});	
 	</script>
 {% endblock script %}
-
-
-<nav class="navbar navbar-default">
-	<div class="container-fluid" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)">
-		<div class="navbar-header" style="background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612170254_83-p-fon-gradient-fioletovo-zheltii-97.jpg)>
-			<p style="font-style:italic"><font color="white"><h3>Manager: {{ type_o.manager }}</h3></font></p>
-		</div>
-		<div>
-			<ul class="nav navbar">
-				<button type="button" class="btn btn-dark"><a href="{% url 'manager_page' manager_id=user.id %}" class="link-dark">Main Page</a></button>
-			</ul>
-		</div>
-	</div>
-</nav>
-<div class="container-fluid">
-	<div class="row sidebar-heading">
-		<div class="row">
-			<!-- Left side panel -->
-			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 sidebar-sticky" style="background-color: #a13f4f">
-				<h1><font color="white"><a href="https://{{ link }}" target="_blank"> {{name}} </a></font></h1>
-				Продажи : {{ sales }} <br>
-				Средние продажи: {{ ave_sales}} <br>
-				BSR: {{ bsr }} <br>
-				Средний рейтинг: {{ rating }} <br>
-				Asin: {{ asin }} <br>
-				Seller account: {{ seller }} <br>
-				<!-- Ссылка на СЕО:<a href="{{ seo }}"> {{ seo }} </a><br> -->
-				<!-- Остатки: {{ ostatki }} <br> -->
-				<button class="btn btn" ><a href="edit_type/{{type_o.id}}" target="_blank">Change status</a></button><br>
-				<!-- <h2>Comments:<br></h2>
-				<div>
-				<ul class="nav navbar-nav">
-					{% for item in messages %}
-					<li class="active navbar-collapse">{{item.date}} {{item.user}} : {{item.text}}</li>
-				{% endfor %}
-				</ul>
-				</div> -->
-			</div>
-			
-			<!-- Main feild with charts -->
-			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-6 sidebar-sticky" style="background-color: #FFFFFF">
-				<ul class="nav navbar-nav">
-					<li class="active navbar-brand"> Sales: </li>
-					<li class="nav navbar-toggler"><canvas id="myChart" width="400" height="150"></canvas></li>
-					<li class="active navbar-brand"> BSR: </li>
-					<li class="nav navbar-toggler"><canvas id="BSR" width="400" height="150"></canvas></li>
-					<li class="active navbar-brand"> Price: </li>
-					<li class="nav navbar-toggler"><canvas id="Price" width="400" height="150"></canvas></li>
-					<li class="active navbar-brand"> Rating: </li>
-					<li class="nav navbar-toggler"><canvas id="Rating" width="400" height="150"></canvas></li>
-				</ul>
-				<table class="table table table-hover" >
-					<thead>
-						<tr>
-							<th scope="col">rec_id</th>
-							<th scope="col">Product Name</th>
-							<th scope="col">Date</th>
-							<th scope="col">Price</th>
-							<th scope="col">Sales</th>
-							<th scope="col">Changes</th>
-						</tr>
-					</thead>
-					<tbody>
-					{% for item in last_30 %}
-					<tr>
-					<th scope="row">{{item.id}}</th>
-						<td>{{item.product_name}}</td>
-						<td>{{item.date}}</td>
-						<td>{{item.price}}</td>
-						<td>{{item.sales}}</td>
-						<td>{{item.changes}}</td>
-						<td><a href="edit/{{item.id}}">Изменить</a> | <a href="delete/{{item.id}}">Удалить</a></td>
-					</tr>
-					{% endfor %}
-					</tbody>
-				</table>
-			</div>
-			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #a86240">
-				<br>
-				<form class='form-control' method="POST" action="" >
-					{{form}}
-					<div align="center">
-						<input type="Submit" name="submit" value="Filter"/>
-					</div>
-				</form>
-				<a href="{% url 'product' name=products.first.product_name %}"><button class="save btn btn"><p style="font-style:Arial">
-					Сбросить фильтрацию
-				</p></button></a><br><br>
-				<!-- <form style=" font-style:italic" class='form-check' method="POST" action="" >
-					{% csrf_token %}
-					<font color="black"> Text {{chat.text}}
-					From {{chat.user}}
-					{{chat.product_type}}
-					{{chat.date}}
-					</font>
-					<div align="center">
-						<input type="Submit" name="submit" value="Send"/>
-					</div>
-				</form> -->
-			</div>
-			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #68132c">
-				<form method="POST" class="col-form-label", action=""><font color='#FFFFFF'>
-					{% for field in data %}
-					<div class="col-form-label-sm">
-						<div>{{field.label_tag}}
-						{{field}}</div>
-					</div>
-					{% endfor %}
-					<input type="Submit" name="data" value="Сохранить"/></font>
-				</form>
-			</div>
-		</div>	
-	</div>	
-</div>
 {% endblock %}
 

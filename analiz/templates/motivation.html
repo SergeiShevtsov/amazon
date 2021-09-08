@@ -2,6 +2,65 @@
 {% load static %}
 {% block detail %}
 
+
+
+<nav class="navbar navbar-default">
+	<div class="container-fluid" style="background-color: #a4828f ">
+		<div class="navbar-header">
+			<h1> Amazonchik </h1>
+			<form class='form' method="POST" action="" >
+				{% csrf_token %}
+				{{form}}
+				<input type="Submit" name="submit" value="Filter"/>
+			</form>
+		</div>
+		<div>
+			<ul class="nav navbar">
+				{% if user.is_authenticated %}
+				<button type="button" class="btn btn-warning"><a href="{% url 'manager_page' manager_id=user.id %}" class="link-dark">Main Page</a></button>
+				<ul>
+				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
+				 <li class="nav-link active"><a href="{% url 'logout'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
+				{% else %}
+				 <li><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE>Login</font></a></li>
+				{% endif %} 
+				</ul>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+{% if user.is_authenticated %}
+
+<table style="background-color:white" class="table table table-hover" >
+	<thead>
+		<tr>
+			<th scope="col">Manager</th>
+			<th scope="col">Product Name</th>
+			<th scope="col">Min Sales</th>
+			<th scope="col">Max sales</th>
+			<th scope="col">Sales</th>
+			<th scope="col"></th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr>
+	{% for i,k in dicti.items %}
+	<th scope="row">{{i.manager}}</th>
+	<th scope="row">{{i}}</th>
+	<th scope="row">{{i.status_min}}</th>
+	<th scope="row">{{i.status_need}}</th>
+	<th scope="row">{{k}}</th>
+	<th scope="row"><a href="edit_motivation/{{i.id}}">Edit</a></th>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+<br>
+
+{{monthes}}
+{% endif %}
+
 {% block script %}
 <script>
 	$(document).ready(function(){
@@ -51,60 +110,4 @@
 	});	
 </script>
 {% endblock %}
-
-<nav class="navbar navbar-default">
-	<div class="container-fluid" style="background-color: #a4828f ">
-		<div class="navbar-header">
-			<h1> Amazonchik </h1>
-			<form class='form' method="POST" action="" >
-				{% csrf_token %}
-				{{form}}
-				<input type="Submit" name="submit" value="Filter"/>
-			</form>
-		</div>
-		<div>
-			<ul class="nav navbar">
-				{% if user.is_authenticated %}
-				<button type="button" class="btn btn-warning"><a href="{% url 'manager_page' manager_id=user.id %}" class="link-dark">Main Page</a></button>
-				<ul>
-				 <li class="nav-link active"><font color=#FFF5EE>User: {{ user.get_username }}  </font></li>
-				 <li class="nav-link active"><a href="{% url 'logout'%}?next={{request.path}}"><font color=#FFF5EE>Logout</font></a></li>
-				{% else %}
-				 <li><a href="{% url 'login'%}?next={{request.path}}"><font color=#FFF5EE>Login</font></a></li>
-				{% endif %} 
-				</ul>
-			</ul>
-		</div>
-	</div>
-</nav>
-
-{% if user.is_authenticated %}
-
-<table style="background-color:white" class="table table table-hover" >
-	<thead>
-		<tr>
-			<th scope="col">Manager</th>
-			<th scope="col">Product Name</th>
-			<th scope="col">Min Sales</th>
-			<th scope="col">Max sales</th>
-			<th scope="col">Sales</th>
-		</tr>
-	</thead>
-	<tbody>
-	<tr>
-	{% for i,k in dicti.items %}
-	<th scope="row">{{i.manager}}</th>
-	<th scope="row">{{i}}</th>
-	<th scope="row">{{i.status_min}}</th>
-	<th scope="row">{{i.status_need}}</th>
-	<th scope="row">{{k}}</th>
-	</tr>
-	{% endfor %}
-	</tbody>
-</table>
-<br>
-
-{{monthes}}
-{% endif %}
-
 {% endblock %}

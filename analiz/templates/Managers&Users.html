@@ -40,7 +40,7 @@
 			  <div class="row sidebar-heading">
 				  <div class="row">
 					  <!-- First field -->
-					  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-5 sidebar-sticky" style="background-color: #dc7a8a	">
+					  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-3 sidebar-sticky" style="background-color: #dc7a8a	">
 						<form class='form-control' method="POST" action="" >
 							{% csrf_token %}
 							<div class="row">
@@ -49,8 +49,10 @@
 								   	{{ item|as_crispy_field }}
 								   {% endfor %}
 								</div>
+							
 							<div align="center">
-								<input type="Submit" name="submit" value="Save Product" class="btn btn-danger"/>
+								<br>
+								<input type="Submit" name="submit" value="Save" class="btn btn-danger"/>
 							</div>
 						</form>
 					  </div>
@@ -58,7 +60,20 @@
 					  
 					  <!-- Second field -->
 					  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-3 sidebar-sticky" style="background-color: #f7b796">
-
+						  <form class='form-control' method="POST" action="" >
+							  {% csrf_token %}
+							  <div class="row">
+								  <div class="col-6">
+									 {% for item in new_manager %}
+										 {{ item|as_crispy_field }}
+									 {% endfor %}
+								  </div>
+							  
+							  <div align="center">
+								  <br>
+								  <input type="Submit" name="submit" value="Save" class="btn btn-danger"/>
+							  </div>
+						  </form>
 					  </div>
 					  <!-- Third field -->
 					  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="background-color: #c3886c">

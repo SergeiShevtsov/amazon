@@ -5,26 +5,24 @@ from django.forms import ModelForm
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+class UsersForm(forms.ModelForm):
+	password = forms.CharField(label='Password', widget=forms.PasswordInput)
+	password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput)
+
+	class Meta:
+		model = User
+		fields = ('username', 'first_name', 'email')
+
+	def clean_password2(self):
+		cd = self.cleaned_data
+		if cd['password'] != cd['password2']:
+			raise forms.ValidationError('Passwords don\'t match.')
+		return cd['password2']
 
 class Managersform(ModelForm):
 	class Meta:
 		model = Manager
 		exclude = ()
-	# def clean_type(self):
-	# 	type_one = self.cleaned_data['type']
-	# 	# Помните, что всегда надо возвращать "очищенные" данные.
-	# 	return type_one
-
-
-class UsersForm(ModelForm):
-	class Meta:
-		model = User
-		exclude = ()
-	# def clean_type(self):
-	# 	type_one = self.cleaned_data['type']
-	# 	# Помните, что всегда надо возвращать "очищенные" данные.
-	# 	return type_one
-
 
 class ACOSForm(ModelForm):
 	class Meta:
@@ -79,6 +77,14 @@ class AddProduct(ModelForm):
 	changes = forms.CharField(max_length=20, required=False)
 	offers = forms.CharField(max_length=20, required=False)
 	event = forms.CharField(max_length=1000, required=False)
+	
+class ChangeLink(ModelForm):
+	class Meta:
+		model = Product
+		fields = ('product_name', 'link', 'asin',)
+		# fields = '__all__'
+		# exclude = ()
+
 
 class AddNewProduct(ModelForm):
 	class Meta:

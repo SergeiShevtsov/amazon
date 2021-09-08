@@ -5,7 +5,7 @@ from django.db.models import Sum, Avg
 from django.db.models import Count
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType, MessageForm, ACOSForm, Managersform, UsersForm
+from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType, MessageForm, ACOSForm, Managersform, UsersForm, ChangeLink
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -24,17 +24,17 @@ from django.contrib.auth.models import User, Group
 def managers_users(request):
 	manager = Managersform(request.POST or None)
 	user = UsersForm(request.POST or None)
-	# if request.method == 'POST' and new_product.is_valid():
-	# 	new_product.save()	
-	# elif request.method == 'POST' and new_type.is_valid():
-	# 	new_type.save()
+	if request.method == 'POST' and manager.is_valid():
+		manager.save()	
+	elif request.method == 'POST' and user.is_valid():
+		user.save()
 	# elif choose_type.is_valid() and request.method == "POST":
 	# 	data = choose_type.clean_type()
 	# 	prod = Product.objects.filter(type=data).last()
 	# 	new_product = AddNewProduct(request.POST or None, instance=prod)
-	# else:
-	# 	new_product = AddNewProduct(request.POST or None, instance=prod)
-	# 	new_type = AddTypeOfProduct(request.POST or None)
+	else:
+		manager = Managersform(request.POST or None)
+		user = UsersForm(request.POST or None)
 	
 	context = {'new_manager':manager, 'new_user':user}
 	return render(request, 'Managers&Users.html', context)
@@ -227,8 +227,8 @@ def registerPage(request):
 	context = {'form': form, 'profile_form': profile_form}
 	return render(request, 'register.html', context)
 
-# поставить прогрузку продуктов на графике за прошедний месяц
-# @cache_page(60*60*2) # установить время для кеширования main page 
+
+@cache_page(60*60*2) # установить время для кеширования main page 
 @csrf_exempt
 def mypage(request, manager_id):
 	if request.user.id:
@@ -251,7 +251,6 @@ def mypage(request, manager_id):
 	brands = []
 	for item in product:
 		if item.manager not in managers:
-			print(item.manager)
 			managers.append(item.manager)
 		if item.brand not in brands:
 			brands.append(item.brand)
@@ -377,9 +376,11 @@ def brand(request, manager_id, brandname=0):
 
 
 @csrf_exempt
+@cache_page(60*60*4) 
 def productinfo(request, name):
 	type = TypeOfProduct.objects.filter(type=name).first()
 	products = Product.objects.all().filter(product_name=name)
+	first_product = products.first()
 	product_name = products.values('product_name').first()
 	manager_name = products.values('manager').first()['manager']
 	
@@ -455,9 +456,24 @@ def productinfo(request, name):
 		chat_form = MessageForm(request.POST or None, instance=last_message)
 	
 	
-	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok, 'chat':chat_form, 'messages':messages, 'type_o':type, 'ave_sales':average_sales}
+	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok, 'chat':chat_form, 'messages':messages, 'type_o':type, 'ave_sales':average_sales, 'first_product':first_product}
 	return render(request, 'Product.html', context)
 
+ 
+def edit_first(request, id): # changing data in DB
+	try:
+		product = Product.objects.get(id=id)
+		prod_name = product.product_name
+		link = f'/amz/product/{prod_name}'
+		form = ChangeLink(request.POST or None, instance=product)
+		context = {'form':form, 'product':product}
+		if request.method == "POST":
+			form.save()
+			return HttpResponseRedirect(link)
+		else:
+			return render(request, "edit.html", context)
+	except Product.DoesNotExist:
+		return HttpResponseNotFound("<h2>Product not found</h2>")
  
 
 def edit(request, id): # changing data in DB
@@ -473,7 +489,7 @@ def edit(request, id): # changing data in DB
 		else:
 			return render(request, "edit.html", context)
 	except Product.DoesNotExist:
-		return HttpResponseNotFound("<h2>Person not found</h2>")
+		return HttpResponseNotFound("<h2>Product not found</h2>")
 
 
 def delete(request, id): # removing data from DB
@@ -520,6 +536,23 @@ def edit_type(request, id): # removing data from DB
 		product = Product.objects.get(id=id)
 		prod_name = product.product_name
 		link = f'/amz/product/{prod_name}'
+		form = AddTypeOfProduct(request.POST or None, instance=type)
+		context = {'form':form, 'type':type}
+		if request.method == "POST":
+			form.save()
+			return HttpResponseRedirect(link)
+		else:
+			return render(request, "edit.html", context)
+	except TypeOfProduct.DoesNotExist:
+		return HttpResponseNotFound("<h2>Запись не найдена</h2>")
+
+
+def edit_motivation(request, id):
+	try:
+		type = TypeOfProduct.objects.get(id=id)
+		product = Product.objects.get(id=id)
+		prod_name = product.product_name
+		link = f'/amz/motivation' 
 		form = AddTypeOfProduct(request.POST or None, instance=type)
 		context = {'form':form, 'type':type}
 		if request.method == "POST":
