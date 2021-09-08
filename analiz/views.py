@@ -228,7 +228,7 @@ def registerPage(request):
 	return render(request, 'register.html', context)
 
 
-@cache_page(60*60*2) # установить время для кеширования main page 
+# @cache_page(60*60*5) # установить время для кеширования main page 
 @csrf_exempt
 def mypage(request, manager_id):
 	if request.user.id:
@@ -244,7 +244,8 @@ def mypage(request, manager_id):
 	else:
 		manager_id = Manager.objects.get(id=current_user) # manager_id = Manager.objects.get(id=manager_id)
 		
-	product = Product.objects.select_related('manager', 'type', 'brand').all()
+	product = Product.objects.select_related('manager', 'type', 'brand')
+	# .defer('link', 'changes', 'positions_by_keys', 'bsr', 'rating', 'offers', 'event', 'conversion_rate', 'price')
 	
 	managers = []
 	type = []
@@ -280,7 +281,9 @@ def mypage(request, manager_id):
 
 
 	if len(type) == 0:
-		type = TypeOfProduct.objects.all()
+		for item in product:
+			if item.type not in type:
+				type.append(item.type)
 	
 	# разобраться с максимом отдельный def вызывающийся когда нужно
 	maxim_list = []
