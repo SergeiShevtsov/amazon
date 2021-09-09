@@ -244,8 +244,7 @@ def mypage(request, manager_id):
 	else:
 		manager_id = Manager.objects.get(id=current_user) # manager_id = Manager.objects.get(id=manager_id)
 		
-	product = Product.objects.select_related('manager', 'type', 'brand')
-	# .defer('link', 'changes', 'positions_by_keys', 'bsr', 'rating', 'offers', 'event', 'conversion_rate', 'price')
+	product = Product.objects.select_related('manager', 'type', 'brand').defer('link', 'changes', 'asin')
 	
 	managers = []
 	type = []
@@ -379,7 +378,7 @@ def brand(request, manager_id, brandname=0):
 
 
 @csrf_exempt
-@cache_page(60*60*4) 
+# @cache_page(60*60*4) 
 def productinfo(request, name):
 	type = TypeOfProduct.objects.filter(type=name).first()
 	products = Product.objects.all().filter(product_name=name)
