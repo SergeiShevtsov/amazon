@@ -1,4 +1,4 @@
-from .models import Product, Manager, Brand, TypeOfProduct, Message, ACOS
+from .models import Product, Manager, Brand, TypeOfProduct, Message, ACOS, Category
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Sum, Avg
@@ -19,6 +19,227 @@ from django.http import HttpResponseNotFound
 from django.http import HttpResponseRedirect
 from django.views.decorators.cache import cache_page
 from django.contrib.auth.models import User, Group
+
+
+
+# @cache_page(60*60*1) # установить время для кеширования main page 
+@csrf_exempt
+def mypage(request, manager_id, brandname=None):
+	
+	if request.user.id:
+		pass
+	else:
+		return render(request, 'MyPage.html')
+	current_user = request.user.id 
+	user = User.objects.get(id=current_user)
+	# users = User.objects.all()
+	
+	if user.groups.filter(name='Boss').exists():
+		manager_id = Manager.objects.get(id=manager_id)
+	else:
+		manager_id = Manager.objects.get(id=current_user) # manager_id = Manager.objects.get(id=manager_id)
+	
+	# if brandname != "None":
+	# 	product = Product.objects.filter(brand=brandname).select_related('manager', 'type', 'brand')
+	# else:
+	product = Product.objects.select_related('manager', 'type', 'brand')
+	
+	managers = []
+	type = []
+	brands = []
+	for item in product:
+		if item.manager not in managers:
+			managers.append(item.manager)
+		if item.brand not in brands:
+			brands.append(item.brand)
+	
+		# if user.groups.filter(name='Boss').exists():
+		# 	if item.type not in type:
+		# 		print(f'{item.manager}-{manager_id}')
+		# 		if brandname == None:
+		# 			type.append(item.type)
+		# 			print(f'{brandname}-{item.brand.id}')
+		# 		else:
+		# 			print('Brandname ne None')
+		# 			if item.brand.id == brandname:
+		# 				type.append(item.type)
+		# else:
+		# 	if item.type not in type and item.manager == manager_id:
+		# 		type.append(item.type)
+		# 		# print(f'{item.manager}-{manager_id}')
+		# 		# if brandname == None:
+		# 		# 	type.append(item.type)
+		# 		# 	print(f'{brandname}-{item.brand.id}')
+		# 		# else:
+		# 		# 	print('Brandname ne None')
+		# 		# 	if item.brand.id == brandname:
+		# 		# 		type.append(item.type)
+	
+	for item in product:
+		if item.type not in type and item.manager == manager_id:
+			type.append(item.type)
+	
+	categories = Category.objects.all()
+	
+	date3 = datetime.now()
+	date1 = f'{date3.timetuple()[0]}-0{date3.timetuple()[1]-1}-01' 
+	date2 = f'{date3.timetuple()[0]}-0{date3.timetuple()[1]}-01' 	
+	
+	form = DateForm(request.POST or None)
+	got_items = '0'
+	if form.is_valid():
+		got_items = '1'
+		date1 = form.clean_date1()
+		date2 = form.clean_date2()
+		if date1==None or date2==None:
+			date1 = '2020-01-01'
+			date2 = datetime.now()
+		product = product.filter(date__gte=date1).filter(date__lte=date2)
+	else:
+		product = product.filter(date__gte=date1).filter(date__lte=date2)
+	
+	last_products = product.filter(manager=manager_id).order_by('-date')[0:len(type)]
+
+	if len(type) == 0:
+		for item in product:
+			if item.type not in type:
+				type.append(item.type)
+	
+	# разобраться с максимом отдельный def вызывающийся когда нужно
+	maxim_list = []
+	for i in type:
+		if i.owner == "max" or i.owner == "Max":
+			maxim_list.append(i)
+		else:
+			pass
+	
+	max_total_sales = []
+	max_ave_sales = []
+	max_got_money = []
+	total_sales = []
+	ave_sales = []
+	got_money = []
+
+
+	for item in type:
+		name = item.type
+		type_sales = 0
+		average_sales = 0
+		coun = 0
+		money = 0
+		for p in product.order_by('-date'):
+			if name == p.product_name:
+				coun += 1
+				s = p.sales
+				price = p.price
+				money += price*s
+				type_sales += s
+				average_sales += s
+
+	
+		if coun == 0:
+			coun = 1
+		average_sales = average_sales / coun
+		average_sales = round(average_sales,0)
+		ave_sales.append(average_sales)
+		total_sales.append(type_sales)
+		got_money.append(money)
+		
+		if item.owner == 'Max' or item.owner == 'max':
+			max_ave_sales.append(average_sales)
+			max_total_sales.append(type_sales)
+			max_got_money.append(money)
+		
+	context = {'got_items':got_items, 'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products, 'current_user':current_user, 'categories':categories}
+	
+	
+	return render(request, 'MyPage.html', context)
+
+
+
+@csrf_exempt
+# @cache_page(60*60*4) 
+def productinfo(request, name):
+	type = TypeOfProduct.objects.filter(type=name).first()
+	products = Product.objects.all().filter(product_name=name)
+	first_product = products.first()
+	product_name = products.values('product_name').first()
+	manager_name = products.values('manager').first()['manager']
+	
+	date = products.values('date').annotate(month=TruncMonth('date'))
+	asin = products.values('asin').first()['asin'] # dictionary
+	link = products.values('link').first()['link'] # dictionary
+	link = link[8:]
+	
+	type_id = TypeOfProduct.objects.filter(type=name).values('id').first()['id'] # 35
+	messages = Message.objects.filter(product_type=type_id).order_by('-id')
+	coun = 0
+	average_sales = 0
+	for p in products:
+		if type == p.product_name:
+			s = p.sales
+			average_sales += s
+			coun += 1
+	if coun == 0:
+		coun = 1
+	average_sales = average_sales / coun
+	average_sales = round(average_sales,0)
+
+	
+	event = products.values('event').last()['event']
+	sel_acc = products.values('sel_acc').first()['sel_acc']
+	link_to_seo = products.values('link_to_seo').first()['link_to_seo']
+	last_30 = products.order_by('-date')[0:10:-1]
+	date1 = '2020-01-01'
+	date2 = datetime.now()
+	form = DateForm(request.POST or None)
+	if form.is_valid():
+		date1 = form.clean_date1()
+		date2 = form.clean_date2()
+		if date1==None or date2==None:
+			date1 = '2020-01-01'
+			date2 = datetime.now()
+		products = products.filter(date__gte=date1).filter(date__lte=date2)
+		last_30 = products
+		messages = Message.objects.filter(product_type=type_id).filter(date__gte=date1).filter(date__lte=date2).order_by('-id')
+	if products.count() == 0:
+		products = Product.objects.all().filter(product_name=name)
+	
+	average_bsr = products.aggregate(Avg('bsr'))
+	bsr = str(average_bsr['bsr__avg'])[0:str(average_bsr['bsr__avg']).find('.')]
+	average_rating = products.aggregate(Avg('rating'))
+	rating = str(average_rating['rating__avg'])[0:3]
+	sum_sales = products.aggregate(Sum('sales')) 
+	sales = sum_sales['sales__sum'] 
+	ostatok = TypeOfProduct.objects.filter(type=name).values('ostatki').first()['ostatki']
+	
+	if products.last() == None:
+		data = AddProduct(request.POST or None)
+	else:
+		data = AddProduct(request.POST or None, instance=products.last())
+	
+	if request.method == "POST":
+		data = AddProduct(request.POST)
+		if data.is_valid():
+			sales = data.cleaned_data['sales']
+			product = data.save(manager_name)
+			product.save()
+	else:
+		data = AddProduct(instance=products.last()) 
+		form = DateForm(request.POST or None)
+		
+	
+	last_message = Message.objects.filter(product_type=type_id).last()
+	
+	chat_form = MessageForm(request.POST or None)
+	if request.method == 'POST' and chat_form.is_valid():
+		chat_form.save()
+	else:
+		chat_form = MessageForm(request.POST or None, instance=last_message)
+	
+	
+	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok, 'chat':chat_form, 'messages':messages, 'type_o':type, 'ave_sales':average_sales, 'first_product':first_product}
+	return render(request, 'Product.html', context)
 
 
 def managers_users(request):
@@ -227,119 +448,22 @@ def registerPage(request):
 	context = {'form': form, 'profile_form': profile_form}
 	return render(request, 'register.html', context)
 
-
-@cache_page(60*60*2) # установить время для кеширования main page 
-@csrf_exempt
-def mypage(request, manager_id):
-	if request.user.id:
-		pass
-	else:
-		return render(request, 'MyPage.html')
-	current_user = request.user.id 
-	user = User.objects.get(id=current_user)
-	users = User.objects.all()
-	
-	if user.groups.filter(name='Boss').exists():
-		manager_id = Manager.objects.get(id=manager_id)
-	else:
-		manager_id = Manager.objects.get(id=current_user) # manager_id = Manager.objects.get(id=manager_id)
-		
-	product = Product.objects.select_related('manager', 'type', 'brand').defer('link', 'changes', 'asin')
-	
-	managers = []
-	type = []
-	brands = []
-	for item in product:
-		if item.manager not in managers:
-			managers.append(item.manager)
-		if item.brand not in brands:
-			brands.append(item.brand)
-	
-	for item in product:
-		if item.type not in type and item.manager == manager_id:
-			type.append(item.type)
-
-	last_products = product.filter(manager=manager_id).order_by('-date')[0:len(type)]
-	
-	date3 = datetime.now()
-	date1 = f'{date3.timetuple()[0]}-0{date3.timetuple()[1]-1}-01' 
-	date2 = f'{date3.timetuple()[0]}-0{date3.timetuple()[1]}-01' 	
-	
-	form = DateForm(request.POST or None)
-	got_items = '0'
-	if form.is_valid():
-		got_items = '1'
-		date1 = form.clean_date1()
-		date2 = form.clean_date2()
-		if date1==None or date2==None:
-			date1 = '2020-01-01'
-			date2 = datetime.now()
-		product = product.filter(date__gte=date1).filter(date__lte=date2)
-	else:
-		product = product.filter(date__gte=date1).filter(date__lte=date2)
-
-
-	if len(type) == 0:
-		for item in product:
-			if item.type not in type:
-				type.append(item.type)
-	
-	# разобраться с максимом отдельный def вызывающийся когда нужно
-	maxim_list = []
-	for i in type:
-		if i.owner == "max" or i.owner == "Max":
-			maxim_list.append(i)
-		else:
-			pass
-	
-	max_total_sales = []
-	max_ave_sales = []
-	max_got_money = []
-	total_sales = []
-	ave_sales = []
-	got_money = []
-
-
-	for item in type:
-		name = item.type
-		type_sales = 0
-		average_sales = 0
-		coun = 0
-		money = 0
-		for p in product.order_by('-date'):
-			if name == p.product_name:
-				coun += 1
-				s = p.sales
-				price = p.price
-				money += price*s
-				type_sales += s
-				average_sales += s
-
-	
-		if coun == 0:
-			coun = 1
-		average_sales = average_sales / coun
-		average_sales = round(average_sales,0)
-		ave_sales.append(average_sales)
-		total_sales.append(type_sales)
-		got_money.append(money)
-		
-		if item.owner == 'Max' or item.owner == 'max':
-			max_ave_sales.append(average_sales)
-			max_total_sales.append(type_sales)
-			max_got_money.append(money)
-		
-	context = {'got_items':got_items, 'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'money':got_money, 'maxim':maxim_list, 'max_total_sales':max_total_sales, 'max_ave_sales':max_ave_sales, 'max_got_money':max_got_money, 'last_products':last_products, 'current_user':current_user, 'users':users}
-	
-	
-	return render(request, 'MyPage.html', context)
-
-
-def brand(request, manager_id, brandname=0):
+# сначала бренд - потом категория
+def brand(request, manager_id, brandname=0, cat=0):
 	brands = Brand.objects.all()
 	managers = Manager.objects.all()
-	type = TypeOfProduct.objects.all().filter(brand=brandname)
-	product = Product.objects.all().filter(brand=brandname)
+	categories = Category.objects.all()
+
+	
+	if brandname != 0 and cat == 0:
+		type = TypeOfProduct.objects.all().filter(brand=brandname)
+		product = Product.objects.all().filter(brand=brandname)
+	elif brandname == 0 and cat != 0:
+		type = TypeOfProduct.objects.all().filter(category=cat)
+		product = Product.objects.all()
+	elif brandname != 0 and cat != 0:
+		type = TypeOfProduct.objects.all().filter(category=cat, brand=brandname)
+		product = Product.objects.all()
 	
 
 	date1 = '2020-01-01'
@@ -374,92 +498,8 @@ def brand(request, manager_id, brandname=0):
 		ave_sales.append(average_sales)
 		total_sales.append(type_sales)
 	
-	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id})
+	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'categories':categories, 'brandname':brandname, 'cat':cat})
 
-
-@csrf_exempt
-# @cache_page(60*60*4) 
-def productinfo(request, name):
-	type = TypeOfProduct.objects.filter(type=name).first()
-	products = Product.objects.all().filter(product_name=name)
-	first_product = products.first()
-	product_name = products.values('product_name').first()
-	manager_name = products.values('manager').first()['manager']
-	
-	date = products.values('date').annotate(month=TruncMonth('date'))
-	asin = products.values('asin').first()['asin'] # dictionary
-	link = products.values('link').first()['link'] # dictionary
-	link = link[8:]
-	
-	type_id = TypeOfProduct.objects.filter(type=name).values('id').first()['id'] # 35
-	messages = Message.objects.filter(product_type=type_id).order_by('-id')
-	coun = 0
-	average_sales = 0
-	for p in products:
-		if type == p.product_name:
-			s = p.sales
-			average_sales += s
-			coun += 1
-	if coun == 0:
-		coun = 1
-	average_sales = average_sales / coun
-	average_sales = round(average_sales,0)
-
-	
-	event = products.values('event').last()['event']
-	sel_acc = products.values('sel_acc').first()['sel_acc']
-	link_to_seo = products.values('link_to_seo').first()['link_to_seo']
-	last_30 = products.order_by('-date')[0:10:-1]
-	date1 = '2020-01-01'
-	date2 = datetime.now()
-	form = DateForm(request.POST or None)
-	if form.is_valid():
-		date1 = form.clean_date1()
-		date2 = form.clean_date2()
-		if date1==None or date2==None:
-			date1 = '2020-01-01'
-			date2 = datetime.now()
-		products = products.filter(date__gte=date1).filter(date__lte=date2)
-		last_30 = products
-		messages = Message.objects.filter(product_type=type_id).filter(date__gte=date1).filter(date__lte=date2).order_by('-id')
-	if products.count() == 0:
-		products = Product.objects.all().filter(product_name=name)
-	
-	average_bsr = products.aggregate(Avg('bsr'))
-	bsr = str(average_bsr['bsr__avg'])[0:str(average_bsr['bsr__avg']).find('.')]
-	average_rating = products.aggregate(Avg('rating'))
-	rating = str(average_rating['rating__avg'])[0:3]
-	sum_sales = products.aggregate(Sum('sales')) 
-	sales = sum_sales['sales__sum'] 
-	ostatok = TypeOfProduct.objects.filter(type=name).values('ostatki').first()['ostatki']
-	
-	if products.last() == None:
-		data = AddProduct(request.POST or None)
-	else:
-		data = AddProduct(request.POST or None, instance=products.last())
-	
-	if request.method == "POST":
-		data = AddProduct(request.POST)
-		if data.is_valid():
-			sales = data.cleaned_data['sales']
-			product = data.save(manager_name)
-			product.save()
-	else:
-		data = AddProduct(instance=products.last()) 
-		form = DateForm(request.POST or None)
-		
-	
-	last_message = Message.objects.filter(product_type=type_id).last()
-	
-	chat_form = MessageForm(request.POST or None)
-	if request.method == 'POST' and chat_form.is_valid():
-		chat_form.save()
-	else:
-		chat_form = MessageForm(request.POST or None, instance=last_message)
-	
-	
-	context= {'form' : form, 'date1': date1, 'date2': date2, 'products':products, 'sales':sales, 'bsr':bsr, 'rating':rating, 'name':name, 'data':data, 'asin':asin, 'link':link, 'event':event, 'seller':sel_acc, 'seo':link_to_seo, 'last_30':last_30, 'ostatki':ostatok, 'chat':chat_form, 'messages':messages, 'type_o':type, 'ave_sales':average_sales, 'first_product':first_product}
-	return render(request, 'Product.html', context)
 
  
 def edit_first(request, id): # changing data in DB

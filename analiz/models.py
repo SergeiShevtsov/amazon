@@ -57,14 +57,13 @@ class Product(models.Model):
 class TypeOfProduct(models.Model): # конкретно все товары
 	type = models.CharField(max_length=30, unique=True)
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
+	category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE,)
-	# мотивация
 	status_min = models.IntegerField(blank=True, null = True, default=25)
 	status_need = models.IntegerField(blank=True, null = True, default=101)
 	
 	ostatki = models.PositiveIntegerField(blank=True, null = True) # удалить
 	owner = models.CharField(max_length=40, blank=True, null = True)
-	# статус товара: продается/не продается/в разработке и тп
 	BAN = 'BAN'
 	OUT_OF_STOCK = 'OOS'
 	SUPRESSION = 'SSS'
@@ -92,14 +91,29 @@ class Brand(models.Model):
 	brand = models.CharField(max_length=20, unique=True)
 	def __str__(self):
 		return self.brand
+	class Meta:
+		ordering = ['brand',]
 	
 	
 class Manager(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, default='1')
 	username = models.CharField(max_length=20, unique=True)
 	image = models.ImageField(upload_to='images/', null = True, blank = True)
+	
 	def __str__(self):
 		return self.username
+	
+	class Meta:
+		ordering = ['username',]
 
+
+class Category(models.Model):
+	category = models.CharField(max_length=20, unique=True)
+	
+	def __str__(self):
+		return self.category
+	
+	class Meta:
+		ordering = ['category',]
 
 # Create your models here.

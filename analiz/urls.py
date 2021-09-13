@@ -6,8 +6,11 @@ from django.views.generic import RedirectView
 
 
 urlpatterns = [
+	# в ссылке и категория и бренд
 	path('MyPage/<str:manager_id>', views.mypage, name = 'manager_page'),
-	path('manager/<str:manager_id>/<str:brandname>', views.brand, name = "brand"),
+	path('manager/<str:manager_id>/<str:brandname>', views.brand, name = "manager&brand"),
+	path('manager/<str:manager_id>/<str:cat>', views.brand, name = "manager&brand"),
+	path('manager/<str:manager_id>/<str:cat>/<str:brandname>', views.brand, name = "manager&brand"),
 	path('product/<str:name>', views.productinfo , name = "product"),
 	path('regist/', views.registerPage , name = "regist"),
 	path('add_new/', views.new_page , name = "adding new"),
