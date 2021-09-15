@@ -22,7 +22,7 @@ from django.contrib.auth.models import User, Group
 
 
 
-@cache_page(60*60*1) # установить время для кеширования main page 
+# @cache_page(60*60*1) # установить время для кеширования main page 
 @csrf_exempt
 def mypage(request, manager_id, brandname=None):
 	
@@ -36,18 +36,19 @@ def mypage(request, manager_id, brandname=None):
 	if user.groups.filter(name='Boss').exists():
 		manager_id = Manager.objects.get(id=manager_id)
 	else:
-		manager_id = Manager.objects.get(id=current_user) # manager_id = Manager.objects.get(id=manager_id)
+		manager_id = Manager.objects.get(id=current_user) 
 	
-	product = Product.objects.select_related('manager', 'type', 'brand')
+	product = Product.objects.select_related('manager', 'type', 'brand').order_by('manager')
 	
 	managers = []
 	type = []
-	brands = []
+	brands = Brand.objects.all() # можно попробовать методы сортировки
+	# brands = []
 	for item in product:
 		if item.manager not in managers:
 			managers.append(item.manager)
-		if item.brand not in brands:
-			brands.append(item.brand)
+		# if item.brand not in brands:
+		# 	brands.append(item.brand)
 	
 	for item in product:
 		if item.type not in type and item.manager == manager_id:
@@ -425,30 +426,12 @@ def registerPage(request):
 def brand(request, manager_id, brandname=None, cat=None):
 	print(f'cat:{cat}, brand:{brandname}')
 	brands = Brand.objects.all()
-	managers = Manager.objects.all()
+	managers = Manager.objects.all().order_by('username')
 	categories = Category.objects.all()
 	print(f'b:{brandname}-c:{cat}')
 	type = TypeOfProduct.objects.all().filter(brand=brandname)
 	product = Product.objects.all().filter(brand=brandname)
 	
-	# if brandname != None and cat == None:
-	# 	print('!!!!!1')
-	# 	type = TypeOfProduct.objects.all().filter(brand=brandname)
-	# 	product = Product.objects.all().filter(brand=brandname)
-	# elif cat != None and brandname == '0':
-	# 	print(f'!!!!!2 cat:{cat}, brand:{brandname}')
-	# 	type = TypeOfProduct.objects.all().filter(category=cat)
-	# 	product = Product.objects.all()
-	# elif brandname != None and cat != None:
-	# 	print(f'!!!!!3 cat:{cat}, brand:{brandname}')
-	# 	type = TypeOfProduct.objects.all().filter(category=cat, brand=brandname)
-	# 	product = Product.objects.all()
-	# else:
-	# 	print('Pip')
-	# 	type = TypeOfProduct.objects.all()
-	# 	product = Product.objects.all()
-	
-
 	date1 = '2020-01-01'
 	date2 = datetime.now()
 	form = DateForm(request.POST or None)
