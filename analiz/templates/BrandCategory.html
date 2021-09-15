@@ -86,7 +86,7 @@
 								  </div>
 								  <div class="modal-body">
 									{% for category in categories %}
-									<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'category2' manager_id=user.id cat=category.id %}"><font color=#0000000>
+									<li class="nav navbar-toggler"><a class="nav-link active" aria-current="page" href="{% url 'category1' manager_id=user.id brandname=brand_id cat=category.id %}"><font color=#0000000>
 										{{ category.category }}
 										</font></a></li>
 									{% endfor %}

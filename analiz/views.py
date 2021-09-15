@@ -22,7 +22,7 @@ from django.contrib.auth.models import User, Group
 
 
 
-@cache_page(60*60*1) # установить время для кеширования main page 
+# @cache_page(60*60*1) # установить время для кеширования main page 
 @csrf_exempt
 def mypage(request, manager_id, brandname=None):
 	
@@ -32,16 +32,12 @@ def mypage(request, manager_id, brandname=None):
 		return render(request, 'MyPage.html')
 	current_user = request.user.id 
 	user = User.objects.get(id=current_user)
-	# users = User.objects.all()
 	
 	if user.groups.filter(name='Boss').exists():
 		manager_id = Manager.objects.get(id=manager_id)
 	else:
 		manager_id = Manager.objects.get(id=current_user) # manager_id = Manager.objects.get(id=manager_id)
 	
-	# if brandname != "None":
-	# 	product = Product.objects.filter(brand=brandname).select_related('manager', 'type', 'brand')
-	# else:
 	product = Product.objects.select_related('manager', 'type', 'brand')
 	
 	managers = []
@@ -52,28 +48,6 @@ def mypage(request, manager_id, brandname=None):
 			managers.append(item.manager)
 		if item.brand not in brands:
 			brands.append(item.brand)
-	
-		# if user.groups.filter(name='Boss').exists():
-		# 	if item.type not in type:
-		# 		print(f'{item.manager}-{manager_id}')
-		# 		if brandname == None:
-		# 			type.append(item.type)
-		# 			print(f'{brandname}-{item.brand.id}')
-		# 		else:
-		# 			print('Brandname ne None')
-		# 			if item.brand.id == brandname:
-		# 				type.append(item.type)
-		# else:
-		# 	if item.type not in type and item.manager == manager_id:
-		# 		type.append(item.type)
-		# 		# print(f'{item.manager}-{manager_id}')
-		# 		# if brandname == None:
-		# 		# 	type.append(item.type)
-		# 		# 	print(f'{brandname}-{item.brand.id}')
-		# 		# else:
-		# 		# 	print('Brandname ne None')
-		# 		# 	if item.brand.id == brandname:
-		# 		# 		type.append(item.type)
 	
 	for item in product:
 		if item.type not in type and item.manager == manager_id:
@@ -154,7 +128,6 @@ def mypage(request, manager_id, brandname=None):
 	
 	
 	return render(request, 'MyPage.html', context)
-
 
 
 @csrf_exempt
@@ -449,21 +422,31 @@ def registerPage(request):
 	return render(request, 'register.html', context)
 
 # сначала бренд - потом категория
-def brand(request, manager_id, brandname=0, cat=0):
+def brand(request, manager_id, brandname=None, cat=None):
+	print(f'cat:{cat}, brand:{brandname}')
 	brands = Brand.objects.all()
 	managers = Manager.objects.all()
 	categories = Category.objects.all()
-
+	print(f'b:{brandname}-c:{cat}')
+	type = TypeOfProduct.objects.all().filter(brand=brandname)
+	product = Product.objects.all().filter(brand=brandname)
 	
-	if brandname != 0 and cat == 0:
-		type = TypeOfProduct.objects.all().filter(brand=brandname)
-		product = Product.objects.all().filter(brand=brandname)
-	elif brandname == 0 and cat != 0:
-		type = TypeOfProduct.objects.all().filter(category=cat)
-		product = Product.objects.all()
-	elif brandname != 0 and cat != 0:
-		type = TypeOfProduct.objects.all().filter(category=cat, brand=brandname)
-		product = Product.objects.all()
+	# if brandname != None and cat == None:
+	# 	print('!!!!!1')
+	# 	type = TypeOfProduct.objects.all().filter(brand=brandname)
+	# 	product = Product.objects.all().filter(brand=brandname)
+	# elif cat != None and brandname == '0':
+	# 	print(f'!!!!!2 cat:{cat}, brand:{brandname}')
+	# 	type = TypeOfProduct.objects.all().filter(category=cat)
+	# 	product = Product.objects.all()
+	# elif brandname != None and cat != None:
+	# 	print(f'!!!!!3 cat:{cat}, brand:{brandname}')
+	# 	type = TypeOfProduct.objects.all().filter(category=cat, brand=brandname)
+	# 	product = Product.objects.all()
+	# else:
+	# 	print('Pip')
+	# 	type = TypeOfProduct.objects.all()
+	# 	product = Product.objects.all()
 	
 
 	date1 = '2020-01-01'
@@ -498,8 +481,95 @@ def brand(request, manager_id, brandname=0, cat=0):
 		ave_sales.append(average_sales)
 		total_sales.append(type_sales)
 	
-	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'categories':categories, 'brandname':brandname, 'cat':cat})
+	return render(request, 'BrandCategory.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'categories':categories, 'brand_id':brandname, 'cat':cat})
 
+
+def brand_category(request, manager_id, brandname=None, cat=None):
+	print(f'cat:{cat}, brand:{brandname}')
+	brands = Brand.objects.all()
+	managers = Manager.objects.all()
+	categories = Category.objects.all()
+	print(f'b:{brandname}-c:{cat}')
+	type = TypeOfProduct.objects.all().filter(brand=brandname, category=cat)
+	product = Product.objects.all().filter(brand=brandname)
+
+	date1 = '2020-01-01'
+	date2 = datetime.now()
+	form = DateForm(request.POST or None)
+	if form.is_valid():
+		date1 = form.clean_date1()
+		date2 = form.clean_date2()
+		if date1==None or date2==None:
+			date1 = '2020-01-01'
+			date2 = datetime.now()
+		product = product.filter(date__gte=date1).filter(date__lte=date2)
+	if product.count() == 0:
+		product = Product.objects.all()
+	
+	total_sales = []
+	ave_sales = []
+	for item in type:
+		name = item.type
+		type_sales = 0
+		average_sales = 0
+		coun = 0
+		for p in product:
+			if name == p.product_name:
+				coun += 1
+				s = p.sales
+				type_sales += s
+				average_sales += s
+		if coun == 0:
+			coun = 1
+		average_sales = average_sales / coun
+		ave_sales.append(average_sales)
+		total_sales.append(type_sales)
+	
+	return render(request, 'BrandCategory.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'categories':categories, 'brand_id':brandname, 'cat':cat})
+
+
+
+def category(request, manager_id, brandname=None, cat=0):
+	brands = Brand.objects.all()
+	managers = Manager.objects.all()
+	categories = Category.objects.all()
+
+	type = TypeOfProduct.objects.all().filter(category=cat)
+	product = Product.objects.all()	
+
+	date1 = '2020-01-01'
+	date2 = datetime.now()
+	form = DateForm(request.POST or None)
+	if form.is_valid():
+		date1 = form.clean_date1()
+		date2 = form.clean_date2()
+		if date1==None or date2==None:
+			date1 = '2020-01-01'
+			date2 = datetime.now()
+		product = product.filter(date__gte=date1).filter(date__lte=date2)
+	if product.count() == 0:
+		product = Product.objects.all()
+	
+	total_sales = []
+	ave_sales = []
+	for item in type:
+		name = item.type
+		type_sales = 0
+		average_sales = 0
+		coun = 0
+		for p in product:
+			if name == p.product_name:
+				coun += 1
+				s = p.sales
+				type_sales += s
+				average_sales += s
+		if coun == 0:
+			coun = 1
+		average_sales = average_sales / coun
+		ave_sales.append(average_sales)
+		total_sales.append(type_sales)
+	
+	return render(request, 'MyPage.html', {'form':form, 'product' : product, 'managers' : managers, 'type' : type, 'type_1':total_sales,'ave_sales':ave_sales , 'brands':brands, 'manage_id' : manager_id, 'categories':categories, 'cat':cat})
 
  
 def edit_first(request, id): # changing data in DB
