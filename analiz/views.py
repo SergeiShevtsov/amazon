@@ -22,7 +22,7 @@ from django.contrib.auth.models import User, Group
 
 
 
-@cache_page(60*60*1) # установить время для кеширования main page 
+# @cache_page(60*60*1) # установить время для кеширования main page 
 @csrf_exempt
 def mypage(request, manager_id, brandname=None):
 	
@@ -628,8 +628,8 @@ def delete_reklama(request, id): # removing data from DB
 def edit_type(request, id): # removing data from DB
 	try:
 		type = TypeOfProduct.objects.get(id=id)
-		product = Product.objects.get(id=id)
-		prod_name = product.product_name
+		# product = Product.objects.get(id=id)
+		# prod_name = product.product_name
 		link = f'/amz/product/{prod_name}'
 		form = AddTypeOfProduct(request.POST or None, instance=type)
 		context = {'form':form, 'type':type}
@@ -645,8 +645,8 @@ def edit_type(request, id): # removing data from DB
 def edit_motivation(request, id):
 	try:
 		type = TypeOfProduct.objects.get(id=id)
-		product = Product.objects.get(id=id)
-		prod_name = product.product_name
+		# product = Product.objects.get(id=id)
+		# prod_name = product.product_name
 		link = f'/amz/motivation' 
 		form = AddTypeOfProduct(request.POST or None, instance=type)
 		context = {'form':form, 'type':type}
