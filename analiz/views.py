@@ -22,7 +22,7 @@ from django.contrib.auth.models import User, Group
 
 
 
-# @cache_page(60*60*1) # установить время для кеширования main page 
+@cache_page(60*60*1) # установить время для кеширования main page 
 @csrf_exempt
 def mypage(request, manager_id, brandname=None):
 	
