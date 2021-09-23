@@ -59,8 +59,8 @@ class TypeOfProduct(models.Model): # конкретно все товары
 	manager = models.ForeignKey('Manager', on_delete=models.CASCADE)
 	category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True)
 	brand = models.ForeignKey('Brand', on_delete=models.CASCADE,)
-	status_min = models.IntegerField(blank=True, null = True, default=25)
-	status_need = models.IntegerField(blank=True, null = True, default=101)
+	status_min = models.IntegerField(default=25) # убрал null & blank
+	status_need = models.IntegerField(default=101) # убрал null & blank
 	
 	ostatki = models.PositiveIntegerField(blank=True, null = True) # удалить
 	owner = models.CharField(max_length=40, blank=True, null = True)

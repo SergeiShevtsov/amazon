@@ -12,7 +12,9 @@
 				{% csrf_token %}
 				{{form}}
 				<input type="Submit" name="submit" value="Filter"/>
+				<a href="{% url 'motivation' %}"><button class="btn btn-dark">Сбросить фильтрацию</button></a>
 			</form>
+			
 		</div>
 		<div>
 			<ul class="nav navbar">

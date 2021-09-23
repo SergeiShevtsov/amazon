@@ -56,7 +56,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(TypeOfProduct)
 class ProductAdmin(admin.ModelAdmin):
-	list_display = ('id', "type", 'brand',  "manager", "status", 'owner', 'category',)
+	list_display = ('id', "type", 'brand',  "manager", 'status_min', 'status_need', 'owner', 'category',)
 
 
 @admin.register(Manager)

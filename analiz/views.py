@@ -22,7 +22,7 @@ from django.contrib.auth.models import User, Group
 
 
 
-@cache_page(60*60*1) # установить время для кеширования main page 
+@cache_page(60*10) # установить время для кеширования main page 
 @csrf_exempt
 def mypage(request, manager_id, brandname=None):
 	
@@ -404,6 +404,12 @@ def motivation(request):
 			coun = 1
 		average_sales = average_sales / coun
 		average_sales = round(average_sales,0)
+		if (average_sales / int(item.status_min) > 0.9) and (average_sales / int(item.status_need) < 0.9):
+			average_sales = f'{average_sales} - 50 BYN'
+		elif (average_sales / int(item.status_min) > 0.9) and (average_sales / int(item.status_need) > 0.9):
+			average_sales = f'{average_sales} - 100 BYN'
+		else:
+			average_sales = f'{average_sales}'
 		ave_sales.append(average_sales)
 		total_sales.append(type_sales)
 	dictionary = dict(zip(type, ave_sales))
