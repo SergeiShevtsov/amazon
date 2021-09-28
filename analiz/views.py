@@ -634,8 +634,9 @@ def delete_reklama(request, id): # removing data from DB
 def edit_type(request, id): # removing data from DB
 	try:
 		type = TypeOfProduct.objects.get(id=id)
-		# product = Product.objects.get(id=id)
-		# prod_name = product.product_name
+		name = type.type
+		product = Product.objects.filter(product_name=name).last()
+		prod_name = product.product_name
 		link = f'/amz/product/{prod_name}'
 		form = AddTypeOfProduct(request.POST or None, instance=type)
 		context = {'form':form, 'type':type}
