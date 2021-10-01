@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth, TruncYear
-import itertools
+# import itertools
 from django.db.models.functions import ExtractMonth, TruncMonth
 from django.utils import timezone
 from django.template import Context, loader
@@ -57,8 +57,8 @@ def mypage(request, manager_id, brandname=None):
 	categories = Category.objects.all()
 	
 	date3 = datetime.now()
-	date1 = f'{date3.timetuple()[0]}-0{date3.timetuple()[1]-1}-01' 
-	date2 = f'{date3.timetuple()[0]}-0{date3.timetuple()[1]}-01' 	
+	date1 = f'{date3.timetuple()[0]}-{date3.timetuple()[1]-1}-01' 
+	date2 = f'{date3.timetuple()[0]}-{date3.timetuple()[1]}-01' 	
 	
 	form = DateForm(request.POST or None)
 	got_items = '0'
