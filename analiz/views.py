@@ -1,31 +1,94 @@
 from .models import Product, Manager, Brand, TypeOfProduct, Message, ACOS, Category
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.db.models import Sum, Avg
-from django.db.models import Count
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import DateForm, AddProduct, AddNewProduct, AddTypeOfProduct, ChooseType, MessageForm, ACOSForm, Managersform, UsersForm, ChangeLink
-from datetime import datetime, timedelta
+from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
-from django.db.models import Count, Sum
+from django.db.models import Sum
 from django.db.models.functions import TruncMonth, TruncYear
-# import itertools
 from django.db.models.functions import ExtractMonth, TruncMonth
 from django.utils import timezone
-from django.template import Context, loader
 from django.http import HttpResponseNotFound
 from django.http import HttpResponseRedirect
 from django.views.decorators.cache import cache_page
 from django.contrib.auth.models import User, Group
+import gspread
+import pandas as pd
+import gspread
+import pandas as pd
+import re
+
+
+# обьединять данные по двум товаров с одного склада за один день
+def sentry(request, test=None):
+    added_products = []
+    gc = gspread.service_account(filename='/Users/sphere4/Desktop/sergik/SentryKit_bot/sentrykit-24ddd78fce35.json')
+    sh = gc.open("SentryKit sheets") # выбор электронной таблицы
+
+    sales = sh.worksheet("Sales")
+    data_sales = sales.get_all_records()
+    dash = sh.worksheet("Dashboard")
+    data_dash = dash.get_all_records()
+
+    try:
+        counter = 0
+        for dict in data_dash:
+            if dict['ASIN'] == data_sales[counter]['ASIN']:
+                dict['Sales'] = data_sales[counter]['Yesterday\'s Sales (units)']
+                dict['Date'] = data_sales[counter]['Yesterday\'s Date on Marketplace']
+                counter += 1
+            else:
+                dict['Sales'] = 'No'
+                dict['Date'] = '(untracked)'
+    except:
+        print('exception')
+    
+
+    for item in data_dash:
+		
+        if item['Date'] == '(untracked)':
+            continue
+	
+        product = Product.objects.filter(asin = item['ASIN']).last()
+        try:
+            id = product.id
+        except:
+            continue
+
+        # print(str(product.date), item['Date'])
+        if str(product.date) == item['Date']:
+            date2 = item['Sales']
+            print(f'{product.product_name} + {date2}')
+            product.sales += item['Sales']
+            product.save()
+            continue
+        product.id=None 
+        product.date=item["Date"]
+        product.sales=item["Sales"]
+        try:
+            new_price = re.findall(r'\d+', item['Price']) 
+            product.price=float('.'.join(new_price))
+        except:
+            pass
+        new_rating = float(re.findall(r'\d+', item['Star Rating'])[0])
+		
+        product.rating=new_rating
+        product.link=item['Amazon URL']
+        product.fba_inventory=item['FBA Inventory']
+        product.save()
+        added_products.append(product.product_name)
+
+    context = {'new_products':data_sales, 'products':added_products}
+    return render(request, 'Sentry.html', context)
 
 
 
 @cache_page(60*10) # установить время для кеширования main page 
 @csrf_exempt
-def mypage(request, manager_id, brandname=None):
-	
+def mypage(request, manager_id, brandname=None):	
 	if request.user.id:
 		pass
 	else:
@@ -47,8 +110,7 @@ def mypage(request, manager_id, brandname=None):
 	for item in product:
 		if item.manager not in managers:
 			managers.append(item.manager)
-		# if item.brand not in brands:
-		# 	brands.append(item.brand)
+
 	
 	for item in product:
 		if item.type not in type and item.manager == manager_id:

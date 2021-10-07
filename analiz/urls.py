@@ -24,6 +24,7 @@ urlpatterns = [
 	path('acos/edit/<int:id>/', views.edit_reklama),
 	path('acos/delete/<int:id>/', views.delete_reklama),
 	path('akcii/', views.akcii , name = "table"),
+	path('sentry/', views.sentry , name = "sentry"),
 	path('dashboard/', views.dash, name = 'dashboard'),
 	path('acos/', views.acos, name = 'acos'),
 	url(r'^favicon\.ico$', RedirectView.as_view(url='/static/img/favicon.ico', permanent=True)),
