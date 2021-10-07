@@ -25,7 +25,7 @@ import re
 # обьединять данные по двум товаров с одного склада за один день
 def sentry(request, test=None):
     added_products = []
-    gc = gspread.service_account(filename='/Users/sphere4/Desktop/sergik/SentryKit_bot/sentrykit-24ddd78fce35.json')
+    gc = gspread.service_account(filename='app/sentrykit-24ddd78fce35.json')
     sh = gc.open("SentryKit sheets") # выбор электронной таблицы
 
     sales = sh.worksheet("Sales")
