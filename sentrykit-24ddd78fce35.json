@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "sentrykit",
+  "private_key_id": "24ddd78fce358f3719a62e052fcb6fbadfc7ade7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDPrpp3YHhCHNfK\nTpcL5gbXvb1wf1+QVbdm8KCSWJZZCGc2WMorqPmSnrcO/PiouCkPLza9S78S+Pqq\n/C6qsRxp/0FZqXofUpYXindI7eTMxtQvOg6yU8MqIyg4JaVQyVYqIDkcYvOlXw2V\nlZiG1UDAz6aJZU+5iEsmtJA6vgSWbAW+4bs3C/VosbB456Ny6b1b5r6TVqm6z5Za\nutKiNdYZaN9lA9+O9QqfIcAEG20Y1vchM1mylezO0VNeZfUhyp7Md+5hWgciAwSA\nTeZ17iDGi1vY/3R2eu2NUwSSkrU8tbZbhWJbqPbvyeA+V4sSJqtuNmmx5AJGWBur\nN8afu1NfAgMBAAECggEAB4SuIdkzsU0DANdkf3FF2SSMyZhK2NpJh+f5ICMl2jZE\nKkL/mqIE2up0/Q1qYQ09q0eNxz+JPMIXrP3xIIvF2A5+CqVoft7KATMpi1HVYRZn\nkwgahRkkLQ/VwmaWe/y16lN9TcpFQLzWrI4cVfE9ZV1/DWVGBBTrh4ys1fuQBfP1\nXinMgcUy053zRW2jnyTAC4ZhzWQwd/A9KP3Yid3OiODCN0o+woKrJJJDqbKgNLFN\nwjv3qF9cQBtVuskKvlY2c/RxfYkvuvGujrDKtj/1wv/idSca7JH6h3XRPoGse5HY\naSq544i+jXhHHQisLdyU5LBhtZF5hHQJFsozOIhEAQKBgQD/889Z1QdJShKtyOy2\nqtZ6/1cOxRHOxHRUBnPkWIgKVe0QmN51/H6CPi806IFNmsRLsIjZKiAEHxKBKxmo\nb7hpSlPbKW21VwXjGQi25aSAMYfkCQtr7Y0W7VQ90loSjCIzBTfXkCF7WYR4aDTR\nmdkDmS3IBl6Ab+m0HZLbHUkcAQKBgQDPuH6Wu8V8EZbEmjGEu4Sy7cCxgLAEpy/s\n5ilO5F/mjr3Hx0txXhV1F5VYBRK3D9lTEDrxJaxi/4fO5Xh7l7GM8hn99rsIdW5f\n5J2tRCS5ImebTvLIvsh+QkxIXIcVCmyP6BCtyA/c5HcWAyeA0S/0agSmbFMNokEi\nddIFtHXvXwKBgQCa0QWVx7YtjYF43rTX1MQBB9vH0knwMIJQpMqKz0YSQmEvjdfZ\ntA1tiGGTdiNoJnofcjuEZ+ePtp/Bw6k0acc44L2SLh/u9SFZeTX9MzBqXgtdUl83\nPCwANzOiZU8YMu0owTpCyCqIauAm2JlCQvWyKIA5oiidNZQ93zmKEc+8AQKBgQCk\nf3rga/tM8bDwKRwl/UptWJNM/phmVvBBL1RvQbQgpdHtMAqy0Ms1W2PNvNbBWi/E\n9Al5h1gpXity0Y7EcbEN6Xxj/szHOhgaoLWtzVU3t+NMvwzNpSiptF8svvnK0+J9\nZE4xEUpeqB8Ws5DJFuBfMsZT9V0gYuoqHBwioHL1CQKBgQD2bzQUp5gBR7QisMJC\nvBMLAXwmudMj+AzxmGOelSTZ9pdPQ4jIfHjlEAOxc1DWCfaKPL1oo8WU36KnQmzn\niMMWFEcxOmec+vrqlfsKTlIAiEEofUjYEdDAMCxn/O9mW5/chepQikmaKghZBBGn\ntuByzqdHIqqVMsST3RZRmvdYuQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "sentrykit@sentrykit.iam.gserviceaccount.com",
+  "client_id": "114723689146208615268",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sentrykit%40sentrykit.iam.gserviceaccount.com"
+}
