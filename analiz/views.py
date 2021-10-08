@@ -26,7 +26,7 @@ import re
 def sentry(request, test=1):
     added_products = []
     new_products = []
-    gc = gspread.service_account(filename='/Users/sphere4/Desktop/sergik/SentryKit_bot/sentrykit-24ddd78fce35.json')
+    gc = gspread.service_account(filename='sentrykit-24ddd78fce35.json')
     sh = gc.open("SentryKit sheets") # выбор электронной таблицы
 
     sales = sh.worksheet("Sales")
