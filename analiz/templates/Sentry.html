@@ -42,8 +42,21 @@
 </nav>
 
 {% for item in products %}
-	{{item}} has been updated<br>
+	{{item.product_name}} - {{item.sales}}<br>
+
 {% endfor %}
+
+
+<br>
+<br>
+<br>
+Not added products:
+{% for item in new_items %}
+	{{item}}<br>
+{% endfor %}
+
+
+
 
 {% block script %}
 {% if user.get_username == 'Max' %}

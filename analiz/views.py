@@ -23,9 +23,10 @@ import re
 
 
 # обьединять данные по двум товаров с одного склада за один день
-def sentry(request, test=None):
+def sentry(request, test=1):
     added_products = []
-    gc = gspread.service_account(filename='sentrykit-24ddd78fce35.json')
+    new_products = []
+    gc = gspread.service_account(filename='/Users/sphere4/Desktop/sergik/SentryKit_bot/sentrykit-24ddd78fce35.json')
     sh = gc.open("SentryKit sheets") # выбор электронной таблицы
 
     sales = sh.worksheet("Sales")
@@ -44,7 +45,7 @@ def sentry(request, test=None):
                 dict['Sales'] = 'No'
                 dict['Date'] = '(untracked)'
     except:
-        print('exception')
+        pass 
     
 
     for item in data_dash:
@@ -56,12 +57,10 @@ def sentry(request, test=None):
         try:
             id = product.id
         except:
+            new_products.append(item['Product Short Name'])
             continue
 
-        # print(str(product.date), item['Date'])
         if str(product.date) == item['Date']:
-            date2 = item['Sales']
-            print(f'{product.product_name} + {date2}')
             product.sales += item['Sales']
             product.save()
             continue
@@ -79,9 +78,9 @@ def sentry(request, test=None):
         product.link=item['Amazon URL']
         product.fba_inventory=item['FBA Inventory']
         product.save()
-        added_products.append(product.product_name)
+        added_products.append(product)
 
-    context = {'new_products':data_sales, 'products':added_products}
+    context = {'new_products':data_sales, 'products':added_products, 'new_items':new_products}
     return render(request, 'Sentry.html', context)
 
 
@@ -492,11 +491,9 @@ def registerPage(request):
 
 # сначала бренд - потом категория
 def brand(request, manager_id, brandname=None, cat=None):
-	print(f'cat:{cat}, brand:{brandname}')
 	brands = Brand.objects.all()
 	managers = Manager.objects.all().order_by('username')
 	categories = Category.objects.all()
-	print(f'b:{brandname}-c:{cat}')
 	type = TypeOfProduct.objects.all().filter(brand=brandname)
 	product = Product.objects.all().filter(brand=brandname)
 	
@@ -536,11 +533,9 @@ def brand(request, manager_id, brandname=None, cat=None):
 
 
 def brand_category(request, manager_id, brandname=None, cat=None):
-	print(f'cat:{cat}, brand:{brandname}')
 	brands = Brand.objects.all()
 	managers = Manager.objects.all()
 	categories = Category.objects.all()
-	print(f'b:{brandname}-c:{cat}')
 	type = TypeOfProduct.objects.all().filter(brand=brandname, category=cat)
 	product = Product.objects.all().filter(brand=brandname)
 
